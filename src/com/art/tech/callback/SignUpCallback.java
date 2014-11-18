@@ -1,6 +1,6 @@
 package com.art.tech.callback;
 
-import com.art.exception.AVException;
+import com.art.tech.exception.AVException;
 
 public class SignUpCallback {
 

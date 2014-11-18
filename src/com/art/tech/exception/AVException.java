@@ -1,4 +1,4 @@
-package com.art.exception;
+package com.art.tech.exception;
 
 public class AVException {
 

@@ -7,9 +7,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class AnyTimeActivity extends Activity {
+public class BaseActivity extends Activity {
 
-  public AnyTimeActivity activity;
+  public BaseActivity activity;
   private String userId;
 
   @Override
@@ -24,7 +24,8 @@ public class AnyTimeActivity extends Activity {
   }
 
   public String getUserId() {
-    return userId;
+    //return userId;
+	  return "true";
   }
 
   protected void showError(String errorMessage) {

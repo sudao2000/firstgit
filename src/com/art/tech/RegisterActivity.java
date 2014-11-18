@@ -1,7 +1,7 @@
 package com.art.tech;
 
-import com.art.exception.AVException;
 import com.art.tech.callback.SignUpCallback;
+import com.art.tech.exception.AVException;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-public class RegisterActivity extends AnyTimeActivity {
+public class RegisterActivity extends BaseActivity {
 
 	Button registerButton;
 	EditText userName;

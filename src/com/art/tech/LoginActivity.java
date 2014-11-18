@@ -1,7 +1,7 @@
 package com.art.tech;
 
-import com.art.exception.AVException;
 import com.art.tech.callback.LogInCallback;
+import com.art.tech.exception.AVException;
 import com.art.tech.model.AVUser;
 
 import android.annotation.SuppressLint;
@@ -15,7 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class LoginActivity extends AnyTimeActivity {
+public class LoginActivity extends BaseActivity {
 
 	Button loginButton;
 	Button registerButton;

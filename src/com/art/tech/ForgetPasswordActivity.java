@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ForgetPasswordActivity extends AnyTimeActivity {
+public class ForgetPasswordActivity extends BaseActivity {
 
 	EditText emailText;
 	Button findPasswordButton;
