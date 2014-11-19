@@ -40,8 +40,11 @@ public class MainActivity extends BaseActivity {
 
 		@Override
 		public void onClick(View arg0) {
-			// TODO Auto-generated method stub
-
+			Intent mainIntent = new Intent(MainActivity.this,
+					ImageBrowseActivity.class);
+			startActivity(mainIntent);
+			MainActivity.this.finish();
+			
 		}
 
 	};

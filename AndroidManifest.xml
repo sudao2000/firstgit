@@ -55,6 +55,12 @@
             android:name="com.art.tech.RecordActivity"
             android:label="@string/app_name" >
         </activity>
+        
+                <activity
+            android:name="com.art.tech.ImageBrowseActivity"
+            android:label="@string/app_name" >            
+            
+        </activity>
     </application>
 
 </manifest>
