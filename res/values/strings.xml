@@ -57,4 +57,21 @@
 	<string name="doing_detail_achievement_null">没有获得成就T.T</string>
 	
 		<string name="descr_image">Image</string>
+		
+		<string name="copy_name">copy name</string>
+		<string name="copy_owner">copy owner</string>
+		<string name="copy_material">copy material</string>
+		<string name="copy_money_unit">yuan</string>
+		<string name="copy_money">copy money</string>
+		<string name="copy_size">copy size</string>
+		<string name="copy_date">copy date</string>
+		<string name="copy_description">copy name</string>
+
+		
+		
+		
+		
+		
+		
+		
 </resources>

@@ -14,22 +14,17 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:layout_weight="1" />
-            
-        <EditText
-        android:hint="@string/login_button_register"
-        android:id="@+id/copy_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:ems="10" >
+            android:layout_weight="1"
+            android:hint="@string/copy_name" />
 
-      
-    </EditText>
+        <TextView
+            android:id="@+id/copy_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/login_button_register" />
     </LinearLayout>
 
     <LinearLayout
@@ -38,11 +33,17 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/TextView01"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="TextView" />
+            android:layout_weight="1"
+            android:hint="@string/copy_owner" />
+
+        <TextView
+            android:id="@+id/copy_owner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/copy_owner" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,13 +52,17 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/TextView02"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView1"
-            android:layout_below="@+id/textView1"
-            android:layout_marginTop="56dp"
-            android:text="TextView" />
+            android:layout_weight="1"
+            android:hint="@string/copy_material" />
+
+        <TextView
+            android:id="@+id/copy_material"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/copy_material" />
     </LinearLayout>
 
     <LinearLayout
@@ -66,13 +71,17 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/TextView03"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/TextView01"
-            android:layout_below="@+id/TextView01"
-            android:layout_marginTop="62dp"
-            android:text="TextView" />
+            android:layout_weight="1"
+            android:hint="@string/copy_size" />
+
+        <TextView
+            android:id="@+id/copy_size"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/copy_size" />
     </LinearLayout>
 
     <LinearLayout
@@ -81,13 +90,17 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/TextView04"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/TextView02"
-            android:layout_marginTop="26dp"
-            android:layout_toRightOf="@+id/TextView02"
-            android:text="TextView" />
+            android:layout_weight="1"
+            android:hint="@string/copy_date" />
+
+        <TextView
+            android:id="@+id/copy_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/copy_date" />
     </LinearLayout>
 
     <LinearLayout
@@ -96,13 +109,17 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/TextView05"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/TextView03"
-            android:layout_alignBottom="@+id/TextView03"
-            android:layout_centerHorizontal="true"
-            android:text="TextView" />
+            android:layout_weight="1"
+            android:hint="@string/copy_description" />
+
+        <TextView
+            android:id="@+id/copy_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/copy_description" />
     </LinearLayout>
 
     <LinearLayout
@@ -111,14 +128,23 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/TextView06"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/TextView04"
-            android:layout_alignBottom="@+id/TextView04"
-            android:layout_alignRight="@+id/button_login"
-            android:layout_marginRight="48dp"
-            android:text="TextView" />
+            android:layout_weight="2"
+            android:hint="@string/copy_money" />
+
+        <TextView
+            android:id="@+id/copy_money"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="@string/copy_money" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/copy_money_unit" />
     </LinearLayout>
 
     <LinearLayout
@@ -133,35 +159,6 @@
             android:layout_marginTop="20dp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/TextView07"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/datePicker1"
-            android:layout_marginTop="29dp"
-            android:layout_toLeftOf="@+id/TextView04"
-            android:text="TextView" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/TextView08"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/button_login"
-            android:layout_alignLeft="@+id/button_login"
-            android:layout_marginBottom="24dp"
-            android:text="TextView" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
