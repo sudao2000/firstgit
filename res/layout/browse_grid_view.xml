@@ -7,17 +7,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <GridView
-        android:id="@+id/grid_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnWidth="60dp"
-        android:gravity="center"
-        android:horizontalSpacing="10dp"
-        android:numColumns="auto_fit"
-        android:padding="10dp"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" />
+  	<fragment android:name="com.art.tech.fragment.ImageGridFragment"
+            android:id="@+id/image_grid_frag"            
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:layout_gravity="center"/>
 
     <ImageButton
         android:id="@+id/button_camera"
