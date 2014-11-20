@@ -100,7 +100,13 @@ public class ImageGridFragment extends Fragment {
 				.considerExifParams(true)
 				.bitmapConfig(Bitmap.Config.RGB_565)
 				.build();
+		
+		
+		
 	}
+	
+	
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
