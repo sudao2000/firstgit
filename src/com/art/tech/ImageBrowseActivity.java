@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.art.tech.application.Constants;
 import com.art.tech.util.UIHelper;
 
 public class ImageBrowseActivity extends FragmentActivity {
@@ -37,12 +38,9 @@ public class ImageBrowseActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				String saveLocation = "/sdcard/";
+				String saveLocation = Constants.IMAGE_SAVE_PAHT;
 				uri = UIHelper.capureImage(ImageBrowseActivity.this,
-						ACTION_CAPTURE_IMAGE, saveLocation);
-				
-				
-			}
+						ACTION_CAPTURE_IMAGE, saveLocation);			}
 
 		});
 	}

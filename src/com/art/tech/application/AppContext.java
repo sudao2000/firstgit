@@ -578,12 +578,7 @@ public class AppContext extends BaseApplication {
 		// }
 		// file.delete();
 		// }
-		deleteDatabase("webview.db");
-		deleteDatabase("webview.db-shm");
-		deleteDatabase("webview.db-wal");
-		deleteDatabase("webviewCache.db");
-		deleteDatabase("webviewCache.db-shm");
-		deleteDatabase("webviewCache.db-wal");
+
 		// 清除数据缓存
 		clearCacheFolder(getFilesDir(), System.currentTimeMillis());
 		clearCacheFolder(getCacheDir(), System.currentTimeMillis());

@@ -70,8 +70,8 @@
 		
 		    <string name="press_again_exit">再按一次退出</string>
 		
-		
-		
+		<string name="original_real_code">原作防伪代码</string>
+		<string name="activate_real_code">激活防伪代码</string>
 		
 		
 </resources>
