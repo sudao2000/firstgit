@@ -10,19 +10,16 @@
     <string name="dialog_error_title">错误</string>
     <string name="dialog_message_title">提示</string>
     <string name="dialog_message_success">成功</string>
-	<string name="dialog_text_wait">请等待</string>
-    
+    <string name="dialog_text_wait">请等待</string>
     <string name="login_input_user_name">请输入名字</string>
     <string name="login_input_user_password">请输入密码</string>
     <string name="login_button_login">登录</string>
     <string name="login_button_register">注册</string>
     <string name="login_button_forget_password">忘记用户名或密码？</string>
     <string name="error_login_error">登陆失败，请确认网络和用户名密码后重试</string>
-    
     <string name="forget_password_find_password_button">发送邮件</string>
     <string name="forget_password_send_email">已发送邮件</string>
     <string name="forget_password_email_error">邮件发送错误，请确认您的邮件地址</string>
-    
     <string name="register_input_user_password_again">请再次输入密码</string>
     <string name="register_input_user_email">请输入E-mail地址</string>
     <string name="error_register_password_not_equals">两次输入密码不一致，请重新输入</string>
@@ -32,10 +29,8 @@
     <string name="error_register_user_name_repeat">用户名已被注册，请重新填写</string>
     <string name="error_register_email_repeat">邮箱已被注册，请更换邮箱</string>
     <string name="success_register_success">注册成功</string>
-    
     <string name="main_view_person_title">我的成就</string>
     <string name="main_view_anytime_title">正在做</string>
-    
     <string name="action_logout_alert_message">确定更换账号么？之前保留的账号信息将被删除。</string>
     <string name="action_about_app_text">关于作者:\n\thi，大家好，我是“孤独的猫咪神”。\n\t我的微博是:weibo.com/maomishen\n\t感谢您使用此APP。欢迎对本APP提出您宝贵的意见和建议。</string>
     <string name="action_about_app_doing_list_title">我希望在“正在做”中，加入如下的事情:\n我要提意见:</string>
@@ -43,35 +38,38 @@
     <string name="action_about_app_submit_doing_hint">输入意见或希望添加在“正在做”中的内容。</string>
     <string name="action_about_app_submit_message_success">感谢您的提交。祝您生活愉快。</string>
     <string name="action_about_app_submit_message_error">非常抱歉，提交出错。</string>
-    
     <string name="person_register_time">注册时间:{0}</string>
     <string name="person_achievement_list_null">暂无成就</string>
-    
-	<string name="doing_list_wait_loading">正在加载</string>
-	<string name="doing_list_error_loading">加载错误，请检查网络</string>
-	
-	<string name="doing_detail_loading">努力查询中！</string>
-	<string name="doing_detail_same_time_title">与您同时在{0}的人有</string>
-	<string name="doing_detail_person">人</string>
-	<string name="doing_detail_get_achievement_title">本次获得的成就</string>
-	<string name="doing_detail_achievement_null">没有获得成就T.T</string>
-	
-		<string name="descr_image">Image</string>
-		
-		<string name="copy_name">copy name</string>
-		<string name="copy_owner">copy owner</string>
-		<string name="copy_material">copy material</string>
-		<string name="copy_money_unit">yuan</string>
-		<string name="copy_money">copy money</string>
-		<string name="copy_size">copy size</string>
-		<string name="copy_date">copy date</string>
-		<string name="copy_description">copy name</string>
+    <string name="doing_list_wait_loading">正在加载</string>
+    <string name="doing_list_error_loading">加载错误，请检查网络</string>
+    <string name="doing_detail_loading">努力查询中！</string>
+    <string name="doing_detail_same_time_title">与您同时在{0}的人有</string>
+    <string name="doing_detail_person">人</string>
+    <string name="doing_detail_get_achievement_title">本次获得的成就</string>
+    <string name="doing_detail_achievement_null">没有获得成就T.T</string>
+    <string name="descr_image">Image</string>
+    <string name="copy_name">name</string>
+    <string name="copy_owner">owner</string>
+    <string name="copy_material">material</string>
+    <string name="copy_money_unit_and_publicity">yuan  publicity</string>
+    <string name="copy_money">money</string>
+    <string name="copy_size">size</string>
+    <string name="copy_size_unit">cm</string>
+    <string name="copy_date">date</string>
+    <string name="copy_description">description</string>
+    <string name="press_again_exit">再按一次退出</string>
+    <string name="original_real_code">原作防伪代码</string>
+    <string name="activate_real_code">激活防伪代码</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+    <string name="default_copy_size">100</string>
+<string name="default_copy_money">0</string>
+<string name="default_real_code">00000000</string>
+<string name="product_report">product report</string>
+<string name="product_report_title">product analysis report</string>
 
-		
-		    <string name="press_again_exit">再按一次退出</string>
-		
-		<string name="original_real_code">原作防伪代码</string>
-		<string name="activate_real_code">激活防伪代码</string>
-		
-		
+<string name="exhibision">exhibision</string>
+<string name="more_analysis">"more analysis"</string>
+
+
 </resources>

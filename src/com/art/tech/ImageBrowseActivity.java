@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ public class ImageBrowseActivity extends FragmentActivity {
 	public static final int ACTION_CAPTURE_IMAGE = 0;
 
 	private boolean isWaitingExit = false;
-	ImageButton button_camera;
+	Button product_report;
 	private Uri uri;
 
 	@Override
@@ -32,16 +33,16 @@ public class ImageBrowseActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.browse_grid_view);
 
-		ImageButton button_camera = (ImageButton) this
-				.findViewById(R.id.button_camera);
-		button_camera.setOnClickListener(new OnClickListener() {
+		product_report = (Button) this
+				.findViewById(R.id.product_report);
+		product_report.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
-				String saveLocation = Constants.IMAGE_SAVE_PAHT;
-				uri = UIHelper.capureImage(ImageBrowseActivity.this,
-						ACTION_CAPTURE_IMAGE, saveLocation);			}
-
+			public void onClick(View v) {
+				Intent i = new Intent(ImageBrowseActivity.this,
+						ProductReportActivity.class);
+				startActivity(i);
+			}
 		});
 	}
 
@@ -61,33 +62,6 @@ public class ImageBrowseActivity extends FragmentActivity {
 		}
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-			if (isWaitingExit) {
-				isWaitingExit = false;
-
-			} else {
-				Toast.makeText(this,
-						getResources().getString(R.string.press_again_exit),
-						Toast.LENGTH_SHORT).show();
-				isWaitingExit = true;
-				Timer timer = new Timer();
-				timer.schedule(new TimerTask() {
-					@Override
-					public void run() {
-						isWaitingExit = false;
-					}
-				}, 3000);
-				return true;
-			}
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_MENU) {
-
-		}
-		return super.onKeyDown(keyCode, event);
-	}
 
 }

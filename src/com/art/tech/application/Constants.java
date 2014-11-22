@@ -12,6 +12,8 @@ public class Constants {
 	
 	public final static String IMAGE_SAVE_PAHT = BASE_DIR +"download_images" + "/";
 
+	public final static int EXIT_TIMEOUT = 2000;
+	
 	public static class Config {
 		public static final boolean DEVELOPER_MODE = false;
 	}
