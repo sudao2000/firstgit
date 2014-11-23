@@ -84,7 +84,7 @@ public class FileUtils {
 		if (!destDir.exists()) {
 			destDir.mkdirs();
 		}
-		return new File(folderPath, fileName + fileName);
+		return new File(folderPath, fileName);
 	}
 
 	/**
