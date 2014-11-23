@@ -24,7 +24,6 @@ import com.art.tech.util.UIHelper;
 public class ImageBrowseActivity extends FragmentActivity {
 	public static final int ACTION_CAPTURE_IMAGE = 0;
 
-	private boolean isWaitingExit = false;
 	Button product_report;
 	private Uri uri;
 
@@ -45,23 +44,4 @@ public class ImageBrowseActivity extends FragmentActivity {
 			}
 		});
 	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-		if (ACTION_CAPTURE_IMAGE == requestCode && resultCode == RESULT_OK
-				&& data.getData() != null) {
-			
-			ContentResolver cr = this.getContentResolver();
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(cr
-                        .openInputStream(uri));
-            } catch (FileNotFoundException e) {
-            	
-            }
-		}
-	}
-
-
-
 }
