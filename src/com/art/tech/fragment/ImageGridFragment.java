@@ -1,5 +1,8 @@
 package com.art.tech.fragment;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,7 +27,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 
 
 public class ImageGridFragment extends Fragment {
-
+/*
 	public static final String[] IMAGES = new String[] {
 		// Heavy images
 		"file://sdcard/image01.jpg",
@@ -77,15 +80,20 @@ public class ImageGridFragment extends Fragment {
 		"file://sdcard/image03.jpg",
 		"file://sdcard/image04.jpg"
 	};
+*/
 
+	private static final String TAG = "ImageGridFragment";
 
-	protected static final String TAG = "ImageGridFragment";
-	
-	String[] imageUrls = IMAGES;
+	private List<String> imageUrls = new LinkedList<String>();
 
 	DisplayImageOptions options;
 
 	private GridView gridView;
+	
+	public void addImageUrl(String url) {
+		if (imageUrls != null)
+			imageUrls.add(url);
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -101,12 +109,7 @@ public class ImageGridFragment extends Fragment {
 				.bitmapConfig(Bitmap.Config.RGB_565)
 				.build();
 		
-		
-		
 	}
-	
-	
-	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -132,7 +135,7 @@ public class ImageGridFragment extends Fragment {
 
 		@Override
 		public int getCount() {
-			return imageUrls.length;
+			return imageUrls.size();
 		}
 
 		@Override
@@ -161,7 +164,7 @@ public class ImageGridFragment extends Fragment {
 			}
 
 			ImageLoader.getInstance()
-					.displayImage(imageUrls[position], holder.imageView, options, new SimpleImageLoadingListener() {
+					.displayImage(imageUrls.get(position), holder.imageView, options, new SimpleImageLoadingListener() {
 						@Override
 						public void onLoadingStarted(String imageUri, View view) {
 							holder.progressBar.setProgress(0);

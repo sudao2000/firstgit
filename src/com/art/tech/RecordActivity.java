@@ -1,10 +1,22 @@
 package com.art.tech;
 
+import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -22,6 +34,9 @@ import android.widget.Toast;
 
 import com.art.tech.adapter.ImageAdapter;
 import com.art.tech.application.Constants;
+import com.art.tech.db.DBHelper;
+import com.art.tech.db.DBManager;
+import com.art.tech.db.ImageCacheColumn;
 import com.art.tech.model.ProductInfo;
 import com.art.tech.util.UIHelper;
 import com.art.tech.view.GalleryView;
@@ -43,24 +58,38 @@ public class RecordActivity extends BaseActivity {
 	EditText copyDescription;
 	EditText copyMoney;
 	CheckBox copyMoneyPublicity;
-	ImageButton button_camera;
+	
+	ImageButton buttonCamera;
+	Uri currentPicUri;
 
 	private Button datePicker;
 	private OnClickListener datePickerListener;
 	private static final int DATE_DIALOG_ID = 1;
 	protected static final int ACTION_CAPTURE_IMAGE = 0;
+	private static final String TAG = "RecordActivity";
 
 	private Spinner copyMaterial;
+	
+	private Button buttonOk;
+	private Button buttonCancel;
+	
+	private ProductInfo currentProductInfo;
+	
+	private String saveLocation;
 
 	private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
+			
+			Calendar c = Calendar.getInstance();
+			c.set(year, monthOfYear + 1, dayOfMonth);
+			
 			mYear = year;
-			mMonth = monthOfYear;
+			mMonth = monthOfYear + 1;
 			mDay = dayOfMonth;
 
-			updateDisplay();
+			updateDisplay(c);
 		}
 	};
 
@@ -70,20 +99,38 @@ public class RecordActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.detail_view_container);
 
+		initProductList();//call before setWorkspace
+		
+		setWorkspace();
+		
 		initRes();
+		
+	}
+	
+	private void setWorkspace() {
+		saveLocation = Constants.IMAGE_SAVE_PAHT
+				+ currentProductInfo.real_code + "/";
+	}
+	
+	private void initProductList() {
+		currentProductInfo = new ProductInfo();
+		currentProductInfo.real_code = "00000001";
 	}
 
 	private void initRes() {
 		gallery = (GalleryView) findViewById(R.id.mygallery);
 
-		adapter = new ImageAdapter(this);
-		adapter.createReflectedImages();
+		adapter = new ImageAdapter(this, saveLocation);
+		
+		//adapter.createReflectedImages();
 		gallery.setAdapter(adapter);
 
-		datePicker = (Button) findViewById(R.id.datePicker);
-		setDialogOnClickListener(R.id.datePicker, DATE_DIALOG_ID);
-
 		{
+			datePicker = (Button) findViewById(R.id.datePicker);
+			setDialogOnClickListener(R.id.datePicker, DATE_DIALOG_ID);
+			Calendar c = Calendar.getInstance();
+			updateDisplay(c);
+			
 			datePickerListener = new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -148,17 +195,47 @@ public class RecordActivity extends BaseActivity {
 		copyMoney = (EditText) this.findViewById(R.id.copy_money);
 		copyMoneyPublicity = (CheckBox) this.findViewById(R.id.copy_money_publicity);
 		
-		button_camera = (ImageButton) this
+		buttonCamera = (ImageButton) this
 				.findViewById(R.id.button_camera);
-		button_camera.setOnClickListener(new OnClickListener() {
+		buttonCamera.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				String saveLocation = Constants.IMAGE_SAVE_PAHT;
-				Uri uri = UIHelper.capureImage(RecordActivity.this,
+				String saveLocation = Constants.IMAGE_SAVE_PAHT
+						+ currentProductInfo.real_code + "/";
+				Log.d(TAG, "kurt : " + saveLocation);
+					currentPicUri = UIHelper.capureImage(RecordActivity.this,
 						ACTION_CAPTURE_IMAGE, saveLocation);
+					if (currentPicUri == null) {
+						Log.d(TAG, "kurt 1 : " + saveLocation);
+					} else {
+						Log.d(TAG, "kurt 2 : " + currentPicUri  );
+					}
 				}
 		});
+		
+		{
+			buttonOk = (Button) this
+					.findViewById(R.id.button_ok);
+			buttonOk.setOnClickListener(new OnClickListener() {
+	
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(activity, ProductListActivity.class);
+					startActivity(i);
+				}
+			});
+			buttonCancel = (Button) this
+					.findViewById(R.id.button_cancel);
+			buttonCancel.setOnClickListener(new OnClickListener() {
+	
+				@Override
+				public void onClick(View v) {
+					RecordActivity.this.finish();
+				}
+			});
+			
+		}
 	}
 
 	private void setDialogOnClickListener(int buttonId, final int dialogId) {
@@ -184,6 +261,13 @@ public class RecordActivity extends BaseActivity {
 		datePicker.setText(new StringBuilder()
 				// Month is 0 based so add 1
 				.append(mYear).append("-").append(mMonth + 1).append("-").append(mDay));
+
+	}
+	
+	private void updateDisplay(Calendar c) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String yymmdd = simpleDateFormat.format(c.getTime());
+		datePicker.setText(yymmdd);
 
 	}
 
@@ -220,5 +304,42 @@ public class RecordActivity extends BaseActivity {
 		copyDescription.setEnabled(editable);
 		copyMoney.setEnabled(editable);
 		copyMoneyPublicity.setEnabled(editable);
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (ACTION_CAPTURE_IMAGE == requestCode && resultCode == RESULT_OK) {
+			
+			ContentResolver cr = this.getContentResolver();
+            try {
+                Bitmap bitmap = BitmapFactory.decodeStream(cr
+                        .openInputStream(currentPicUri));
+                
+                adapter.updateImageList(saveLocation);
+
+                DBHelper dbHelper = DBHelper.getInstance(activity);
+                Log.d(TAG, "currentImage url " + currentPicUri);
+                
+                ContentValues values = new ContentValues();                
+                values.put(ImageCacheColumn.Url, currentPicUri.getPath());
+                values.put(ImageCacheColumn.TIMESTAMP, System.currentTimeMillis());
+                values.put(ImageCacheColumn.PAST_TIME, 0);
+                
+                dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
+                
+                /*
+                Cursor cursor = this.getContentResolver().query(currentPicUri, null,
+                		null, null, null);
+                if (cursor.moveToFirst()) {
+                	String path = cursor.getString(cursor
+                			.getColumnIndex("_data"));
+                	Log.d(TAG, "kurt uri : " + path);
+                }
+                */
+            } catch (FileNotFoundException e) {
+            	Log.e(TAG, e.getMessage());
+            }
+		}
 	}
 }

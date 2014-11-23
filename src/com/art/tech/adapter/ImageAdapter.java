@@ -1,11 +1,14 @@
 package com.art.tech.adapter;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.art.tech.R;
+import com.art.tech.application.Constants;
 import com.art.tech.view.GalleryView;
 
 import android.content.Context;
@@ -19,6 +22,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader.TileMode;
+import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -31,12 +36,18 @@ public class ImageAdapter extends BaseAdapter
 
 	private Context mContext;
 	public List<Map<String, Object>> list;
+	public List<String> imageList = new ArrayList<String>(10);
+
 	
 
-	public Integer[] imgs = { R.drawable.image01, R.drawable.image02, R.drawable.image03,
-							  R.drawable.image04, R.drawable.image05};
+	//public Integer[] imgs = { R.drawable.image01, R.drawable.image02, R.drawable.image03,
+	//						  R.drawable.image04, R.drawable.image05};
+	
+	
+	
 	public String[] titles = { "1", "2", "3", "4", "5", "6", "7"};
 
+	/*
 	public ImageAdapter(Context c) 
 	{
 		this.mContext = c;
@@ -48,16 +59,63 @@ public class ImageAdapter extends BaseAdapter
 		}
 		mImages = new ImageView[list.size()];
 	}
-
+	*/
+	
+	public ImageAdapter(Context c, String location) 
+	{
+		this.mContext = c;
+		list = new ArrayList<Map<String, Object>>();
+		
+		File f = new File(location);
+		Log.d("debug", "location: " + location);
+		if (f.exists() && f.isDirectory()) {
+			File files[] = f.listFiles(Constants.jpgFilefilter);
+			if (files != null) {
+				for (int i = 0; i < files.length; i++) {
+					HashMap<String, Object> map = new HashMap<String, Object>();
+					map.put("image", files[i].getAbsolutePath());
+					
+					Log.d("debug",  i + " file " + files[i].getAbsolutePath());
+					list.add(map);
+				}
+				mImages = new ImageView[list.size()];
+				
+				for (int i = 0; i < files.length; i++) {
+					mImages[i] = new ImageView(c);
+					//mImages[i].setImageURI(Uri.parse(files[i].getAbsolutePath()));
+					mImages[i].setImageResource(R.drawable.image01);
+				}
+			}
+		}
+	}
+	
+	public void updateImageList(String location) {
+		File f = new File(location);
+		if (f.exists() && f.isDirectory()) {
+			File files[] = f.listFiles(Constants.jpgFilefilter);
+			if (files != null) {
+				for (int i = 0; i < files.length; i++) {
+					HashMap<String, Object> map = new HashMap<String, Object>();
+					map.put("image", files[i].getAbsolutePath());
+					list.add(map);
+				}
+				mImages = new ImageView[list.size()];
+			}
+		}
+		notifyDataSetChanged();
+	}
+	
 	public boolean createReflectedImages() 
 	{
 		final int reflectionGap = 4;
 		final int Height = 200;
 		int index = 0;
 		for (Map<String, Object> map : list) {
-			Integer id = (Integer) map.get("image");
-			// ��ȡԭʼͼƬ
-			Bitmap originalImage = BitmapFactory.decodeResource(mContext.getResources(), id);	
+			//Integer id = (Integer) map.get("image");
+			String imagePath = (String) map.get("image");
+
+			Bitmap originalImage = BitmapFactory.decodeFile(imagePath);
+			//		.decodeResource(mContext.getResources(), id);	
 			int width = originalImage.getWidth();
 			int height = originalImage.getHeight();
 			float scale = Height / (float)height;
@@ -101,12 +159,15 @@ public class ImageAdapter extends BaseAdapter
 
 	@Override
 	public int getCount() {
-		return imgs.length;
+		//return imgs.length;
+		return imageList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mImages[position];
+		if (mImages != null)
+			return mImages[position];
+		throw new NullPointerException();
 	}
 
 	@Override
@@ -116,7 +177,9 @@ public class ImageAdapter extends BaseAdapter
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		return mImages[position];
+		if (mImages != null)
+			return mImages[position];
+		throw new NullPointerException();
 	}
 
 	public float getScale(boolean focused, int offset) {

@@ -1,5 +1,8 @@
 package com.art.tech.application;
 
+import java.io.File;
+import java.io.FileFilter;
+
 import android.os.Environment;
 
 public class Constants {
@@ -17,4 +20,13 @@ public class Constants {
 	public static class Config {
 		public static final boolean DEVELOPER_MODE = false;
 	}
+	
+	public static FileFilter jpgFilefilter = new FileFilter() {
+        public boolean accept(File file) {
+            if (file.getName().endsWith(".jpg")) {
+                return true;
+            }
+            return false;
+        }
+    };
 }

@@ -14,8 +14,6 @@
         android:spacing="20dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:unselectedAlpha="128"
-        android:layout_marginTop="10dip" />
-    <include layout="@layout/detail_view_footer" />
-
+        android:unselectedAlpha="128"/>
+    <include layout="@layout/detail_view_footer"  />
 </LinearLayout>
