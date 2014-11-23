@@ -14,6 +14,7 @@ public class ImageCacheColumn extends DatabaseColumn {
 	 * 单位：天
 	 */
 	public final static String PAST_TIME = "past_time";
+	public final static String REAL_CODE = "real_code";
 	
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
 			+ "/" + TABLE_NAME);
@@ -24,8 +25,8 @@ public class ImageCacheColumn extends DatabaseColumn {
 		mColumnMap.put(TIMESTAMP, "TimeStamp");
 		mColumnMap.put(Url, "text");
 		mColumnMap.put(PAST_TIME, "TimeStamp");
+		//mColumnMap.put(REAL_CODE, "text");
 	}
-	
 
 	@Override
 	public String getTableName() {
