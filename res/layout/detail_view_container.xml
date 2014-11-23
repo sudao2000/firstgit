@@ -9,11 +9,20 @@
     android:paddingTop="@dimen/activity_vertical_margin" >
 
     <include layout="@layout/detail_view_header" />    
-    <com.art.tech.view.GalleryView        
+    <!-- <com.art.tech.view.GalleryView        
         android:id="@+id/mygallery"
         android:spacing="20dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:unselectedAlpha="128"/>
+     -->
+    
+  	<fragment android:name="com.art.tech.fragment.ImageGalleryFragment"
+            android:id="@+id/image_gallery_frag"            
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_gravity="center"/>
+  	
+    
     <include layout="@layout/detail_view_footer"  />
 </LinearLayout>

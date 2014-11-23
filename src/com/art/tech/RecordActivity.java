@@ -16,6 +16,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,13 +39,16 @@ import com.art.tech.application.Constants;
 import com.art.tech.db.DBHelper;
 import com.art.tech.db.DBManager;
 import com.art.tech.db.ImageCacheColumn;
+import com.art.tech.fragment.ImageGalleryFragment;
 import com.art.tech.model.ProductInfo;
 import com.art.tech.util.UIHelper;
 import com.art.tech.view.GalleryView;
 
-public class RecordActivity extends BaseActivity {
+public class RecordActivity extends FragmentActivity {
 
-	private GalleryView gallery;
+	//private GalleryView gallery;
+	
+	ImageGalleryFragment imageGallery;
 	private ImageAdapter adapter;
 
 	private int mYear;
@@ -118,12 +123,15 @@ public class RecordActivity extends BaseActivity {
 	}
 
 	private void initRes() {
-		gallery = (GalleryView) findViewById(R.id.mygallery);
-
-		adapter = new ImageAdapter(this, saveLocation);
+		//gallery = (GalleryView) findViewById(R.id.mygallery);
+		
+		//imageGallery = this.gets(ImageGalleryFragment) findViewById(R.id.image_gallery_frag);
+		
+		
+		//adapter = new ImageAdapter(this, saveLocation);
 		
 		//adapter.createReflectedImages();
-		gallery.setAdapter(adapter);
+		//gallery.setAdapter(adapter);
 
 		{
 			datePicker = (Button) findViewById(R.id.datePicker);
@@ -163,6 +171,7 @@ public class RecordActivity extends BaseActivity {
 		}
 
 		{
+			/*
 			gallery.setOnItemSelectedListener(new OnItemSelectedListener() {
 				@Override
 				public void onItemSelected(AdapterView<?> parent, View view,
@@ -184,6 +193,16 @@ public class RecordActivity extends BaseActivity {
 							Toast.LENGTH_SHORT).show();
 				}
 			});
+			*/
+            Fragment fr;
+            String tag;
+            tag = ImageGalleryFragment.class.getSimpleName();
+            fr = getSupportFragmentManager().findFragmentByTag(tag);
+            if (fr == null) {
+                    fr = new ImageGalleryFragment();
+            }
+
+			getSupportFragmentManager().beginTransaction().replace(R.id.image_gallery_frag, fr, tag).commit();
 		}
 		
 		copyName = (EditText) this.findViewById(R.id.copy_name);
@@ -221,7 +240,7 @@ public class RecordActivity extends BaseActivity {
 	
 				@Override
 				public void onClick(View v) {
-					Intent i = new Intent(activity, ProductListActivity.class);
+					Intent i = new Intent(RecordActivity.this, ProductListActivity.class);
 					startActivity(i);
 				}
 			});
@@ -315,10 +334,8 @@ public class RecordActivity extends BaseActivity {
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(cr
                         .openInputStream(currentPicUri));
-                
-                adapter.updateImageList(saveLocation);
 
-                DBHelper dbHelper = DBHelper.getInstance(activity);
+                DBHelper dbHelper = DBHelper.getInstance(RecordActivity.this);
                 Log.d(TAG, "currentImage url " + currentPicUri);
                 
                 ContentValues values = new ContentValues();                
@@ -327,6 +344,9 @@ public class RecordActivity extends BaseActivity {
                 values.put(ImageCacheColumn.PAST_TIME, 0);
                 
                 dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
+                ImageGalleryFragment igf = (ImageGalleryFragment) getSupportFragmentManager()
+                		.findFragmentByTag(ImageGalleryFragment.class.getSimpleName());
+                igf.refetchImageListFromGallery();
                 
                 /*
                 Cursor cursor = this.getContentResolver().query(currentPicUri, null,
