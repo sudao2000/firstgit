@@ -1,6 +1,7 @@
 package com.art.tech;
 
 import com.art.tech.application.Constants;
+import com.art.tech.db.DBHelper;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -66,4 +67,15 @@ public class MainActivity extends BaseActivity {
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
+	
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            DBHelper db = DBHelper.getInstance(this);
+            db.closeDb();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
