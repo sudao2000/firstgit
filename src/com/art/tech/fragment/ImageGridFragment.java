@@ -1,12 +1,17 @@
 package com.art.tech.fragment;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,12 +37,14 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 public class ImageGridFragment extends Fragment {
 
 	private static final String TAG = "ImageGridFragment";
-
-	private List<String> imageUrls = new LinkedList<String>();
+	private static final int MSG_QUERY_IMAGE = 1;
+	
+	List<String> imageUrls = new LinkedList<String>();
 
 	DisplayImageOptions options;
 	private ImageAdapter imageAdapter;
 	private GridView gridView;
+	private Handler uiHandler;
 
 	public void addImageUrl(String url) {
 		if (imageUrls != null)
@@ -73,16 +80,88 @@ public class ImageGridFragment extends Fragment {
 				Log.v(TAG, "position " + position + " id : " + id);
 			}
 		});
+		
+		
+		uiHandler = new UiHandler();
 
 		initImageUrls();
 
 		return rootView;
 	}
+	
+	public interface AsyncListener {
+		void updateImageUrls(Cursor c);
+	}
+	
+	private class UiHandler extends Handler {
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MSG_QUERY_IMAGE:
+				if (imageAdapter != null)
+					imageAdapter.notifyDataSetChanged();
+				break;
+			}
+		}
+	}
+	
+	private class ImageQueryThread extends Thread {
+		private WeakReference<Handler> weakHandler;
+		ImageQueryThread(Handler h) {
+			weakHandler = new WeakReference<Handler>(h);
+		}
+		
+		@Override
+		public void run() {
+			String columns[] = { ImageCacheColumn.Url };
+			DBHelper helper = DBHelper.getInstance(ImageGridFragment.this.getActivity());
+			Cursor c = helper.query(ImageCacheColumn.TABLE_NAME, columns, null,
+					null);
+			if (c != null && c.moveToFirst()) {
+				do {
+					ImageGridFragment.this.imageUrls.add("file://"
+							+ new File(c.getString(c
+									.getColumnIndex(ImageCacheColumn.Url)))
+									.getAbsolutePath());
+				} while (c.moveToNext());
+				c.close();
+				
+				if (weakHandler.get() != null) {
+					weakHandler.get().sendEmptyMessage(MSG_QUERY_IMAGE);
+				}				
+			}
+		}
+	}
+		
+	private void asyncQueryGalleryFirstImage() {
+		int token = 0;
+		Object cookie = new AsyncListener() {
+			@Override
+			public void updateImageUrls(Cursor c) {
+				if (c != null && c.moveToFirst()) {
+					do {
+						imageUrls.add("file://"
+								+ new File(c.getString(c
+										.getColumnIndex(ImageCacheColumn.Url)))
+										.getAbsolutePath());
+					} while (c.moveToNext());
+				}
+			}
+		};
+		
+		String columns[] = { ImageCacheColumn.Url } ;
+		String selection = null;
+		String[] selectionArgs = null;
+		String sortOrder = null;
+				
+		ImageCacheColumn.asyncQuery(getActivity(), token, cookie, ImageCacheColumn.CONTENT_URI, 
+				columns, selection, selectionArgs, sortOrder);
+	}
 
 	private void initImageUrls() {
-		getImageListFromDB();
-		if (imageAdapter != null)
-			imageAdapter.notifyDataSetChanged();
+		//getImageListFromDB();
+		//asyncQueryGalleryFirstImage();
+		new ImageQueryThread(uiHandler).start();
+
 	}
 
 	private void getImageListFromDB() {

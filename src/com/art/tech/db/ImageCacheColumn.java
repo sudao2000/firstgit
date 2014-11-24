@@ -3,6 +3,11 @@ package com.art.tech.db;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.art.tech.fragment.ImageGridFragment.AsyncListener;
+
+import android.content.AsyncQueryHandler;
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 
 public class ImageCacheColumn extends DatabaseColumn {
@@ -25,9 +30,15 @@ public class ImageCacheColumn extends DatabaseColumn {
 		mColumnMap.put(TIMESTAMP, "TimeStamp");
 		mColumnMap.put(Url, "text");
 		mColumnMap.put(PAST_TIME, "TimeStamp");
-		//mColumnMap.put(REAL_CODE, "text");
+		mColumnMap.put(REAL_CODE, "INTEGER");
 	}
-
+	
+	public static class ImageInfo {
+		public long timestamp;
+		public String real_code;
+		public String uri;
+	};
+	
 	@Override
 	public String getTableName() {
 		// TODO Auto-generated method stub
@@ -45,5 +56,22 @@ public class ImageCacheColumn extends DatabaseColumn {
 		// TODO Auto-generated method stub
 		return mColumnMap;
 	}
+	
+	
+	public static void asyncQuery(Context c, int token, Object cookie, Uri uri, 
+				String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+		
+		AsyncQueryHandler queryHandler = new AsyncQueryHandler(c.getContentResolver()) {
+			@Override
+			protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+					AsyncListener r = (AsyncListener) cookie;
+			        r.updateImageUrls(cursor);
+			    }
+			};
+
+			// 调用时只需要调用startQuery(int token, Object cookie, ContentURI uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)函数即可：
+		queryHandler.startQuery(token, cookie, uri, projection, selection, selectionArgs, sortOrder);	
+	}
+
 
 }

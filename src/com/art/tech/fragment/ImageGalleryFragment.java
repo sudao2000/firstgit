@@ -109,8 +109,6 @@ public class ImageGalleryFragment extends Fragment {
 		startActivity(intent);
 		*/
 	}
-	
-	
 
 	private class ImageAdapter extends BaseAdapter {
 

@@ -37,7 +37,6 @@ import android.widget.Toast;
 import com.art.tech.adapter.ImageAdapter;
 import com.art.tech.application.Constants;
 import com.art.tech.db.DBHelper;
-import com.art.tech.db.DBManager;
 import com.art.tech.db.ImageCacheColumn;
 import com.art.tech.fragment.ImageGalleryFragment;
 import com.art.tech.model.ProductInfo;
@@ -342,6 +341,7 @@ public class RecordActivity extends FragmentActivity {
                 values.put(ImageCacheColumn.Url, currentPicUri.getPath());
                 values.put(ImageCacheColumn.TIMESTAMP, System.currentTimeMillis());
                 values.put(ImageCacheColumn.PAST_TIME, 0);
+                values.put(ImageCacheColumn.REAL_CODE, currentProductInfo.real_code);
                 
                 dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
                 ImageGalleryFragment igf = (ImageGalleryFragment) getSupportFragmentManager()
