@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" 
+    android:background="@drawable/toastbox_bg" android:paddingLeft="@dimen/padding_eight" 
+    android:paddingRight="@dimen/padding_eight" android:paddingBottom="@dimen/padding_ten" 
+    android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="180.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center" android:id="@id/toastbox_anim" 
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:maxWidth="60.0dip" android:minWidth="60.0dip" 
+        android:background="@anim/progress_round"
+        android:contentDescription="@string/app_name" />
+    <TextView android:textSize="@dimen/textsize_fifteen" android:textStyle="bold" 
+        android:textColor="@color/white" android:layout_gravity="center_horizontal" 
+        android:id="@id/toastbox_message" android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" android:layout_marginTop="@dimen/padding_eight" 
+        android:maxWidth="160.0dip" 
+        android:layout_marginBottom="@dimen/padding_eight" android:singleLine="false" />
+</LinearLayout>

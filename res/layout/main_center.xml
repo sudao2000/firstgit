@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF" >
+    
+    <ImageView
+	        android:id="@+id/imgPlugout"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true" 
+	        android:src="@drawable/plugout" android:contentDescription="@string/app_name"/>
+
+	    <TextView
+	        android:id="@+id/textView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginLeft="6dp"
+	        android:layout_marginTop="6dp"
+	        android:text="@string/lblEPC"
+	        android:textAppearance="?android:attr/textAppearanceLarge"
+	        android:textColor="#000000"
+	        android:textSize="20sp"
+	        android:visibility="invisible" />
+	    
+	    <TextView
+	        android:id="@+id/textView11"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="12dp"
+	        android:layout_marginTop="6dp"
+	        android:text="@string/lblTimes"
+	        android:textAppearance="?android:attr/textAppearanceLarge"
+	        android:textColor="#000000"
+	        android:textSize="20sp"
+	        android:visibility="invisible" />
+
+	    <EditText
+	        android:id="@+id/editText1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        android:layout_marginLeft="6dp"
+	        android:layout_marginRight="6dp"
+	        android:layout_marginTop="6dp"
+	        android:ems="10"
+	        android:inputType="text"
+	        android:visibility="invisible" >
+
+	    </EditText>
+	    
+	    <Button
+	        android:id="@+id/btnQuery"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentRight="true"
+	        android:text="@string/btnQuery"
+	        android:textColor="#000000"
+	        android:textSize="18sp"
+	        android:visibility="invisible" />
+	    
+	    <TextView
+	        android:id="@+id/txtTotal"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@id/btnQuery"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="12dp"
+	        android:text="@string/sTotal"
+	        android:textColor="#ff000000"
+	        android:textSize="22sp"
+	        android:visibility="invisible" />
+	    
+	    <ListView
+	        android:id="@+id/tag_list"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@id/txtTotal"
+	        android:layout_below="@id/textView1"
+	        android:layout_marginBottom="6dp"
+	        android:scrollingCache="false"
+	        android:descendantFocusability="blocksDescendants"
+	        android:textColor="#ffff0000"
+	        android:visibility="invisible" />
+
+	    <Button
+	        android:id="@+id/btnClear"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/btnClear"
+	        android:textColor="#000000"
+	        android:textSize="18sp"
+	        android:visibility="invisible" />
+
+</RelativeLayout>

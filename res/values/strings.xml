@@ -63,13 +63,51 @@
     <string name="ok">ok</string>
     <string name="cancel">cancel</string>
     <string name="default_copy_size">100</string>
-<string name="default_copy_money">0</string>
-<string name="default_real_code">00000000</string>
-<string name="product_report">product report</string>
-<string name="product_report_title">product analysis report</string>
+    <string name="default_copy_money">0</string>
+    <string name="default_real_code">00000000</string>
+    <string name="product_report">product report</string>
+    <string name="product_report_title">product analysis report</string>
+    <string name="exhibision">exhibision</string>
+    <string name="more_analysis">"more analysis"</string>
 
-<string name="exhibision">exhibision</string>
-<string name="more_analysis">"more analysis"</string>
-
+    <!-- from board example -->
+    <string name="sStatusPlugin">Welcome</string>
+    <string name="sStatusPlugout">You are not connected to the device!</string>
+    <string name="sDate">2012\–\08\–\23 Thur.</string>
+    <string name="sCopyright">Copyright © 2014 All rights reverved.</string>
+    <string name="btnQuery">&gt;&gt;&gt;&gt;Start&lt;&lt;&lt;&lt;</string>
+    <string name="lblEPC">No　　EPC Data</string>
+    <string name="btnClear">Clean</string>
+    <string name="sTotal">Total：0</string>
+    <string name="lblTimes">Times</string>
+    <string name="shortzero">00</string>
+    <string name="zero">0000</string>
+    <string name="longzero">00000000</string>
+    <string name="lzero">0000000000</string>
+    <string name="password">Access Password(HEX)</string>
+    <string name="address">Start Address</string>
+    <string name="memory">Memory Block</string>
+    <string name="length">Length(WORD)</string>
+    <string name="data">Tag Data(HEX)</string>
+    <string name="read">Read</string>
+    <string name="write">Write</string>
+    <string name="lock">Lock</string>
+    <string name="kill">Kill</string>
+    <string name="mask">Lock Object</string>
+    <string name="action">Lock Action</string>
+    <string name="target_memory">Memory Address</string>
+    <string name="lockobject">Lock Object</string>
+    <string name="lockaction">Lock Action</string>
+    <string name="password3">Kill Password</string>
+    <string name="battery">Battery：</string>
+    <string name="btnGet">Get</string>
+    <string name="btnSet">Set</string>
+    <string name="beep">Beep：</string>
+    <string name="open">On</string>
+    <string name="close">Off</string>
+    <string name="sEPC">EPC:</string>
+    <string name="sTID">TID</string>
+    <string name="sSection">Work Region：</string>
+    <string name="sSection1">Work Region</string>
 
 </resources>

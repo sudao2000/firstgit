@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bag_menu"
+    android:orientation="vertical" >
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_weight="2.0"
+        android:background="#ffffffff" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+
+                <LinearLayout
+                    android:id="@id/tab2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@id/textView14"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="3.0"
+                            android:gravity="center"
+                            android:text="@string/battery"
+                            android:textAppearance="?android:textAppearanceLarge"
+                            android:textColor="#ff000000" />
+
+                        <TextView
+                            android:id="@id/battery"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_margin="5.0dip"
+                            android:layout_weight="3.0"
+                            android:inputType="none" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@id/textView16"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="3.0"
+                            android:gravity="center"
+                            android:text="@string/beep"
+                            android:textAppearance="?android:textAppearanceLarge"
+                            android:textColor="#ff000000" />
+
+                        <ToggleButton
+                            android:id="@+id/toggleButton1"
+                            android:layout_width="122dp"
+                            android:layout_height="wrap_content"
+                            android:textOff="@string/close"
+                            android:textOn="@string/open" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@id/button3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:text="@string/btnGet" />
+                        <Button
+                            android:id="@+id/button5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:text="@string/btnSet" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/tab1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <TableLayout
+                        android:id="@id/tab_read"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <TableRow
+                            android:id="@+id/tableRow1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+
+                            <TextView
+                                android:id="@+id/textView5"
+                                android:layout_weight="1.0"
+                                android:gravity="left"
+                                android:text="@string/password"
+                                android:textColor="#ff000000"
+                                android:textSize="12.0sp" />
+
+                            <EditText
+                                android:id="@+id/accesspwd"
+                                android:layout_weight="3.0"
+                                android:ems="10"
+                                android:hint="@string/longzero"
+                                android:textSize="12.0sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/tableRow2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_weight="1.0"
+                                android:gravity="left"
+                                android:text="@string/sEPC"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:textColor="#ff000000"
+                                android:textSize="12.0sp" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_weight="1.0"
+                                android:gravity="left"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:textColor="#ff000000"
+                                android:textSize="12.0sp"
+                                tools:ignore="InefficientWeight,NestedWeights" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/tableRow3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_weight="1.0"
+                                android:gravity="left"
+                                android:text="@string/sTID"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:textColor="#ff000000"
+                                android:textSize="12.0sp" />
+
+                            <TextView
+                                android:id="@+id/textView4"
+                                android:layout_weight="1.0"
+                                android:gravity="left"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:textColor="#ff000000"
+                                android:textSize="12.0sp"
+                                tools:ignore="InefficientWeight,NestedWeights" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/tableRow4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+
+                            <Button
+                                android:id="@id/button4"
+                                android:layout_weight="3.0"
+                                android:text="@string/read" />
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</LinearLayout>

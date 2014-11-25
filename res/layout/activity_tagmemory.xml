@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bag_menu" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bag_menu"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.0"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@id/selected_tag"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ff000000"
+                android:textSize="20.0sp" />
+        </LinearLayout>
+
+        <TabHost
+            android:id="@android:id/tabhost"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+
+                <TableLayout
+                    android:id="@+id/Table1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TableRow
+                        android:id="@+id/tableRow1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:text="@string/password"
+                            android:textColor="#ff000000"
+                            android:textSize="12.0sp" />
+
+                        <EditText
+                            android:id="@id/password1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.0"
+                            android:ems="10"
+                            android:hint="@string/longzero"
+                            android:imeOptions="actionDone"
+                            android:inputType="textCapCharacters"
+                            android:textSize="12.0sp"
+                            tools:ignore="TextFields" />
+
+                    </TableRow>
+                </TableLayout>
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ff33cc66" />
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <TableLayout
+                        android:id="@id/tab_read"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" >
+
+                        <TableRow>
+
+                            <TextView
+                                android:layout_weight="1.0"
+                                android:gravity="right"
+                                android:text="@string/address"
+                                android:textColor="#ff000000"
+                                android:textSize="12.0sp" />
+
+                            <EditText
+                                android:id="@id/address"
+                                android:layout_weight="3.0"
+                                android:hint="@string/zero"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:textSize="12.0sp" />
+
+                        </TableRow>
+
+                        <TableRow>
+
+                            <TextView
+                                android:layout_weight="1.0"
+                                android:gravity="right"
+                                android:text="@string/memory"
+                                android:textColor="#ff000000"
+                                android:textSize="12.0sp" />
+
+                            <Spinner
+                                android:id="@id/target_memory"
+                                android:layout_weight="3.0"
+                                android:prompt="@string/target_memory"
+                                android:textSize="12.0sp" />
+                        </TableRow>
+
+                        <TableRow>
+
+                            <TextView
+                                android:layout_weight="1.0"
+                                android:gravity="right"
+                                android:text="@string/length"
+                                android:textColor="#ff000000"
+                                android:textSize="12.0sp" />
+
+                            <EditText
+                                android:id="@id/length"
+                                android:layout_weight="3.0"
+                                android:hint="@string/zero"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:textSize="12.0sp" />
+
+                        </TableRow>
+
+                        <TableRow>
+
+                            <TextView
+                                android:layout_weight="1.0"
+                                android:gravity="right"
+                                android:text="@string/data"
+                                android:textColor="#ff000000"
+                                android:textSize="12.0sp" />
+
+                            <EditText
+                                android:id="@id/data1"
+                                android:layout_weight="3.0"
+                                android:hint="@string/longzero"
+                                android:imeOptions="actionDone"
+                                android:inputType="textCapCharacters"
+                                android:textSize="12.0sp" />
+
+                        </TableRow>
+
+                        <TableRow>
+
+                            <Button
+                                android:id="@id/read_tag"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.0"
+                                android:text="@string/read"
+                                android:textSize="12.0sp" />
+
+                            <Button
+                                android:id="@id/write_tag"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.0"
+                                android:text="@string/write"
+                                android:textSize="12.0sp" />
+                        </TableRow>
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@id/tab_lock"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" >
+
+                        <TableRow>
+
+                            <TextView
+                                android:layout_weight="1.0"
+                                android:gravity="right"
+                                android:text="@string/mask"
+                                android:textSize="12.0sp" />
+
+                            <Spinner
+                                android:id="@+id/spinner1"
+                                android:layout_weight="3.0"
+                                android:prompt="@string/lockobject"
+                                android:textSize="12.0sp" />
+                        </TableRow>
+
+                        <TableRow>
+
+                            <TextView
+                                android:layout_weight="1.0"
+                                android:gravity="right"
+                                android:text="@string/action"
+                                android:textSize="12.0sp" />
+
+                            <Spinner
+                                android:id="@+id/spinner2"
+                                android:layout_weight="3.0"
+                                android:prompt="@string/lockaction"
+                                android:textSize="12.0sp" />
+                        </TableRow>
+
+                        <TableRow>
+
+                            <TextView
+                                android:layout_weight="1.0"
+                                android:gravity="right"
+                                android:textSize="12.0sp" />
+
+                            <Button
+                                android:id="@id/lock_tag"
+                                android:layout_weight="3.0"
+                                android:text="@string/lock"
+                                android:textSize="12.0sp" />
+                        </TableRow>
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@id/tab_kill"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" >
+
+                        <TableRow>
+
+                            <TextView
+                                android:layout_weight="1.0"
+                                android:gravity="right"
+                                android:text="@string/password3"
+                                android:textSize="12.0sp" />
+
+                            <EditText
+                                android:id="@id/password3"
+                                android:layout_weight="3.0"
+                                android:hint="@string/longzero"
+                                android:imeOptions="actionDone"
+                                android:inputType="textCapCharacters"
+                                android:textSize="12.0sp"
+                                tools:ignore="TextFields" />
+
+                        </TableRow>
+
+                        <TableRow>
+
+                            <TextView android:textSize="16.0sp" />
+                        </TableRow>
+
+                        <TableRow>
+
+                            <TextView android:layout_weight="1.0" />
+
+                            <Button
+                                android:id="@id/kill_tag"
+                                android:layout_weight="3.0"
+                                android:text="@string/kill" />
+                        </TableRow>
+                    </TableLayout>
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.0"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@id/result"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:textSize="15.0sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>
