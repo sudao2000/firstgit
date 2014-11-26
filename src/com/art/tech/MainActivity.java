@@ -6,50 +6,51 @@ import com.art.tech.db.DBHelper;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends FragmentActivity {
 	Button scanButton;
 	Button browseButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.main_activity);
 
-		scanButton = (Button) findViewById(R.id.button_scan);
-		browseButton = (Button) findViewById(R.id.button_browse);
-
-		scanButton.setOnClickListener(scanListener);
-		browseButton.setOnClickListener(browseListener);
+//		scanButton = (Button) findViewById(R.id.button_scan);
+//		browseButton = (Button) findViewById(R.id.button_browse);
+//
+//		scanButton.setOnClickListener(scanListener);
+//		browseButton.setOnClickListener(browseListener);
 	}
 
-	OnClickListener scanListener = new OnClickListener() {
-
-		@Override
-		public void onClick(View arg0) {
-			Intent mainIntent = new Intent(MainActivity.this,
-					RecordActivity.class);
-			startActivity(mainIntent);
-		}
-
-	};
-
-	OnClickListener browseListener = new OnClickListener() {
-
-		@Override
-		public void onClick(View arg0) {
-			Intent mainIntent = new Intent(MainActivity.this,
-					ImageBrowseActivity.class);
-			startActivity(mainIntent);
-			
-		}
-
-	};
+//	OnClickListener scanListener = new OnClickListener() {
+//
+//		@Override
+//		public void onClick(View arg0) {
+//			Intent mainIntent = new Intent(MainActivity.this,
+//					RecordActivity.class);
+//			startActivity(mainIntent);
+//		}
+//
+//	};
+//
+//	OnClickListener browseListener = new OnClickListener() {
+//
+//		@Override
+//		public void onClick(View arg0) {
+//			Intent mainIntent = new Intent(MainActivity.this,
+//					ImageBrowseActivity.class);
+//			startActivity(mainIntent);
+//			
+//		}
+//
+//	};
 	
 	private long exitTime = 0;	
 
