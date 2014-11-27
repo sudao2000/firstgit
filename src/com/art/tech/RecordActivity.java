@@ -201,7 +201,7 @@ public class RecordActivity extends FragmentActivity {
                     fr = new ImageGalleryFragment();
             }
 
-			getSupportFragmentManager().beginTransaction().replace(R.id.image_gallery_frag, fr, tag).commit();
+			//getSupportFragmentManager().beginTransaction().replace(R.id.image_gallery_frag, fr, tag).commit();
 		}
 		
 		copyName = (EditText) this.findViewById(R.id.copy_name);

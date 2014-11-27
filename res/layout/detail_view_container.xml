@@ -17,11 +17,7 @@
         android:unselectedAlpha="128"/>
      -->
     
-  	<fragment android:name="com.art.tech.fragment.ImageGalleryFragment"
-            android:id="@+id/image_gallery_frag"            
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            android:layout_gravity="center"/>
+
   	
     
     <include layout="@layout/detail_view_footer"  />

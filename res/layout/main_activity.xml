@@ -20,24 +20,12 @@
         layout="@layout/main_footer" />
         
     <FrameLayout
+        android:id="@+id/main_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/main_header"
         android:layout_above="@id/main_footer" >
-        <fragment
-            android:id="@+id/scan_frag"
-            android:name="com.art.tech.fragment.ScanFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center" />
-        <fragment
-            android:id="@+id/image_grid_frag"
-            android:name="com.art.tech.fragment.ImageGridFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center" />
-        
-        
+
 
     </FrameLayout>
 

@@ -7,7 +7,7 @@
     android:orientation="horizontal" >
 
     <Button
-        android:id="@+id/main_footbar_news"
+        android:id="@+id/button_browse"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -19,7 +19,7 @@
         android:src="@drawable/widget_bar_cut_off" />
 
     <Button
-        android:id="@+id/main_footbar_question"
+        android:id="@+id/button_scan"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"
