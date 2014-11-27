@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -24,9 +25,12 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.art.tech.ProductDetailActivity;
 import com.art.tech.R;
 import com.art.tech.db.DBHelper;
 import com.art.tech.db.ImageCacheColumn;
+import com.art.tech.model.PictureInfo;
+import com.art.tech.model.ProductInfo;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -34,21 +38,22 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+
 public class ImageGridFragment extends Fragment {
 
 	private static final String TAG = "ImageGridFragment";
 	private static final int MSG_QUERY_IMAGE = 1;
 	
-	List<String> imageUrls = new LinkedList<String>();
+	private List<PictureInfo> imageUrls = new LinkedList<PictureInfo>();
 
 	DisplayImageOptions options;
 	private ImageAdapter imageAdapter;
 	private GridView gridView;
 	private Handler uiHandler;
 
-	public void addImageUrl(String url) {
+	public void addImageUrl(String url, String realCode) {
 		if (imageUrls != null)
-			imageUrls.add(url);
+			imageUrls.add(new PictureInfo(url, realCode));
 	}
 
 	@Override
@@ -78,6 +83,7 @@ public class ImageGridFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Log.v(TAG, "position " + position + " id : " + id);
+				startImagePagerActivity(position);
 			}
 		});
 		
@@ -87,6 +93,12 @@ public class ImageGridFragment extends Fragment {
 		initImageUrls();
 
 		return rootView;
+	}
+	
+	protected void startImagePagerActivity(int position) {
+		Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+		intent.putExtra(ProductInfo.REAL_CODE, imageUrls.get(position).realCode);
+		startActivity(intent);
 	}
 	
 	public interface AsyncListener {
@@ -112,16 +124,17 @@ public class ImageGridFragment extends Fragment {
 		
 		@Override
 		public void run() {
-			String columns[] = { ImageCacheColumn.Url };
+			String columns[] = { ImageCacheColumn.Url , ImageCacheColumn.REAL_CODE};
 			DBHelper helper = DBHelper.getInstance(ImageGridFragment.this.getActivity());
 			Cursor c = helper.query(ImageCacheColumn.TABLE_NAME, columns, null,
 					null);
 			if (c != null && c.moveToFirst()) {
 				do {
-					ImageGridFragment.this.imageUrls.add("file://"
+					ImageGridFragment.this.imageUrls.add(new PictureInfo("file://"
 							+ new File(c.getString(c
 									.getColumnIndex(ImageCacheColumn.Url)))
-									.getAbsolutePath());
+									.getAbsolutePath(),
+									c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE))));
 				} while (c.moveToNext());
 				c.close();
 				
@@ -139,10 +152,11 @@ public class ImageGridFragment extends Fragment {
 			public void updateImageUrls(Cursor c) {
 				if (c != null && c.moveToFirst()) {
 					do {
-						imageUrls.add("file://"
+						imageUrls.add(new PictureInfo("file://"
 								+ new File(c.getString(c
 										.getColumnIndex(ImageCacheColumn.Url)))
-										.getAbsolutePath());
+										.getAbsolutePath(),
+										c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE))));
 					} while (c.moveToNext());
 				}
 			}
@@ -160,6 +174,7 @@ public class ImageGridFragment extends Fragment {
 	private void initImageUrls() {
 		//getImageListFromDB();
 		//asyncQueryGalleryFirstImage();
+		imageUrls.clear();
 		new ImageQueryThread(uiHandler).start();
 
 	}
@@ -171,10 +186,11 @@ public class ImageGridFragment extends Fragment {
 				null);
 		if (c != null && c.moveToFirst()) {
 			do {
-				imageUrls.add("file://"
+				imageUrls.add(new PictureInfo("file://"
 						+ new File(c.getString(c
 								.getColumnIndex(ImageCacheColumn.Url)))
-								.getAbsolutePath());
+								.getAbsolutePath(),
+								c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE))));
 			} while (c.moveToNext());
 			c.close();
 		}
@@ -220,7 +236,7 @@ public class ImageGridFragment extends Fragment {
 				holder = (ViewHolder) view.getTag();
 			}
 
-			ImageLoader.getInstance().displayImage(imageUrls.get(position),
+			ImageLoader.getInstance().displayImage(imageUrls.get(position).url,
 					holder.imageView, options,
 					new SimpleImageLoadingListener() {
 						@Override
