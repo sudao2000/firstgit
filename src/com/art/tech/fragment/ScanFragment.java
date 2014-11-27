@@ -1,13 +1,19 @@
 package com.art.tech.fragment;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,16 +23,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.art.tech.R;
+import com.art.tech.RecordActivity;
+import com.art.tech.application.Constants;
 import com.art.tech.db.DBHelper;
 import com.art.tech.db.ImageCacheColumn;
+import com.art.tech.model.ProductInfo;
+import com.art.tech.util.UIHelper;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -46,17 +58,53 @@ public class ScanFragment extends Fragment {
 	private GridView gridView;
 	private Handler uiHandler;
 
+	
+	private ImageButton buttonCamera;
+	private Uri currentPicUri;
+	
+	protected static final int ACTION_CAPTURE_IMAGE = 0;
+	
+	
 	public void addImageUrl(String url) {
 		if (imageUrls != null)
 			imageUrls.add(url);
 	}
-
+	
+	private ProductInfo currentProductInfo;
+	
+	private void initProductList() {
+		currentProductInfo = new ProductInfo();
+		currentProductInfo.real_code = "00000001";
+	}
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.detail_view_container, container,
 				false);
+		
+		initProductList();
 
+		buttonCamera = (ImageButton) rootView
+				.findViewById(R.id.button_camera);
+		buttonCamera.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				String saveLocation = Constants.IMAGE_SAVE_PAHT
+						+ currentProductInfo.real_code + "/";
+				Log.d(TAG, "kurt : " + saveLocation);
+					currentPicUri = UIHelper.capureImage(ScanFragment.this,
+						ACTION_CAPTURE_IMAGE, saveLocation);
+					if (currentPicUri == null) {
+						Log.d(TAG, "kurt 1 : " + saveLocation);
+					} else {
+						Log.d(TAG, "kurt 2 : " + currentPicUri  );
+					}
+				}
+		});
+		
 		return rootView;
 	}
 	
@@ -148,6 +196,32 @@ public class ScanFragment extends Fragment {
 								.getAbsolutePath());
 			} while (c.moveToNext());
 			c.close();
+		}
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (ACTION_CAPTURE_IMAGE == requestCode && resultCode == Activity.RESULT_OK) {
+			
+			ContentResolver cr = getActivity().getContentResolver();
+            try {
+                Bitmap bitmap = BitmapFactory.decodeStream(cr
+                        .openInputStream(currentPicUri));
+
+                DBHelper dbHelper = DBHelper.getInstance(getActivity());
+                Log.d(TAG, "currentImage url " + currentPicUri);
+                
+                ContentValues values = new ContentValues();                
+                values.put(ImageCacheColumn.Url, currentPicUri.getPath());
+                values.put(ImageCacheColumn.TIMESTAMP, System.currentTimeMillis());
+                values.put(ImageCacheColumn.PAST_TIME, 0);
+                values.put(ImageCacheColumn.REAL_CODE, currentProductInfo.real_code);
+                
+                dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
+            } catch (FileNotFoundException e) {
+            	Log.e(TAG, e.getMessage());
+            }
 		}
 	}
 
