@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -118,7 +119,7 @@ public class ProductDetailActivity extends FragmentActivity {
 		initView();
 	}
 	
-	OnClickListener editListener = new OnClickListener() {
+	private OnClickListener editListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			productDetailInfo.setVisibility(View.GONE);
@@ -126,7 +127,7 @@ public class ProductDetailActivity extends FragmentActivity {
 			detailEditView.setVisibility(View.VISIBLE);
 		}
 	};
-	OnClickListener okListener = new OnClickListener() {
+	private OnClickListener okListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			productDetailInfo.setVisibility(View.VISIBLE);
@@ -134,7 +135,7 @@ public class ProductDetailActivity extends FragmentActivity {
 			detailEditView.setVisibility(View.GONE);
 		}
 	};
-	OnClickListener cancelListener = new OnClickListener() {
+	private OnClickListener cancelListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			productDetailInfo.setVisibility(View.VISIBLE);
@@ -142,10 +143,24 @@ public class ProductDetailActivity extends FragmentActivity {
 			detailEditView.setVisibility(View.GONE);
 		}
 	};
-	OnClickListener typeListener = new OnClickListener() {
+	private OnClickListener typeListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			ProductDetailActivity.this.showDialog(TYPE_DIALOG_ID);
+		}
+	};
+
+	private OnClickListener sizeListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			ProductDetailActivity.this.showDialog(SIZE_DIALOG_ID);
+		}
+	};
+
+	private OnClickListener materialListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			ProductDetailActivity.this.showDialog(MATERIAL_DIALOG_ID);
 		}
 	};
 	
@@ -184,11 +199,15 @@ public class ProductDetailActivity extends FragmentActivity {
 			copyMaterial = (Button) findViewById(R.id.copy_material);
 			copyName = (EditText) this.findViewById(R.id.copy_name);
 			copyType = (Button) this.findViewById(R.id.copy_type);
+			copySize = (Button) this.findViewById(R.id.copy_size);
+			
 			copySizeChang = (EditText) this.findViewById(R.id.copy_size_chang);
 			copySizeKuan = (EditText) this.findViewById(R.id.copy_size_kuan);
 			copySizeGao = (EditText) this.findViewById(R.id.copy_size_gao);
 			
 			copyType.setOnClickListener(typeListener);
+			copySize.setOnClickListener(sizeListener);
+			copySize.setOnClickListener(materialListener);
 		}
 
 //		{
@@ -225,12 +244,19 @@ public class ProductDetailActivity extends FragmentActivity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DATE_DIALOG_ID:
-			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth,
-					mDay);
+			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
 		case TYPE_DIALOG_ID:
 			return createTypeDialog();
+		case SIZE_DIALOG_ID:
+			return createSizeDialog();
+		case MATERIAL_DIALOG_ID:
+			return createMaterialDialog();
 		}
 		return super.onCreateDialog(id);
+	}
+
+	private AlertDialog createMaterialDialog() {
+		return null;
 	}
 	
 	String []texts = new String[]{ 
@@ -258,9 +284,30 @@ public class ProductDetailActivity extends FragmentActivity {
 				new String[] { "itemText" }, new int[] { R.id.itemText });
 		gridview.setAdapter(saImageItems);
 		gridview.setOnItemClickListener(new ItemClickListener());
+		
 		return d;
 	}
 
+	private AlertDialog createSizeDialog() {
+
+		LayoutInflater factory = LayoutInflater.from(this);
+		final View v = factory.inflate(R.layout.detail_edit_size, null);
+		AlertDialog d = new AlertDialog.Builder(this).setView(v).create();
+		d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		d.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface d) {
+				copySize.setText(copySizeChang + "x" + copySizeKuan + "x"
+						+ copySizeGao);
+			}
+			
+		});
+		
+		return d;
+	}
+	
 	private class ItemClickListener implements OnItemClickListener {
 
 		public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -270,9 +317,8 @@ public class ProductDetailActivity extends FragmentActivity {
 			// 获取数据源的属性值
 			String itemText = (String) item.get("itemText");
 			currentProductInfo.copy_type = itemText;
-			Toast.makeText(ProductDetailActivity.this, itemText, 100).show();
+			copyType.setText(itemText);
 			ProductDetailActivity.this.dismissDialog(TYPE_DIALOG_ID);
-
 		}
 	}
 
