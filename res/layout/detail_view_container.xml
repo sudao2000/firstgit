@@ -20,5 +20,5 @@
 
   	
     
-    <include layout="@layout/detail_view_footer"  />
+    <include layout="@layout/detail_edit_footer"  />
 </LinearLayout>

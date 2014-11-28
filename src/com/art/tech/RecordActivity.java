@@ -205,13 +205,9 @@ public class RecordActivity extends FragmentActivity {
 		}
 		
 		copyName = (EditText) this.findViewById(R.id.copy_name);
-		copyOwner = (EditText) this.findViewById(R.id.copy_owner);
 		copySizeChang = (EditText) this.findViewById(R.id.copy_size_chang);
 		copySizeKuan = (EditText) this.findViewById(R.id.copy_size_kuan);
 		copySizeGao = (EditText) this.findViewById(R.id.copy_size_gao);		
-		copyDescription = (EditText) this.findViewById(R.id.copy_description);
-		copyMoney = (EditText) this.findViewById(R.id.copy_money);
-		copyMoneyPublicity = (CheckBox) this.findViewById(R.id.copy_money_publicity);
 		
 		buttonCamera = (ImageButton) this
 				.findViewById(R.id.button_camera);
