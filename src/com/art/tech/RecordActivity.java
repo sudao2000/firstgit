@@ -300,13 +300,9 @@ public class RecordActivity extends FragmentActivity {
 	private void updateProductInfo(ProductInfo info) {
 		
 		copyName.setText(info.copy_name);
-		copyOwner.setText(info.copy_owner);
 		copySizeChang.setText(info.copy_size_chang);
 		copySizeKuan.setText(info.copy_size_kuan);
 		copySizeGao.setText(info.copy_size_gao);
-		copyDescription.setText(info.copy_description);
-		copyMoney.setText(info.copy_money);
-		copyMoneyPublicity.setChecked(info.publicity);
 	}
 	
 	private void updateEditable(boolean editable) {

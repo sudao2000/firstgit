@@ -1,7 +1,9 @@
 package com.art.tech;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import com.art.tech.application.Constants;
 import com.art.tech.fragment.ImageGalleryFragment;
@@ -9,26 +11,34 @@ import com.art.tech.fragment.ImagePagerFragment;
 import com.art.tech.model.ProductInfo;
 import com.art.tech.util.UIHelper;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
 
 public class ProductDetailActivity extends FragmentActivity {
 
@@ -57,10 +67,15 @@ public class ProductDetailActivity extends FragmentActivity {
 	private ProductInfo currentProductInfo;
 	
 	private OnClickListener datePickerListener;
+	
 	private static final int DATE_DIALOG_ID = 1;
+	private static final int TYPE_DIALOG_ID = 2;
+	private static final int MATERIAL_DIALOG_ID = 3;
+	private static final int SIZE_DIALOG_ID = 4;
+	
+	
 	protected static final int ACTION_CAPTURE_IMAGE = 0;
 	private static final String TAG = "ProductDetailActivity";
-
 	//private String saveLocation;
 
 	private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -127,6 +142,12 @@ public class ProductDetailActivity extends FragmentActivity {
 			detailEditView.setVisibility(View.GONE);
 		}
 	};
+	OnClickListener typeListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			ProductDetailActivity.this.showDialog(TYPE_DIALOG_ID);
+		}
+	};
 	
 	private void initProductList() {
 		currentProductInfo = new ProductInfo();
@@ -166,6 +187,8 @@ public class ProductDetailActivity extends FragmentActivity {
 			copySizeChang = (EditText) this.findViewById(R.id.copy_size_chang);
 			copySizeKuan = (EditText) this.findViewById(R.id.copy_size_kuan);
 			copySizeGao = (EditText) this.findViewById(R.id.copy_size_gao);
+			
+			copyType.setOnClickListener(typeListener);
 		}
 
 //		{
@@ -204,8 +227,53 @@ public class ProductDetailActivity extends FragmentActivity {
 		case DATE_DIALOG_ID:
 			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth,
 					mDay);
+		case TYPE_DIALOG_ID:
+			return createTypeDialog();
 		}
 		return super.onCreateDialog(id);
+	}
+	
+	String []texts = new String[]{ 
+			"宫式布局1", "宫式布局2",
+            "宫式布局3", "宫式布局4", 
+            "宫式布局5", "宫式布局6",
+            "宫式布局7", "宫式布局8"};
+
+	private AlertDialog createTypeDialog() {
+
+		LayoutInflater factory = LayoutInflater.from(this);
+		final View v = factory.inflate(R.layout.grid_view, null);
+		AlertDialog d = new AlertDialog.Builder(this).setView(v).create();
+		d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		GridView gridview = (GridView) v;
+		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
+		for (int i = 0; i < 8; i++) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("itemText", texts[i]);
+			lstImageItem.add(map);
+		}
+		SimpleAdapter saImageItems = new SimpleAdapter(this, lstImageItem,// 数据源
+				R.layout.grid_view_item,// 显示布局
+				new String[] { "itemText" }, new int[] { R.id.itemText });
+		gridview.setAdapter(saImageItems);
+		gridview.setOnItemClickListener(new ItemClickListener());
+		return d;
+	}
+
+	private class ItemClickListener implements OnItemClickListener {
+
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long rowid) {
+			HashMap<String, Object> item = (HashMap<String, Object>) parent
+					.getItemAtPosition(position);
+			// 获取数据源的属性值
+			String itemText = (String) item.get("itemText");
+			currentProductInfo.copy_type = itemText;
+			Toast.makeText(ProductDetailActivity.this, itemText, 100).show();
+			ProductDetailActivity.this.dismissDialog(TYPE_DIALOG_ID);
+
+		}
 	}
 
 	private void updateDisplay() {
