@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.art.tech.R;
@@ -69,7 +70,7 @@ public class ImagePagerFragment extends Fragment {
 		ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
 		imageAdapter = new ImageAdapter();
 		pager.setAdapter(imageAdapter);
-		pager.setCurrentItem(0);
+		pager.setCurrentItem(0);		
 		//pager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
 		return rootView;
 	}
