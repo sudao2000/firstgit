@@ -16,5 +16,5 @@ public class ProductInfo {
 	public int copy_size_kuan;
 	public int copy_size_gao;
 	
-	public Date copy_date;
+	public long copy_date;
 }

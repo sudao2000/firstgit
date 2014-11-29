@@ -70,10 +70,21 @@
     <string name="product_report_title">product analysis report</string>
     <string name="exhibision">exhibision</string>
     <string name="more_analysis">"more analysis"</string>
+    <string name="browse">browse</string>
+    <string name="scan">scan</string>
+    <string name="weixin">weixin</string>
+    <string name="phone">phone</string>
+    <string name="email">email</string>
+    <string name="cancel_send">cancel</string>
+    <string name="ok_send">send</string>
     
-     <string name="browse">browse</string>
     
- <string name="scan">scan</string>
+    
+    
+    
+    
+    
+    
     
     <!-- from board example -->
     <string name="sStatusPlugin">Welcome</string>
@@ -114,7 +125,5 @@
     <string name="sTID">TID</string>
     <string name="sSection">Work Region：</string>
     <string name="sSection1">Work Region</string>
-    
-    
 
 </resources>

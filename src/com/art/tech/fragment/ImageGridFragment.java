@@ -172,8 +172,6 @@ public class ImageGridFragment extends Fragment {
 	}
 
 	private void initImageUrls() {
-		//getImageListFromDB();
-		//asyncQueryGalleryFirstImage();
 		imageUrls.clear();
 		new ImageQueryThread(uiHandler).start();
 

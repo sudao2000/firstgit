@@ -3,12 +3,15 @@ package com.art.tech.db;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.art.tech.RecordActivity;
 import com.art.tech.fragment.ImageGridFragment.AsyncListener;
 
 import android.content.AsyncQueryHandler;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 public class ImageCacheColumn extends DatabaseColumn {
 
@@ -57,8 +60,20 @@ public class ImageCacheColumn extends DatabaseColumn {
 		return mColumnMap;
 	}
 	
+	public static void insert(Context c, String url, String real_code) {
+	    DBHelper dbHelper = DBHelper.getInstance(c);
+
+	    ContentValues values = new ContentValues();                
+	    values.put(ImageCacheColumn.Url, url);
+	    values.put(ImageCacheColumn.TIMESTAMP, System.currentTimeMillis());
+	    values.put(ImageCacheColumn.PAST_TIME, 0);
+	    values.put(ImageCacheColumn.REAL_CODE, real_code);
+	    
+	    dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
+	}
+
 	
-	public static void asyncQuery(Context c, int token, Object cookie, Uri uri, 
+	public static void asyncQuery1(Context c, int token, Object cookie, Uri uri, 
 				String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 		
 		AsyncQueryHandler queryHandler = new AsyncQueryHandler(c.getContentResolver()) {

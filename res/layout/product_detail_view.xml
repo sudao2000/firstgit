@@ -35,6 +35,11 @@
                 android:id="@+id/detail_edit"                 
                 layout="@layout/detail_edit_footer" />
         
+            <include
+                android:visibility="gone"
+                android:id="@+id/detail_send"                 
+                layout="@layout/detail_edit_send" />
+            
              <Button
                 android:id="@+id/product_detail_info_edit"
                 android:layout_width="match_parent"
