@@ -29,6 +29,7 @@ import com.art.tech.ProductDetailActivity;
 import com.art.tech.R;
 import com.art.tech.db.DBHelper;
 import com.art.tech.db.ImageCacheColumn;
+import com.art.tech.db.ProductInfoColumn;
 import com.art.tech.model.PictureInfo;
 import com.art.tech.model.ProductInfo;
 
@@ -97,7 +98,7 @@ public class ImageGridFragment extends Fragment {
 	
 	protected void startImagePagerActivity(int position) {
 		Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
-		intent.putExtra(ProductInfo.REAL_CODE, imageUrls.get(position).realCode);
+		intent.putExtra(ProductInfoColumn.REAL_CODE, imageUrls.get(position).realCode);
 		startActivity(intent);
 	}
 	

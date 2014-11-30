@@ -33,7 +33,7 @@ public class ImageCacheColumn extends DatabaseColumn {
 		mColumnMap.put(TIMESTAMP, "TimeStamp");
 		mColumnMap.put(Url, "text");
 		mColumnMap.put(PAST_TIME, "TimeStamp");
-		mColumnMap.put(REAL_CODE, "INTEGER");
+		mColumnMap.put(REAL_CODE, "text");
 	}
 	
 	public static class ImageInfo {
@@ -73,7 +73,7 @@ public class ImageCacheColumn extends DatabaseColumn {
 	}
 
 	
-	public static void asyncQuery1(Context c, int token, Object cookie, Uri uri, 
+	public static void asyncQuery(Context c, int token, Object cookie, Uri uri, 
 				String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 		
 		AsyncQueryHandler queryHandler = new AsyncQueryHandler(c.getContentResolver()) {

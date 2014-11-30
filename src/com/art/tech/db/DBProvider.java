@@ -14,11 +14,14 @@ import android.net.Uri;
 public class DBProvider extends ContentProvider {
 	
 	private static final int IMAGES		=	1;
+	private static final int PRODUCT_INFO		=	2;
+	
 	private DBHelper		 mDBHelper	=	null;
 	private static final 	 UriMatcher	URIMATCHER;
 	static{
 		URIMATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 		URIMATCHER.addURI(DatabaseColumn.AUTHORITY,  ImageCacheColumn.TABLE_NAME, IMAGES);
+		URIMATCHER.addURI(DatabaseColumn.AUTHORITY,  ProductInfoColumn.TABLE_NAME, PRODUCT_INFO);
 	}
 	
 	@Override

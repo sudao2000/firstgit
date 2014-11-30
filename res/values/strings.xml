@@ -77,15 +77,9 @@
     <string name="email">email</string>
     <string name="cancel_send">cancel</string>
     <string name="ok_send">send</string>
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    <string name="alert_dialog_ok">alert_dialog_ok</string>
+    <string name="no_name_message">please input product name!</string>
+
     <!-- from board example -->
     <string name="sStatusPlugin">Welcome</string>
     <string name="sStatusPlugout">You are not connected to the device!</string>

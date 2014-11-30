@@ -12,6 +12,17 @@ import android.net.Uri;
 public class ProductInfoColumn extends DatabaseColumn {
 
 	public static final String TABLE_NAME = "productInfo";
+	
+	public static final String columns[] = { 
+		ProductInfoColumn.REAL_CODE,
+		ProductInfoColumn.COPY_NAME,
+		ProductInfoColumn.COPY_TYPE,
+		ProductInfoColumn.COPY_MATERIAL,
+		ProductInfoColumn.COPY_SIZE_CHANG,
+		ProductInfoColumn.COPY_SIZE_KUAN,
+		ProductInfoColumn.COPY_SIZE_GAO,
+		ProductInfoColumn.COPY_DATE	    
+	};
 
 	public static final String ID = "id";
 	public static final String REAL_CODE = "real_code";
@@ -74,7 +85,7 @@ public class ProductInfoColumn extends DatabaseColumn {
 		values.put(COPY_SIZE_GAO, info.copy_size_gao);
 		values.put(COPY_DATE, info.copy_date);
 	    
-	    dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
+	    dbHelper.insert(ProductInfoColumn.TABLE_NAME, values);
 	}
 	
 	public static void insert(Context c, String real_code, String name, String type, String material, int chang, int kuan, int gao, long timestamp) {
@@ -92,7 +103,7 @@ public class ProductInfoColumn extends DatabaseColumn {
 		values.put(COPY_SIZE_GAO, gao);
 		values.put(COPY_DATE, timestamp);
 	    
-	    dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
+	    dbHelper.insert(ProductInfoColumn.TABLE_NAME, values);
 	}
 
 }

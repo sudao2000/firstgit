@@ -205,23 +205,17 @@ public class ScanFragment extends Fragment {
 		if (ACTION_CAPTURE_IMAGE == requestCode && resultCode == Activity.RESULT_OK) {
 			
 			ContentResolver cr = getActivity().getContentResolver();
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(cr
-                        .openInputStream(currentPicUri));
-
-                DBHelper dbHelper = DBHelper.getInstance(getActivity());
-                Log.d(TAG, "currentImage url " + currentPicUri);
-                
-                ContentValues values = new ContentValues();                
-                values.put(ImageCacheColumn.Url, currentPicUri.getPath());
-                values.put(ImageCacheColumn.TIMESTAMP, System.currentTimeMillis());
-                values.put(ImageCacheColumn.PAST_TIME, 0);
-                values.put(ImageCacheColumn.REAL_CODE, currentProductInfo.real_code);
-                
-                dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
-            } catch (FileNotFoundException e) {
-            	Log.e(TAG, e.getMessage());
-            }
+			
+			DBHelper dbHelper = DBHelper.getInstance(getActivity());
+            Log.d(TAG, "currentImage url " + currentPicUri);
+            
+            ContentValues values = new ContentValues();                
+            values.put(ImageCacheColumn.Url, currentPicUri.getPath());
+            values.put(ImageCacheColumn.TIMESTAMP, System.currentTimeMillis());
+            values.put(ImageCacheColumn.PAST_TIME, 0);
+            values.put(ImageCacheColumn.REAL_CODE, currentProductInfo.real_code);
+            
+            dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
 		}
 	}
 

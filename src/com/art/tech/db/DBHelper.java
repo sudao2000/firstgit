@@ -19,13 +19,15 @@ public class DBHelper extends SQLiteOpenHelper {
 	
 	private static DBHelper mdbHelper;
 	
-	public static DBHelper getInstance(Context context)
-	{
-		if(mdbHelper==null)
-		{
-			mdbHelper=new DBHelper(context);
-			SQLiteDatabase db = mdbHelper.getWritableDatabase();
-			db = null;
+	public static DBHelper getInstance(Context context) {
+		if (mdbHelper == null) {
+			synchronized (DBHelper.class) {
+				if (mdbHelper == null) {
+					mdbHelper = new DBHelper(context);
+					SQLiteDatabase db = mdbHelper.getWritableDatabase();
+					db = null;
+				}
+			}
 		}
 		return mdbHelper;
 	}

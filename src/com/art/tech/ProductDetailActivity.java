@@ -5,45 +5,35 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import com.art.tech.application.Constants;
-import com.art.tech.db.DBHelper;
-import com.art.tech.db.ImageCacheColumn;
-import com.art.tech.db.ProductInfoColumn;
-import com.art.tech.fragment.ImageGalleryFragment;
-import com.art.tech.fragment.ImagePagerFragment;
-import com.art.tech.model.ProductInfo;
-import com.art.tech.util.UIHelper;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Toast;
+
+import com.art.tech.db.DBHelper;
+import com.art.tech.db.ProductInfoColumn;
+import com.art.tech.fragment.ImagePagerFragment;
+import com.art.tech.model.ProductInfo;
 
 public class ProductDetailActivity extends FragmentActivity {
 
@@ -82,6 +72,8 @@ public class ProductDetailActivity extends FragmentActivity {
 	private static final int MATERIAL_DIALOG_ID = 3;
 	private static final int SIZE_DIALOG_ID = 4;
 	
+	private static final int NO_NAME_MESSAGE_DIALOG = 5;
+	
 	
 	protected static final int ACTION_CAPTURE_IMAGE = 0;
 	private static final String TAG = "ProductDetailActivity";
@@ -106,10 +98,8 @@ public class ProductDetailActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.product_detail_view);
+		setContentView(R.layout.product_detail_view);
 
-
-		 
 		Fragment fr;
 		String tag;
 
@@ -124,7 +114,7 @@ public class ProductDetailActivity extends FragmentActivity {
 		
 		initProductList();//call before setWorkspace
 		
-		initView();
+		initView(getIntent());
 	}
 	
 	private OnClickListener editListener = new OnClickListener() {
@@ -144,9 +134,17 @@ public class ProductDetailActivity extends FragmentActivity {
 			detailEditView.setVisibility(View.GONE);
 			detailSendView.setVisibility(View.VISIBLE);
 			
+			currentProductInfo.copy_name = copyName.getText().toString().trim();
+			if (currentProductInfo.copy_name == null || currentProductInfo.copy_name.isEmpty()) {
+				showDialog(NO_NAME_MESSAGE_DIALOG);
+				return;
+			}
 			ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo);
 		}
 	};
+	
+	
+	
 	private OnClickListener cancelListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -177,7 +175,16 @@ public class ProductDetailActivity extends FragmentActivity {
 		}
 	};
 	
-	
+    private AlertDialog createNoNameDialog() {
+        return new AlertDialog.Builder(ProductDetailActivity.this)
+        .setTitle(R.string.no_name_message)
+        .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        }).create();
+
+    }
 	
 	private OnClickListener typeListener = new OnClickListener() {
 		@Override
@@ -205,7 +212,7 @@ public class ProductDetailActivity extends FragmentActivity {
 		currentProductInfo.real_code = "00000001";
 	}
 
-	private void initView() {
+	private void initView(Intent intent) {
 		{
 			productDetailInfo = (TextView) findViewById(R.id.product_detail_info);
 			productDetailInfo.setText("Hello");
@@ -244,7 +251,7 @@ public class ProductDetailActivity extends FragmentActivity {
 			
 			copyType.setOnClickListener(typeListener);
 			copySize.setOnClickListener(sizeListener);
-			copySize.setOnClickListener(materialListener);
+			copyMaterial.setOnClickListener(materialListener);
 		}
 
 		{
@@ -260,6 +267,10 @@ public class ProductDetailActivity extends FragmentActivity {
 			buttonCancelSend = (Button) findViewById(R.id.button_cancel_send);
 			buttonCancelSend.setOnClickListener(cancelListenerSend);
 		}
+		
+		String realCode = intent.getStringExtra(ProductInfoColumn.REAL_CODE);
+		String where = ProductInfoColumn.REAL_CODE + "=" + realCode;
+		new QueryProductInfoTask().execute(where);
 	}
 
 	private void setDialogOnClickListener(int buttonId, final int dialogId) {
@@ -277,17 +288,15 @@ public class ProductDetailActivity extends FragmentActivity {
 		case DATE_DIALOG_ID:
 			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
 		case TYPE_DIALOG_ID:
-			return createTypeDialog(types);
+			return createTypeDialog(types, new TypeItemClickListener());
 		case SIZE_DIALOG_ID:
 			return createSizeDialog();
 		case MATERIAL_DIALOG_ID:
-			return createMaterialDialog(materials);
+			return createMaterialDialog(materials, new MaterialItemClickListener());
+		case NO_NAME_MESSAGE_DIALOG:
+		    return createNoNameDialog();
 		}
 		return super.onCreateDialog(id);
-	}
-
-	private AlertDialog createMaterialDialog(String[] data) {
-		return createTypeDialog(data);
 	}
 	
 	private static final String []types = new String[]{ 
@@ -302,7 +311,7 @@ public class ProductDetailActivity extends FragmentActivity {
         "cai5", "cai6",
         "cai7", "cai8"};
 	
-	private AlertDialog createTypeDialog(String[] data) {
+	private AlertDialog createMaterialDialog(String[] data, MaterialItemClickListener l) {
 
 		LayoutInflater factory = LayoutInflater.from(this);
 		final View v = factory.inflate(R.layout.grid_view, null);
@@ -320,7 +329,30 @@ public class ProductDetailActivity extends FragmentActivity {
 				R.layout.grid_view_item,// 显示布局
 				new String[] { "itemText" }, new int[] { R.id.itemText });
 		gridview.setAdapter(saImageItems);
-		gridview.setOnItemClickListener(new ItemClickListener());
+		gridview.setOnItemClickListener(l);
+		
+		return d;
+	}
+	
+	private AlertDialog createTypeDialog(String[] data, TypeItemClickListener l) {
+
+		LayoutInflater factory = LayoutInflater.from(this);
+		final View v = factory.inflate(R.layout.grid_view, null);
+		AlertDialog d = new AlertDialog.Builder(this).setView(v).create();
+		d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		GridView gridview = (GridView) v;
+		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
+		for (int i = 0; i < 8; i++) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("itemText", data[i]);
+			lstImageItem.add(map);
+		}
+		SimpleAdapter saImageItems = new SimpleAdapter(this, lstImageItem,// 数据源
+				R.layout.grid_view_item,// 显示布局
+				new String[] { "itemText" }, new int[] { R.id.itemText });
+		gridview.setAdapter(saImageItems);
+		gridview.setOnItemClickListener(l);
 		
 		return d;
 	}
@@ -345,17 +377,94 @@ public class ProductDetailActivity extends FragmentActivity {
 		return d;
 	}
 	
-	private class ItemClickListener implements OnItemClickListener {
+	private class QueryProductInfoTask extends AsyncTask<String, Integer, ProductInfo> {
+        @Override  
+        protected void onPreExecute() {
+        }
+        @Override  
+        protected ProductInfo doInBackground(String... params) {
+        	String where = params[0];
+        	
+			DBHelper helper = DBHelper.getInstance(ProductDetailActivity.this);
+			
+			Cursor c = helper.query(ProductInfoColumn.TABLE_NAME,
+					ProductInfoColumn.columns, where, null);
+			if (c != null && c.moveToFirst()) {
+
+				String realCode = new String(c.getString(c
+						.getColumnIndex(ProductInfoColumn.REAL_CODE)));
+				String name = new String(c.getString(c
+						.getColumnIndex(ProductInfoColumn.COPY_NAME)));
+				String type = new String(c.getString(c
+						.getColumnIndex(ProductInfoColumn.COPY_TYPE)));
+				String material = new String(c.getString(c
+						.getColumnIndex(ProductInfoColumn.COPY_MATERIAL)));
+
+				int chang = c.getInt(c
+						.getColumnIndex(ProductInfoColumn.COPY_SIZE_CHANG));
+				int kuan = c.getInt(c
+						.getColumnIndex(ProductInfoColumn.COPY_SIZE_KUAN));
+				int gao = c.getInt(c
+						.getColumnIndex(ProductInfoColumn.COPY_SIZE_GAO));
+				long date = c.getLong(c
+						.getColumnIndex(ProductInfoColumn.COPY_DATE));
+
+				ProductInfo info = new ProductInfo();
+
+				info.real_code = realCode;
+				info.copy_name = name;
+				info.copy_type = type;
+				info.copy_material = material;
+
+				info.copy_size_chang = chang;
+				info.copy_size_kuan = kuan;
+				info.copy_size_gao = gao;
+				info.copy_date = date;
+
+				c.close();
+				return info;
+			}
+        	return null;
+        }
+        
+        @Override  
+        protected void onProgressUpdate(Integer... progresses) {
+        }
+        
+        @Override  
+        protected void onPostExecute(ProductInfo result) {
+        	if (null == result) {
+        		return;
+        	}
+        	currentProductInfo = result;
+        	result = null;
+        	updateView(currentProductInfo);
+        }  
+	}
+	
+	private class TypeItemClickListener implements OnItemClickListener {
 
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long rowid) {
 			HashMap<String, Object> item = (HashMap<String, Object>) parent
 					.getItemAtPosition(position);
-			// 获取数据源的属性值
 			String itemText = (String) item.get("itemText");
 			currentProductInfo.copy_type = itemText;
 			copyType.setText(itemText);
 			ProductDetailActivity.this.dismissDialog(TYPE_DIALOG_ID);
+		}
+	}
+	
+	private class MaterialItemClickListener implements OnItemClickListener {
+
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long rowid) {
+			HashMap<String, Object> item = (HashMap<String, Object>) parent
+					.getItemAtPosition(position);
+			String itemText = (String) item.get("itemText");
+			currentProductInfo.copy_material = itemText;
+			copyMaterial.setText(itemText);
+			ProductDetailActivity.this.dismissDialog(MATERIAL_DIALOG_ID);
 		}
 	}
 	
