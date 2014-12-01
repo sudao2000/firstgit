@@ -75,7 +75,6 @@ public class ProductInfoColumn extends DatabaseColumn {
 
 	    ContentValues values = new ContentValues();    
 	    
-		values.put(_ID, "integer primary key autoincrement");
 		values.put(REAL_CODE, info.real_code);
 		values.put(COPY_NAME, info.copy_name);
 		values.put(COPY_TYPE, info.copy_type);
@@ -91,9 +90,8 @@ public class ProductInfoColumn extends DatabaseColumn {
 	public static void insert(Context c, String real_code, String name, String type, String material, int chang, int kuan, int gao, long timestamp) {
 	    DBHelper dbHelper = DBHelper.getInstance(c);
 
-	    ContentValues values = new ContentValues();    
+	    ContentValues values = new ContentValues();
 	    
-		values.put(_ID, "integer primary key autoincrement");
 		values.put(REAL_CODE, real_code);
 		values.put(COPY_NAME, name);
 		values.put(COPY_TYPE, type);
