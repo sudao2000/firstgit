@@ -3,7 +3,7 @@ package com.art.tech.model;
 import java.util.Date;
 
 public class ProductInfo {
-	public int id;
+	public long id;
 	public String real_code;
 	public String copy_name;
 	public String copy_type;

@@ -71,8 +71,12 @@ public class ImageCacheColumn extends DatabaseColumn {
 	    
 	    dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
 	}
-
 	
+	public static int delete(Context c,  int id) {
+		DBHelper dbHelper = DBHelper.getInstance(c);
+		return dbHelper.delete(ImageCacheColumn.TABLE_NAME, id);
+	}
+
 	public static void asyncQuery(Context c, int token, Object cookie, Uri uri, 
 				String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 		

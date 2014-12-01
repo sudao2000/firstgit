@@ -13,7 +13,8 @@ public class ProductInfoColumn extends DatabaseColumn {
 
 	public static final String TABLE_NAME = "productInfo";
 	
-	public static final String columns[] = { 
+	public static final String columns[] = {
+		ProductInfoColumn._ID,
 		ProductInfoColumn.REAL_CODE,
 		ProductInfoColumn.COPY_NAME,
 		ProductInfoColumn.COPY_TYPE,
@@ -24,7 +25,6 @@ public class ProductInfoColumn extends DatabaseColumn {
 		ProductInfoColumn.COPY_DATE	    
 	};
 
-	public static final String ID = "id";
 	public static final String REAL_CODE = "real_code";
 	public static final String COPY_NAME = "copy_name";
 	public static final String COPY_TYPE = "copy_type";
@@ -102,6 +102,11 @@ public class ProductInfoColumn extends DatabaseColumn {
 		values.put(COPY_DATE, timestamp);
 	    
 	    dbHelper.insert(ProductInfoColumn.TABLE_NAME, values);
+	}
+
+	public static int delete(Context c,  int id) {
+		DBHelper dbHelper = DBHelper.getInstance(c);
+		return dbHelper.delete(ImageCacheColumn.TABLE_NAME, id);
 	}
 
 }

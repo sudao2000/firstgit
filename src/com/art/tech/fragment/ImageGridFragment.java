@@ -52,9 +52,9 @@ public class ImageGridFragment extends Fragment {
 	private GridView gridView;
 	private Handler uiHandler;
 
-	public void addImageUrl(String url, String realCode) {
+	public void addImageUrl(long id, String url, String realCode) {
 		if (imageUrls != null)
-			imageUrls.add(new PictureInfo(url, realCode));
+			imageUrls.add(new PictureInfo(id, url, realCode));
 	}
 
 	@Override
@@ -131,8 +131,9 @@ public class ImageGridFragment extends Fragment {
 					null);
 			if (c != null && c.moveToFirst()) {
 				do {
-					ImageGridFragment.this.imageUrls.add(new PictureInfo("file://"
-							+ new File(c.getString(c
+					ImageGridFragment.this.imageUrls.add(							
+							new PictureInfo(c.getLong(c.getColumnIndex(ImageCacheColumn._ID)),
+									"file://"+ new File(c.getString(c
 									.getColumnIndex(ImageCacheColumn.Url)))
 									.getAbsolutePath(),
 									c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE))));
@@ -153,7 +154,8 @@ public class ImageGridFragment extends Fragment {
 			public void updateImageUrls(Cursor c) {
 				if (c != null && c.moveToFirst()) {
 					do {
-						imageUrls.add(new PictureInfo("file://"
+						imageUrls.add(new PictureInfo(
+								c.getLong(c.getColumnIndex(ImageCacheColumn._ID)), "file://"
 								+ new File(c.getString(c
 										.getColumnIndex(ImageCacheColumn.Url)))
 										.getAbsolutePath(),
@@ -185,7 +187,8 @@ public class ImageGridFragment extends Fragment {
 				null);
 		if (c != null && c.moveToFirst()) {
 			do {
-				imageUrls.add(new PictureInfo("file://"
+				imageUrls.add(new PictureInfo(c.getLong(c.getColumnIndex(ImageCacheColumn._ID)),
+						"file://"
 						+ new File(c.getString(c
 								.getColumnIndex(ImageCacheColumn.Url)))
 								.getAbsolutePath(),

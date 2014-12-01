@@ -390,6 +390,7 @@ public class ProductDetailActivity extends FragmentActivity {
 			Cursor c = helper.query(ProductInfoColumn.TABLE_NAME,
 					ProductInfoColumn.columns, where, null);
 			if (c != null && c.moveToFirst()) {
+				long _id = c.getLong(c.getColumnIndex(ProductInfoColumn._ID));
 
 				String realCode = new String(c.getString(c
 						.getColumnIndex(ProductInfoColumn.REAL_CODE)));
@@ -410,7 +411,7 @@ public class ProductDetailActivity extends FragmentActivity {
 						.getColumnIndex(ProductInfoColumn.COPY_DATE));
 
 				ProductInfo info = new ProductInfo();
-
+				info.id = _id;
 				info.real_code = realCode;
 				info.copy_name = name;
 				info.copy_type = type;
