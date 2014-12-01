@@ -34,21 +34,19 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.art.tech.adapter.ImageAdapter;
 import com.art.tech.application.Constants;
 import com.art.tech.db.DBHelper;
 import com.art.tech.db.ImageCacheColumn;
-import com.art.tech.fragment.ImageGalleryFragment;
+//import com.art.tech.fragment.ImageGalleryFragment1;
 import com.art.tech.model.ProductInfo;
 import com.art.tech.util.UIHelper;
-import com.art.tech.view.GalleryView;
 
 public class RecordActivity extends FragmentActivity {
 
 	//private GalleryView gallery;
 	
-	ImageGalleryFragment imageGallery;
-	private ImageAdapter adapter;
+	//ImageGalleryFragment1 imageGallery;
+	//private ImageAdapter adapter;
 
 	private int mYear;
 	private int mMonth;
@@ -193,13 +191,13 @@ public class RecordActivity extends FragmentActivity {
 				}
 			});
 			*/
-            Fragment fr;
-            String tag;
-            tag = ImageGalleryFragment.class.getSimpleName();
-            fr = getSupportFragmentManager().findFragmentByTag(tag);
-            if (fr == null) {
-                    fr = new ImageGalleryFragment();
-            }
+//            Fragment fr;
+//            String tag;
+//            tag = ImageGalleryFragment1.class.getSimpleName();
+//            fr = getSupportFragmentManager().findFragmentByTag(tag);
+//            if (fr == null) {
+//                    fr = new ImageGalleryFragment1();
+//            }
 
 			//getSupportFragmentManager().beginTransaction().replace(R.id.image_gallery_frag, fr, tag).commit();
 		}
@@ -336,9 +334,9 @@ public class RecordActivity extends FragmentActivity {
                 values.put(ImageCacheColumn.REAL_CODE, currentProductInfo.real_code);
                 
                 dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
-                ImageGalleryFragment igf = (ImageGalleryFragment) getSupportFragmentManager()
-                		.findFragmentByTag(ImageGalleryFragment.class.getSimpleName());
-                igf.refetchImageListFromGallery();
+                //ImageGalleryFragment1 igf = (ImageGalleryFragment1) getSupportFragmentManager()
+                //		.findFragmentByTag(ImageGalleryFragment1.class.getSimpleName());
+                //igf.refetchImageListFromGallery();
                 
                 /*
                 Cursor cursor = this.getContentResolver().query(currentPicUri, null,

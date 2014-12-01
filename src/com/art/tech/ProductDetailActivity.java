@@ -1,5 +1,6 @@
 package com.art.tech;
 
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,14 +9,20 @@ import java.util.HashMap;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,14 +33,18 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.art.tech.application.Constants;
 import com.art.tech.db.DBHelper;
+import com.art.tech.db.ImageCacheColumn;
 import com.art.tech.db.ProductInfoColumn;
 import com.art.tech.fragment.ImagePagerFragment;
 import com.art.tech.model.ProductInfo;
+import com.art.tech.util.UIHelper;
 
 public class ProductDetailActivity extends FragmentActivity {
 
@@ -62,6 +73,10 @@ public class ProductDetailActivity extends FragmentActivity {
 	
 	private Button buttonOkSend;
 	private Button buttonCancelSend;
+	
+	private ImageButton buttonAddImage;
+	private ImageButton buttonRemoveImage;
+	private Uri currentPicUri;
 	
 	private ProductInfo currentProductInfo;
 	
@@ -101,9 +116,7 @@ public class ProductDetailActivity extends FragmentActivity {
 		setContentView(R.layout.product_detail_view);
 
 		Fragment fr;
-		String tag;
-
-		tag = ImagePagerFragment.class.getSimpleName();
+		String tag = ImagePagerFragment.class.getSimpleName();
 		fr = getSupportFragmentManager().findFragmentByTag(tag);
 		if (fr == null) {
 			fr = new ImagePagerFragment();
@@ -142,8 +155,6 @@ public class ProductDetailActivity extends FragmentActivity {
 			ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo);
 		}
 	};
-	
-	
 	
 	private OnClickListener cancelListener = new OnClickListener() {
 		@Override
@@ -204,6 +215,16 @@ public class ProductDetailActivity extends FragmentActivity {
 		@Override
 		public void onClick(View v) {
 			ProductDetailActivity.this.showDialog(MATERIAL_DIALOG_ID);
+		}
+	};
+	
+	private OnClickListener deletePictureListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {			
+			//ImageCacheColumn.delete(c, id);
+			//ProductInfoColumn.delete(c, id);
+			
+			//delete file 
 		}
 	};
 
@@ -267,11 +288,33 @@ public class ProductDetailActivity extends FragmentActivity {
 			buttonCancelSend = (Button) findViewById(R.id.button_cancel_send);
 			buttonCancelSend.setOnClickListener(cancelListenerSend);
 		}
+		{
+			buttonAddImage = (ImageButton) findViewById(R.id.button_image_add);
+			buttonAddImage.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					String saveLocation = Constants.IMAGE_SAVE_PAHT
+							+ currentProductInfo.real_code + "/";
+					Log.d(TAG, "kurt : " + saveLocation);
+						currentPicUri = UIHelper.capureImage(ProductDetailActivity.this,
+							ACTION_CAPTURE_IMAGE, saveLocation);
+						if (currentPicUri == null) {
+							Log.e(TAG, "error, fail to capture image at : " + saveLocation);
+						} else {
+							Log.v(TAG, "succeed to capture image at" + currentPicUri  );
+						}
+					}
+				
+			});
+			
+		}
 		
 		String realCode = intent.getStringExtra(ProductInfoColumn.REAL_CODE);
 		String where = ProductInfoColumn.REAL_CODE + "=" + realCode;
 		new QueryProductInfoTask().execute(where);
 	}
+	
+	
 
 	private void setDialogOnClickListener(int buttonId, final int dialogId) {
 		Button b = (Button) findViewById(buttonId);
@@ -509,5 +552,28 @@ public class ProductDetailActivity extends FragmentActivity {
 		copySizeChang.setEnabled(editable);
 		copySizeKuan.setEnabled(editable);
 		copySizeGao.setEnabled(editable);
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (ACTION_CAPTURE_IMAGE == requestCode && resultCode == RESULT_OK) {
+			if (currentPicUri == null) {
+				Log.e(TAG, "fail to take a picture, currentImage url " + currentPicUri);
+				return;
+			}
+            DBHelper dbHelper = DBHelper.getInstance(this);
+            
+            
+            ContentValues values = new ContentValues();                
+            values.put(ImageCacheColumn.Url, currentPicUri.getPath());
+            values.put(ImageCacheColumn.TIMESTAMP, System.currentTimeMillis());
+            values.put(ImageCacheColumn.PAST_TIME, 0);
+            values.put(ImageCacheColumn.REAL_CODE, currentProductInfo.real_code);
+            
+            dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
+
+            ((ImagePagerFragment) getSupportFragmentManager().findFragmentByTag(ImagePagerFragment.class.getSimpleName())).initImageUrls();            
+		}
 	}
 }

@@ -125,7 +125,7 @@ public class ImageGridFragment extends Fragment {
 		
 		@Override
 		public void run() {
-			String columns[] = { ImageCacheColumn.Url , ImageCacheColumn.REAL_CODE};
+			String columns[] = {ImageCacheColumn._ID, ImageCacheColumn.Url , ImageCacheColumn.REAL_CODE};
 			DBHelper helper = DBHelper.getInstance(ImageGridFragment.this.getActivity());
 			Cursor c = helper.query(ImageCacheColumn.TABLE_NAME, columns, null,
 					null);
@@ -181,7 +181,7 @@ public class ImageGridFragment extends Fragment {
 	}
 
 	private void getImageListFromDB() {
-		String columns[] = { ImageCacheColumn.Url };
+		String columns[] = { ImageCacheColumn._ID, ImageCacheColumn.Url, ImageCacheColumn.REAL_CODE};
 		DBHelper helper = DBHelper.getInstance(getActivity());
 		Cursor c = helper.query(ImageCacheColumn.TABLE_NAME, columns, null,
 				null);

@@ -38,11 +38,11 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 public class ImagePagerFragment extends Fragment {
 	private static final int MSG_QUERY_IMAGE = 1;
 	private List<PictureInfo> imageUrls = new LinkedList<PictureInfo>();
-	
+
 	DisplayImageOptions options;
 	private Handler uiHandler;
 	private ImageAdapter imageAdapter;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,36 +50,35 @@ public class ImagePagerFragment extends Fragment {
 		options = new DisplayImageOptions.Builder()
 				.showImageForEmptyUri(R.drawable.ic_empty)
 				.showImageOnFail(R.drawable.ic_error)
-				.resetViewBeforeLoading(true)
-				.cacheOnDisk(true)
+				.resetViewBeforeLoading(true).cacheOnDisk(true)
 				.imageScaleType(ImageScaleType.EXACTLY)
-				.bitmapConfig(Bitmap.Config.RGB_565)
-				.considerExifParams(true)
-				.displayer(new FadeInBitmapDisplayer(300))
-				.build();
-		
-		
+				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
+				.displayer(new FadeInBitmapDisplayer(300)).build();
+
 		uiHandler = new UiHandler();
 
 		initImageUrls();
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fr_image_pager, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fr_image_pager, container,
+				false);
 		ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
 		imageAdapter = new ImageAdapter();
 		pager.setAdapter(imageAdapter);
-		pager.setCurrentItem(0);		
-		//pager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
+		pager.setCurrentItem(0);
+		// pager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION,
+		// 0));
 		return rootView;
 	}
 
-	private void initImageUrls() {
+	public void initImageUrls() {
 		new ImageQueryThread(uiHandler).start();
 
 	}
-	
+
 	private class UiHandler extends Handler {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -90,36 +89,43 @@ public class ImagePagerFragment extends Fragment {
 			}
 		}
 	}
-	
+
 	private class ImageQueryThread extends Thread {
 		private WeakReference<Handler> weakHandler;
+
 		ImageQueryThread(Handler h) {
 			weakHandler = new WeakReference<Handler>(h);
 		}
-		
+
 		@Override
 		public void run() {
-			String columns[] = { ImageCacheColumn.Url , ImageCacheColumn.REAL_CODE};
-			DBHelper helper = DBHelper.getInstance(ImagePagerFragment.this.getActivity());
+			String columns[] = {
+					ImageCacheColumn._ID,
+					ImageCacheColumn.Url,
+					ImageCacheColumn.REAL_CODE };
+			DBHelper helper = DBHelper.getInstance(ImagePagerFragment.this
+					.getActivity());
 			Cursor c = helper.query(ImageCacheColumn.TABLE_NAME, columns, null,
 					null);
 			if (c != null && c.moveToFirst()) {
+				imageUrls.clear();
 				do {
-					imageUrls.add(new PictureInfo("file://"
-							+ new File(c.getString(c
+					imageUrls.add(new PictureInfo(c.getLong(c
+							.getColumnIndex(ImageCacheColumn._ID)), 
+							"file://" + new File(c.getString(c
 									.getColumnIndex(ImageCacheColumn.Url)))
-									.getAbsolutePath(),
+									.getAbsolutePath(), 
 									c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE))));
 				} while (c.moveToNext());
 				c.close();
-				
+
 				if (weakHandler.get() != null) {
 					weakHandler.get().sendEmptyMessage(MSG_QUERY_IMAGE);
-				}				
+				}
 			}
 		}
 	}
-	
+
 	private class ImageAdapter extends PagerAdapter {
 
 		private LayoutInflater inflater;
@@ -140,47 +146,54 @@ public class ImagePagerFragment extends Fragment {
 
 		@Override
 		public Object instantiateItem(ViewGroup view, int position) {
-			View imageLayout = inflater.inflate(R.layout.item_pager_image, view, false);
+			View imageLayout = inflater.inflate(R.layout.item_pager_image,
+					view, false);
 			assert imageLayout != null;
-			ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image);
-			final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
+			ImageView imageView = (ImageView) imageLayout
+					.findViewById(R.id.image);
+			final ProgressBar spinner = (ProgressBar) imageLayout
+					.findViewById(R.id.loading);
 
-			ImageLoader.getInstance().displayImage(imageUrls.get(position).url, imageView, options, new SimpleImageLoadingListener() {
-				@Override
-				public void onLoadingStarted(String imageUri, View view) {
-					spinner.setVisibility(View.VISIBLE);
-				}
+			ImageLoader.getInstance().displayImage(imageUrls.get(position).url,
+					imageView, options, new SimpleImageLoadingListener() {
+						@Override
+						public void onLoadingStarted(String imageUri, View view) {
+							spinner.setVisibility(View.VISIBLE);
+						}
 
-				@Override
-				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-					String message = null;
-					switch (failReason.getType()) {
-						case IO_ERROR:
-							message = "Input/Output error";
-							break;
-						case DECODING_ERROR:
-							message = "Image can't be decoded";
-							break;
-						case NETWORK_DENIED:
-							message = "Downloads are denied";
-							break;
-						case OUT_OF_MEMORY:
-							message = "Out Of Memory error";
-							break;
-						case UNKNOWN:
-							message = "Unknown error";
-							break;
-					}
-					Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+						@Override
+						public void onLoadingFailed(String imageUri, View view,
+								FailReason failReason) {
+							String message = null;
+							switch (failReason.getType()) {
+							case IO_ERROR:
+								message = "Input/Output error";
+								break;
+							case DECODING_ERROR:
+								message = "Image can't be decoded";
+								break;
+							case NETWORK_DENIED:
+								message = "Downloads are denied";
+								break;
+							case OUT_OF_MEMORY:
+								message = "Out Of Memory error";
+								break;
+							case UNKNOWN:
+								message = "Unknown error";
+								break;
+							}
+							Toast.makeText(getActivity(), message,
+									Toast.LENGTH_SHORT).show();
 
-					spinner.setVisibility(View.GONE);
-				}
+							spinner.setVisibility(View.GONE);
+						}
 
-				@Override
-				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-					spinner.setVisibility(View.GONE);
-				}
-			});
+						@Override
+						public void onLoadingComplete(String imageUri,
+								View view, Bitmap loadedImage) {
+							spinner.setVisibility(View.GONE);
+						}
+					});
 
 			view.addView(imageLayout, 0);
 			return imageLayout;

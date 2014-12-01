@@ -7,12 +7,29 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
 
+    
+
+            
     <FrameLayout
         android:id="@+id/product_detail_content"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
     </FrameLayout>
-
+    <ImageButton
+	    android:id="@+id/button_image_add"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="top|left"
+	    android:contentDescription="@string/add"
+	    android:src="@drawable/camera" />
+    
+        <ImageButton
+	    android:id="@+id/button_image_remove"
+	    android:layout_gravity="top|right"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:contentDescription="@string/remove"
+	    android:src="@drawable/camera" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

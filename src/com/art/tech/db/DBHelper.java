@@ -74,7 +74,6 @@ public class DBHelper extends SQLiteOpenHelper {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public long insert(String Table_Name, ContentValues values) {
