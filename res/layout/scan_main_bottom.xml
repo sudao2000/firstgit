@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="35dp" 
+    android:layout_height="wrap_content" 
     android:background="#FFFFFF">
-
+    
+    <TextView
+        android:id="@+id/id_no_scanner_detected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:text="@string/no_scanner_detected"
+        android:textColor="#000000"
+        android:layout_marginTop="3dp"
+        android:textSize="20sp" />
+    
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
@@ -15,12 +26,12 @@
         />
 
     <TextView
-        android:id="@+id/txtCopyright"
+        android:id="@+id/id_connect_scanner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
+        android:layout_above="@+id/imageView1"
         android:layout_centerHorizontal="true"
-        android:text="@string/sCopyright"
+        android:text="@string/connect_scanner"
         android:textColor="#000000"
         android:layout_marginTop="3dp"
         android:textSize="12sp" />

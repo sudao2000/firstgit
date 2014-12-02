@@ -3,29 +3,52 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" android:background="#FFFFFF">
-    
-    <RelativeLayout
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_alignParentTop="true"
-    	>
-        <include layout="@layout/main_top" />
-    </RelativeLayout>
-    
-    <RelativeLayout
-    	android:layout_width="fill_parent"
-    	android:layout_height="fill_parent"
-    	android:layout_marginBottom="35dp" android:layout_marginTop="70dp">
-        <include layout="@layout/main_center" />
-    </RelativeLayout>
-      
-    <RelativeLayout
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_alignParentBottom="true"
-    	>
-        <include layout="@layout/main_bottom" />
-    </RelativeLayout>
-	    
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/id_no_scanner_detected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:text="@string/no_scanner_detected"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <FrameLayout
+        android:id="@+id/scan_result_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/id_no_scanner_detected" >
+
+        <TextView
+            android:textSize="20sp" 
+            android:layout_gravity="center"
+            android:id="@+id/id_scan_real_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name" />
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/imgPlugout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/plug_out" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/id_connect_scanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scan_result_container"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:text="@string/connect_scanner"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+
 </RelativeLayout>

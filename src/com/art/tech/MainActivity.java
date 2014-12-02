@@ -1,10 +1,9 @@
 package com.art.tech;
 
 import com.art.tech.application.Constants;
+import com.art.tech.board.ScanUIFragment;
 import com.art.tech.db.DBHelper;
 import com.art.tech.fragment.ImageGridFragment;
-import com.art.tech.fragment.ScanFragment;
-
 
 import android.app.Activity;
 import android.content.Intent;
@@ -40,7 +39,7 @@ public class MainActivity extends FragmentActivity {
 		
 		//scanFragment = getSupportFragmentManager().findFragmentById(R.id.scan_frag);
 		//broweFragment = getSupportFragmentManager().findFragmentById(R.id.image_grid_frag);
-		scanFragment = new ScanFragment();
+		scanFragment = new ScanUIFragment();
 		broweFragment = new ImageGridFragment();
 		
 		mCurrentFragment = scanFragment;

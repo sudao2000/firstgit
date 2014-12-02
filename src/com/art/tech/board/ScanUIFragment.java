@@ -12,8 +12,10 @@ import java.util.Locale;
 
 import com.art.tech.R;
 
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,22 +34,32 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast; 
 
-public class Demo extends Fragment  implements IvrJackAdapter {
+public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 	
+	private static final int UPDATE_REQUIRED = 100;
+	private static final int SET_TOTAL = 104;
+
+    private static final int QUERYING = 1;
+    
+    
 	private boolean bFirstLoad = true;
 	private ImageView imgPlugout = null;
+	
 	private TextView txtStatus = null;
-	private TextView txtTotal = null;
-	private TextView txtDate = null;
-	//
-	private TextView lblEPC = null;
-	private TextView lblTimes = null;
-	private Button btnQuery = null;
-	//
-	private Button btnSetting = null;
-	private Button clearScreen;
-	private ListView epclist;
-    //
+	private TextView txtConnect = null;
+	private TextView txtRealCode = null;
+//	
+//	private TextView txtTotal = null;
+//	//private TextView txtDate = null;
+//	//
+//	private TextView lblEPC = null;
+//	private TextView lblTimes = null;
+//	private Button btnQuery = null;
+//	//
+//	private Button btnSetting = null;
+//	private Button clearScreen;
+//	private ListView epclist;
+//    //
     private ProgressDialogEx pd; 
     private boolean bSuccess;
     private String cMsg;
@@ -75,46 +87,49 @@ public class Demo extends Fragment  implements IvrJackAdapter {
 		
 		
 		imgPlugout = (ImageView) rootView.findViewById(R.id.imgPlugout);
-		btnQuery = (Button)rootView.findViewById(R.id.btnQuery);
-		btnSetting = (Button)rootView.findViewById(R.id.btnSetting);
-		btnSetting.setVisibility(View.GONE);
-		btnSetting.setOnClickListener(new View.OnClickListener()
-	    {
-			public void onClick(View paramView)
-			{
-				if (bOpened) {
-					showToast("Please stop the inventory tag action.");
-					return;
-				}
-				Intent intent1 = new Intent();
-		    	intent1.setClass(Demo.this.getActivity(), activity_Setting.class);
-		    	startActivity(intent1);
-			}
-	    });
-		lblEPC = (TextView)rootView.findViewById(R.id.textView1);
-		lblTimes = (TextView)rootView.findViewById(R.id.textView11);
-		txtTotal = (TextView)rootView.findViewById(R.id.txtTotal);
-		//
-		txtStatus = (TextView)rootView.findViewById(R.id.txtStatus);
-		txtDate = (TextView)rootView.findViewById(R.id.txtDate);
-		clearScreen = (Button) rootView.findViewById(R.id.btnClear);
-		clearScreen.setOnClickListener(new View.OnClickListener()
-	    {
-	      public void onClick(View paramView)
-	      {
-	    	  ListClear();
-	      }
-	    });
+//		
+//		btnQuery = (Button)rootView.findViewById(R.id.btnQuery);
+//		btnSetting = (Button)rootView.findViewById(R.id.btnSetting);
+//		btnSetting.setVisibility(View.GONE);
+//		btnSetting.setOnClickListener(new View.OnClickListener()
+//	    {
+//			public void onClick(View paramView)
+//			{
+//				if (bOpened) {
+//					showToast("Please stop the inventory tag action.");
+//					return;
+//				}
+//				Intent intent1 = new Intent();
+//		    	intent1.setClass(ScanUIFragment.this.getActivity(), activity_Setting.class);
+//		    	startActivity(intent1);
+//			}
+//	    });
+//		lblEPC = (TextView)rootView.findViewById(R.id.textView1);
+//		lblTimes = (TextView)rootView.findViewById(R.id.textView11);
+//		txtTotal = (TextView)rootView.findViewById(R.id.txtTotal);
+		txtRealCode  = (TextView)rootView.findViewById(R.id.id_scan_real_code);
+		txtStatus = (TextView)rootView.findViewById(R.id.id_no_scanner_detected);
+		txtConnect = (TextView)rootView.findViewById(R.id.id_connect_scanner);
 		
-		//
-		epclist = ((ListView)rootView.findViewById(R.id.tag_list));
-		epclist.setCacheColorHint(Color.TRANSPARENT); 
-		epclist.setOnItemClickListener(new epclistItemClick());
-	    seqAdapter = new CustomListAdapter(this.getActivity(), R.layout.customlistview, this.seqArray);
-	    epclist.setAdapter(this.seqAdapter);
-		//
-		btnQuery.setOnClickListener(new btnQuery_Click());
-		btnQuery.setVisibility(View.GONE);
+//		//txtDate = (TextView)rootView.findViewById(R.id.txtDate);
+//		clearScreen = (Button) rootView.findViewById(R.id.btnClear);
+//		clearScreen.setOnClickListener(new View.OnClickListener()
+//	    {
+//	      public void onClick(View paramView)
+//	      {
+//	    	  ListClear();
+//	      }
+//	    });
+//		
+//		//
+//		epclist = ((ListView)rootView.findViewById(R.id.tag_list));
+//		epclist.setCacheColorHint(Color.TRANSPARENT); 
+//		epclist.setOnItemClickListener(new epclistItemClick());
+//	    seqAdapter = new CustomListAdapter(this.getActivity(), R.layout.customlistview, this.seqArray);
+//	    epclist.setAdapter(this.seqAdapter);
+//		//
+//		btnQuery.setOnClickListener(new btnQuery_Click());
+//		btnQuery.setVisibility(View.GONE);
 		handler = new MHandler(this);
     	//
 		reader = new IvrJackService();
@@ -126,9 +141,9 @@ public class Demo extends Fragment  implements IvrJackAdapter {
 	private void ListClear() {
 		seqAdapter.setSelectItem(-1);
 		this.seqArray.clear();
-		this.txtTotal.setText(" 0");
+		//this.txtTotal.setText(" 0");
 		this.tagArray.clear();
-		this.epclist.setAdapter(this.seqAdapter);
+		//this.epclist.setAdapter(this.seqAdapter);
 		this.bUpdateRequired = false;
 	}
 
@@ -142,7 +157,7 @@ public class Demo extends Fragment  implements IvrJackAdapter {
 				((seqTag) this.seqArray.get(this.tagArray.indexOf(str)))
 						.setCount(Integer.toString(i + 1));
 				if (!this.bUpdateRequired) {
-					handler.sendEmptyMessageDelayed(100, 80L);
+					handler.sendEmptyMessageDelayed(UPDATE_REQUIRED, 80L);
 					this.bUpdateRequired = true;
 				}
 			} else {
@@ -153,21 +168,21 @@ public class Demo extends Fragment  implements IvrJackAdapter {
 				localseqTag.setCount("1");
 				this.seqArray.add(localseqTag);
 				if (!this.bUpdateRequired) {
-					handler.sendEmptyMessageDelayed(100, 80L);
+					handler.sendEmptyMessageDelayed(UPDATE_REQUIRED, 80L);
 					this.bUpdateRequired = true;
 				}
 			}
 		}
-		handler.sendEmptyMessageDelayed(104, 1000L);
+		handler.sendEmptyMessageDelayed(SET_TOTAL, 1000L);
 	}
 	
-	@Override 
-	public void onStart() {
-		super.onStart();  
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  EEEE", Locale.ENGLISH);     
-    	Date curDate = new Date(System.currentTimeMillis());//获取当前时间   
-		txtDate.setText(formatter.format(curDate));
-	}
+//	@Override 
+//	public void onStart() {
+//		super.onStart();  
+//		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  EEEE", Locale.ENGLISH);     
+//    	Date curDate = new Date(System.currentTimeMillis());//获取当前时间   
+//		txtDate.setText(formatter.format(curDate));
+//	}
 	
 	@Override  
     public void onDestroy() { 
@@ -207,18 +222,19 @@ public class Demo extends Fragment  implements IvrJackAdapter {
 	/** 
      * 用Handler来更新UI 
     */  
-    static class MHandler extends Handler {  
-        WeakReference<Demo> outerClass;  
+    class MHandler extends Handler {  
+        WeakReference<ScanUIFragment> outerClass;  
       
-        MHandler(Demo activity) {  
-            outerClass = new WeakReference<Demo>(activity);  
+        MHandler(ScanUIFragment activity) {  
+            outerClass = new WeakReference<ScanUIFragment>(activity);  
         }  
       
         @Override  
         public void handleMessage(android.os.Message msg) {  
-        	Demo theClass = outerClass.get();  
+        	ScanUIFragment theClass = outerClass.get();  
             switch (msg.what) {
-	            case 1:
+	            case QUERYING:
+	            	/*
 	    			theClass.pd.dismiss(); // 关闭ProgressDialog
 	    			theClass.btnQuery.setEnabled(true);
 	    			if (theClass.bCancel) break;
@@ -233,31 +249,35 @@ public class Demo extends Fragment  implements IvrJackAdapter {
 	    					theClass.showToast(theClass.cMsg);
 	    			}
 	    			break;
-	    			
-				case 100:
+	    			*/
+				case UPDATE_REQUIRED:
 					theClass.seqAdapter.notifyDataSetChanged();
 					//theClass.epclist.setSelection(theClass.epclist.getAdapter().getCount() - 1);
 					theClass.bUpdateRequired = false;
 					break;
 				     
-				case 104:
-					theClass.txtTotal.setText("Total:" + theClass.tagArray.size());
+				case SET_TOTAL:
+					//theClass.txtTotal.setText("Total:" + theClass.tagArray.size());
+					txtRealCode.setText("UPDATE_REQUIRED");
+					txtRealCode.setVisibility(View.VISIBLE);
+					imgPlugout.setVisibility(View.GONE);
 					theClass.bUpdateRequired = false;
 					break;
     		}
         }  
-    }  
+    }
+    
       
 	//查询按钮事件
     private class btnQuery_Click implements android.view.View.OnClickListener
     {
 		public void onClick(View v) 
 		{
-			btnQuery.setEnabled(false);
+			//btnQuery.setEnabled(false);
 			if (!bOpened)
-				pd = ProgressDialogEx.show(Demo.this.getActivity(), "Start read epc");
+				pd = ProgressDialogEx.show(ScanUIFragment.this.getActivity(), "Start read epc");
 			else
-				pd = ProgressDialogEx.show(Demo.this.getActivity(), "Stop read epc");
+				pd = ProgressDialogEx.show(ScanUIFragment.this.getActivity(), "Stop read epc");
             new Thread(){  
                 @Override  
                 public void run() {  
@@ -279,7 +299,7 @@ public class Demo extends Fragment  implements IvrJackAdapter {
                     finally {
 
                     }
-                    handler.sendEmptyMessage(1);
+                    handler.sendEmptyMessage(QUERYING);
                 }}.start();
 
 		}	  
@@ -296,9 +316,9 @@ public class Demo extends Fragment  implements IvrJackAdapter {
 			}
 			seqAdapter.setSelectItem(arg2);  
 			seqAdapter.notifyDataSetInvalidated(); 
-			activity_TagMemory.sEPC = ((seqTag) seqArray.get(arg2)).getTag();
+			//activity_TagMemory.sEPC = ((seqTag) seqArray.get(arg2)).getTag();
 			Intent intent1 = new Intent();
-	    	intent1.setClass(Demo.this.getActivity(), activity_TagMemory.class);
+	    	//intent1.setClass(ScanUIFragment.this.getActivity(), activity_TagMemory.class);
 	    	startActivity(intent1);
 		}
     }
@@ -328,58 +348,90 @@ public class Demo extends Fragment  implements IvrJackAdapter {
 //    }
 
 	@Override
-	public void onConnect(String arg0) {
+	public void onConnect(String arg0) {		
+		Resources res = getActivity().getResources();
+		
+		
+//		btnQuery.setVisibility(View.VISIBLE);					
+//		btnSetting.setVisibility(View.VISIBLE);
+//		txtTotal.setVisibility(View.VISIBLE);
+//		lblEPC.setVisibility(View.VISIBLE);
+//		lblTimes.setVisibility(View.VISIBLE);
+//		clearScreen.setVisibility(View.VISIBLE);
+//		epclist.setVisibility(View.VISIBLE);
+		txtRealCode.setVisibility(View.VISIBLE);
+		txtRealCode.setText("Reading...........");
+		
+		txtStatus.setText(res.getString(R.string.real_code_correct));
+		txtConnect.setText(res.getString(R.string.set_product_name));
+		
 		imgPlugout.setVisibility(View.GONE);
-		btnQuery.setVisibility(View.VISIBLE);					
-		btnSetting.setVisibility(View.VISIBLE);
-		txtTotal.setVisibility(View.VISIBLE);
-		lblEPC.setVisibility(View.VISIBLE);
-		lblTimes.setVisibility(View.VISIBLE);
-		clearScreen.setVisibility(View.VISIBLE);
-		epclist.setVisibility(View.VISIBLE);
-		txtStatus.setText("Welcome");
+		
 		showToast("Recognized.", R.drawable.toastbox_auth_success);
 	}
 
 	@Override
 	public void onDisconnect() {
+		Resources res = getActivity().getResources();
 		imgPlugout.setVisibility(View.VISIBLE);
-		btnQuery.setVisibility(View.INVISIBLE);
-		btnSetting.setVisibility(View.INVISIBLE);
-		lblEPC.setVisibility(View.INVISIBLE);
-		lblTimes.setVisibility(View.INVISIBLE);
-		epclist.setVisibility(View.INVISIBLE);
-		clearScreen.setVisibility(View.INVISIBLE);
-		txtTotal.setVisibility(View.INVISIBLE);
-		txtStatus.setText("You are not connected to the device!");
-		btnQuery.setText(">>>>Start<<<<");
+		txtRealCode.setVisibility(View.GONE);
+//		btnQuery.setVisibility(View.INVISIBLE);
+//		btnSetting.setVisibility(View.INVISIBLE);
+//		lblEPC.setVisibility(View.INVISIBLE);
+//		lblTimes.setVisibility(View.INVISIBLE);
+//		epclist.setVisibility(View.INVISIBLE);
+//		clearScreen.setVisibility(View.INVISIBLE);
+//		txtTotal.setVisibility(View.INVISIBLE);		
+		
+		
+		txtStatus.setText(res.getString(R.string.no_scanner_detected));
+		txtConnect.setText(res.getString(R.string.connect_scanner));
+		
+		//btnQuery.setText(">>>>Start<<<<");
 		bOpened = false;
 		if (!bFirstLoad) {
 			showToast("Plugout!", R.drawable.toastbox_remove);
 		}
 		bFirstLoad = false;
 		bCancel = false;
+
 	}
 
 	@Override
 	public void onInventory(String arg0) {
 		ListRefresh(arg0);
+		txtRealCode.setText(arg0);
 	}
 
 	@Override
 	public void onStatusChange(IvrJackStatus arg0) {
 		switch (arg0) {
+		case ijsPlugout:
+			onDisconnect();
+			break;
 			case ijsDetecting: 
-				pd = ProgressDialogEx.show(Demo.this.getActivity(), "Detecting...");
+				//pd = ProgressDialogEx.show(ScanUIFragment.this.getActivity(), "Detecting...");
 				break;
 				
 			case ijsRecognized:
-				pd.dismiss();
+				//pd.dismiss();				
+				Resources res = getActivity().getResources();
+				
+				imgPlugout.setVisibility(View.GONE);
+				txtRealCode.setVisibility(View.VISIBLE);
+				txtRealCode.setText("Reading...........");
+				
+				txtStatus.setText(res.getString(R.string.real_code_correct));
+				txtConnect.setText(res.getString(R.string.set_product_name));
+				
+				showToast("Recognized.", R.drawable.toastbox_auth_success);
+				
 				break;
 				
 			case ijsUnRecognized:
-				pd.dismiss();
-				Toast.makeText(this.getActivity(), "Unrecognized!", Toast.LENGTH_SHORT).show();
+				//pd.dismiss();
+				//Toast.makeText(this.getActivity(), "Unrecognized!", Toast.LENGTH_SHORT).show();
+				
 				break;
 		}
 	}

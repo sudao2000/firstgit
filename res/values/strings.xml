@@ -87,8 +87,15 @@
     <string name="sStatusPlugin">Welcome</string>
     <string name="sStatusPlugout">You are not connected to the device!</string>
     <string name="sDate">2012\–\08\–\23 Thur.</string>
-    <string name="sCopyright">Copyright © 2014 All rights reverved.</string>
-    <string name="btnQuery">&gt;&gt;&gt;&gt;Start&lt;&lt;&lt;&lt;</string>
+    
+    <string name="no_scanner_detected">未检测到探测器</string>
+    <string name="connect_scanner">请连接探测器</string>
+    <string name="real_code_correct">防伪标签正常</string>
+    <string name="set_product_name">设置作品名称</string>
+    
+    
+    
+<string name="btnQuery">&gt;&gt;&gt;&gt;Start&lt;&lt;&lt;&lt;</string>
     <string name="lblEPC">No　　EPC Data</string>
     <string name="btnClear">Clean</string>
     <string name="sTotal">Total：0</string>
