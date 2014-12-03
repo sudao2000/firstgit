@@ -404,15 +404,30 @@ public class ProductDetailActivity extends FragmentActivity {
 
 		LayoutInflater factory = LayoutInflater.from(this);
 		final View v = factory.inflate(R.layout.detail_edit_size, null);
-		AlertDialog d = new AlertDialog.Builder(this).setView(v).create();
+		
+		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				currentProductInfo.copy_size_chang = Integer.parseInt(copySizeChang.getText().toString());
+				currentProductInfo.copy_size_kuan = Integer.parseInt(copySizeKuan.getText().toString());
+				currentProductInfo.copy_size_gao =  Integer.parseInt(copySizeGao.getText().toString());
+	
+				copySize.setText(copySizeChang + "x" + copySizeKuan + "x"
+						+ copySizeGao);
+			}
+		};
+		
+		AlertDialog d = new AlertDialog.Builder(this).setView(v)
+				//.setPositiveButton(R.string.dialog_OK, listener)
+				.create();
 		d.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		d.setOnDismissListener(new OnDismissListener() {
 
 			@Override
 			public void onDismiss(DialogInterface d) {
-				copySize.setText(copySizeChang + "x" + copySizeKuan + "x"
-						+ copySizeGao);
+				copySize.setText(copySizeChang.getText().toString() + copySizeKuan.getText().toString()  + "x"
+						+ copySizeGao.getText().toString());
 			}
 			
 		});
