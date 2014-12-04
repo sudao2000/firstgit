@@ -236,7 +236,7 @@ public class ProductDetailActivity extends FragmentActivity {
 
 	private void initProductList() {
 		currentProductInfo = new ProductInfo();
-		currentProductInfo.real_code = "00000001";
+		currentProductInfo.real_code = getIntent().getStringExtra(ProductInfoColumn.REAL_CODE);
 	}
 
 	private void initView(Intent intent) {
@@ -272,9 +272,7 @@ public class ProductDetailActivity extends FragmentActivity {
 			copyType = (Button) this.findViewById(R.id.copy_type);
 			copySize = (Button) this.findViewById(R.id.copy_size);
 			
-			copySizeChang = (EditText) this.findViewById(R.id.copy_size_chang);
-			copySizeKuan = (EditText) this.findViewById(R.id.copy_size_kuan);
-			copySizeGao = (EditText) this.findViewById(R.id.copy_size_gao);
+
 			
 			copyType.setOnClickListener(typeListener);
 			copySize.setOnClickListener(sizeListener);
@@ -414,6 +412,11 @@ public class ProductDetailActivity extends FragmentActivity {
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
+				
+				copySizeChang = (EditText) v.findViewById(R.id.copy_size_chang);
+				copySizeKuan = (EditText) v.findViewById(R.id.copy_size_kuan);
+				copySizeGao = (EditText) v.findViewById(R.id.copy_size_gao);		
+				
 				currentProductInfo.copy_size_chang = Integer.parseInt(copySizeChang.getText().toString());
 				currentProductInfo.copy_size_kuan = Integer.parseInt(copySizeKuan.getText().toString());
 				currentProductInfo.copy_size_gao =  Integer.parseInt(copySizeGao.getText().toString());
@@ -453,7 +456,10 @@ public class ProductDetailActivity extends FragmentActivity {
 			
 			Cursor c = helper.query(ProductInfoColumn.TABLE_NAME,
 					ProductInfoColumn.columns, where, null);
+			
+			Log.d(TAG, "hehe");
 			if (c != null && c.moveToFirst()) {
+				Log.d(TAG, "hehe 1");
 				long _id = c.getLong(c.getColumnIndex(ProductInfoColumn._ID));
 
 				String realCode = new String(c.getString(c
@@ -502,7 +508,6 @@ public class ProductDetailActivity extends FragmentActivity {
         		return;
         	}
         	currentProductInfo = result;
-        	result = null;
         	updateView(currentProductInfo);
         }  
 	}
@@ -541,8 +546,7 @@ public class ProductDetailActivity extends FragmentActivity {
 	}
 
 	
-	private void updateView(ProductInfo info) {
-		
+	private void updateView(ProductInfo info) {		
 		copyName.setText(info.copy_name);
 		copyName.setText(info.copy_name);
 		copyType.setText(info.copy_type);
@@ -552,9 +556,8 @@ public class ProductDetailActivity extends FragmentActivity {
 		c.setTimeInMillis(info.copy_date);
 		updateDate(c);
 		
-		copySizeChang.setText(info.copy_size_chang);
-		copySizeKuan.setText(info.copy_size_kuan);
-		copySizeGao.setText(info.copy_size_gao);
+		Log.d(TAG, info.copy_size_chang + " hehe  ") ;
+		copySize.setText(info.copy_size_chang + "x" + info.copy_size_kuan+ "x" + info.copy_size_gao);
 	}
 
 	private void updateProductInfo(String name, String type, String material, int chang,
@@ -562,17 +565,11 @@ public class ProductDetailActivity extends FragmentActivity {
 		copyName.setText(name);
 		copyType.setText(type);
 		copyType.setText(material);
-		
-		copySizeChang.setText(chang + "");
-		copySizeKuan.setText(kuan + "");
-		copySizeGao.setText(gao + "");
+
 	}
 	
 	private void updateEditable(boolean editable) {
 		copyName.setEnabled(editable);
-		copySizeChang.setEnabled(editable);
-		copySizeKuan.setEnabled(editable);
-		copySizeGao.setEnabled(editable);
 	}
 	
 	@Override

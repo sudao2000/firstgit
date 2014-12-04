@@ -2,14 +2,17 @@ package com.art.tech.fragment;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,6 +47,7 @@ public class ImageGridFragment extends Fragment {
 
 	private static final String TAG = "ImageGridFragment";
 	private static final int MSG_QUERY_IMAGE = 1;
+	private static final int MSG_QUERY_IMAGE_FINISH = 2;
 	
 	private List<PictureInfo> imageUrls = new LinkedList<PictureInfo>();
 
@@ -113,8 +117,89 @@ public class ImageGridFragment extends Fragment {
 				if (imageAdapter != null)
 					imageAdapter.notifyDataSetChanged();
 				break;
+			case MSG_QUERY_IMAGE_FINISH:
+				queryProductInfo();
+				break;
 			}
 		}
+	}
+	
+	ConcurrentHashMap<String, ProductInfo> map = new ConcurrentHashMap<String, ProductInfo>();
+
+	private class QueryProductInfoTask extends AsyncTask<String, Integer, Void> {
+        @Override  
+        protected void onPreExecute() {
+        }
+        @Override  
+        protected Void doInBackground(String... params) {
+        	String where = params[0];
+        	
+			DBHelper helper = DBHelper.getInstance(ImageGridFragment.this.getActivity());
+			
+			Cursor c = helper.query(ProductInfoColumn.TABLE_NAME,
+					ProductInfoColumn.columns, null, null);
+			
+			while (c != null && c.moveToNext()) {
+				long _id = c.getLong(c.getColumnIndex(ProductInfoColumn._ID));
+
+				String realCode = new String(c.getString(c
+						.getColumnIndex(ProductInfoColumn.REAL_CODE)));
+				String name = new String(c.getString(c
+						.getColumnIndex(ProductInfoColumn.COPY_NAME)));
+				String type = new String(c.getString(c
+						.getColumnIndex(ProductInfoColumn.COPY_TYPE)));
+				String material = new String(c.getString(c
+						.getColumnIndex(ProductInfoColumn.COPY_MATERIAL)));
+
+				int chang = c.getInt(c
+						.getColumnIndex(ProductInfoColumn.COPY_SIZE_CHANG));
+				int kuan = c.getInt(c
+						.getColumnIndex(ProductInfoColumn.COPY_SIZE_KUAN));
+				int gao = c.getInt(c
+						.getColumnIndex(ProductInfoColumn.COPY_SIZE_GAO));
+				long date = c.getLong(c
+						.getColumnIndex(ProductInfoColumn.COPY_DATE));
+
+				ProductInfo info = new ProductInfo();
+				info.id = _id;
+				info.real_code = realCode;
+				info.copy_name = name;
+				info.copy_type = type;
+				info.copy_material = material;
+
+				info.copy_size_chang = chang;
+				info.copy_size_kuan = kuan;
+				info.copy_size_gao = gao;
+				info.copy_date = date;
+
+				map.put(info.real_code, info);
+				
+				Log.d(TAG, "real code" + info.real_code);
+			}
+			
+			c.close();
+			return null;
+        }
+
+        protected void onPostExecute(Void a) {
+        	if (imageUrls.isEmpty()) {
+        		
+        		for (String realcode : map.keySet()) {        			
+        			addImageUrl(-1, "http://radiotray.sourceforge.net/radio.png", realcode);
+        		}
+        	}
+        		
+        	for (PictureInfo info : imageUrls) {
+        		if (!map.containsKey(info.realCode)) {
+        			addImageUrl(-1, "http://radiotray.sourceforge.net/radio.png", info.realCode);
+        		}
+        	}
+        	imageAdapter.notifyDataSetChanged();
+        }
+	}
+	
+	private void queryProductInfo() {
+		new QueryProductInfoTask().execute(new String[]{"invalid where"});
 	}
 	
 	private class ImageQueryThread extends Thread {
@@ -137,13 +222,19 @@ public class ImageGridFragment extends Fragment {
 									.getColumnIndex(ImageCacheColumn.Url)))
 									.getAbsolutePath(),
 									c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE))));
+					
+					Log.d(TAG, "ImageCacheColumn real code" + c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE)));
+					
 				} while (c.moveToNext());
 				c.close();
 				
 				if (weakHandler.get() != null) {
 					weakHandler.get().sendEmptyMessage(MSG_QUERY_IMAGE);
+					
 				}				
 			}
+			
+			weakHandler.get().sendEmptyMessage(MSG_QUERY_IMAGE_FINISH);
 		}
 	}
 		
