@@ -90,7 +90,7 @@
     <string name="real_code_correct">防伪标签正常</string>
     <string name="set_product_name">设置作品名称</string>
     
-    
+        <string name="other">其他</string>
     
 <string name="btnQuery">&gt;&gt;&gt;&gt;Start&lt;&lt;&lt;&lt;</string>
     <string name="lblEPC">No　　EPC Data</string>

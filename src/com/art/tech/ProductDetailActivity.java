@@ -152,7 +152,13 @@ public class ProductDetailActivity extends FragmentActivity {
 				showDialog(NO_NAME_MESSAGE_DIALOG);
 				return;
 			}
-			ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo);
+			
+			if (ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo) > 0) {
+				
+			} else {
+				
+			}
+				
 		}
 	};
 	

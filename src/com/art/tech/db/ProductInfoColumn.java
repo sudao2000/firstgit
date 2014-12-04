@@ -70,7 +70,7 @@ public class ProductInfoColumn extends DatabaseColumn {
 		return mColumnMap;
 	}
 	
-	public static void insert(Context c, ProductInfo info) {
+	public static long insert(Context c, ProductInfo info) {
 		DBHelper dbHelper = DBHelper.getInstance(c);
 
 	    ContentValues values = new ContentValues();    
@@ -84,7 +84,7 @@ public class ProductInfoColumn extends DatabaseColumn {
 		values.put(COPY_SIZE_GAO, info.copy_size_gao);
 		values.put(COPY_DATE, info.copy_date);
 	    
-	    dbHelper.insert(ProductInfoColumn.TABLE_NAME, values);
+	    return dbHelper.insert(ProductInfoColumn.TABLE_NAME, values);
 	}
 	
 	public static void insert(Context c, String real_code, String name, String type, String material, int chang, int kuan, int gao, long timestamp) {

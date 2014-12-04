@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import com.art.tech.ProductDetailActivity;
 import com.art.tech.R;
+import com.art.tech.db.ProductInfoColumn;
+import com.art.tech.model.ProductInfo;
 
 
 import android.app.Activity;
@@ -41,6 +44,7 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 	private static final int SET_TOTAL = 104;
 
     private static final int QUERYING = 1;
+	private static final String TAG = ScanUIFragment.class.getSimpleName();
     
     
 	private boolean bFirstLoad = true;
@@ -91,6 +95,17 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 		
 		
 		imgPlugout = (ImageView) rootView.findViewById(R.id.imgPlugout);
+		
+		imgPlugout.setOnClickListener(new View.OnClickListener()
+	    {
+			public void onClick(View paramView)
+			{
+				String realcode = "10000001";
+				String name = "test product 1";
+				handleRealCode(realcode, name);
+			}
+	    });
+		
 //		
 //		btnQuery = (Button)rootView.findViewById(R.id.btnQuery);
 //		btnSetting = (Button)rootView.findViewById(R.id.btnSetting);
@@ -454,6 +469,28 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 	public void onInventory(String arg0) {
 		ListRefresh(arg0);
 		txtRealCode.setText(arg0);
+	}
+	
+	
+	private void handleRealCode(String realcode, String name) {
+		Resources res = getActivity().getResources();
+		String other = res.getString(R.string.other);
+		
+		ProductInfo info = new ProductInfo();
+		info.real_code = realcode;
+		info.copy_name = name;
+		info.copy_size_chang = 0;
+		info.copy_size_gao = 0;
+		info.copy_size_kuan = 0;
+		info.copy_type =  other;
+		info.copy_material = other;
+		info.copy_date = System.currentTimeMillis();
+		
+		if (ProductInfoColumn.insert(getActivity(), info) > 0) {
+			Log.v(TAG, "insert a new product success");
+		} else {
+			Log.e(TAG, "insert a new product failed");
+		}
 	}
 
 	@Override
