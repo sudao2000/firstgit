@@ -42,6 +42,7 @@ public class ImagePagerFragment extends Fragment {
 	DisplayImageOptions options;
 	private Handler uiHandler;
 	private ImageAdapter imageAdapter;
+	private ViewPager pager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,12 +66,9 @@ public class ImagePagerFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fr_image_pager, container,
 				false);
-		ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
-		imageAdapter = new ImageAdapter();
-		pager.setAdapter(imageAdapter);
-		pager.setCurrentItem(0);
-		// pager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION,
-		// 0));
+		pager = (ViewPager) rootView.findViewById(R.id.pager);		
+		imageAdapter = new ImageAdapter();		
+
 		return rootView;
 	}
 
@@ -83,8 +81,13 @@ public class ImagePagerFragment extends Fragment {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case MSG_QUERY_IMAGE:
-				if (imageAdapter != null)
+				if (imageAdapter != null) {
+					if (pager.getAdapter() == null) {
+						pager.setAdapter(imageAdapter);
+						pager.setCurrentItem(0);
+					}
 					imageAdapter.notifyDataSetChanged();
+				}
 				break;
 			}
 		}
