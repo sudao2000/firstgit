@@ -1,5 +1,6 @@
 package com.art.tech;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -43,12 +46,14 @@ import com.art.tech.db.DBHelper;
 import com.art.tech.db.ImageCacheColumn;
 import com.art.tech.db.ProductInfoColumn;
 import com.art.tech.fragment.ImagePagerFragment;
+import com.art.tech.model.PictureInfo;
 import com.art.tech.model.ProductInfo;
 import com.art.tech.util.UIHelper;
 
 public class ProductDetailActivity extends FragmentActivity {
 
 	private TextView productDetailInfo;
+	private ImagePagerFragment fragment;
 	
 	private Button editButton;	
 	
@@ -56,8 +61,8 @@ public class ProductDetailActivity extends FragmentActivity {
 	private int mMonth;
 	private int mDay;
 
-	LinearLayout detailEditView;
-	LinearLayout detailSendView;
+	private LinearLayout detailEditView;
+	private LinearLayout detailSendView;
 	
 	EditText copyName;
 	private Button copyType;
@@ -115,15 +120,14 @@ public class ProductDetailActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.product_detail_view);
 
-		Fragment fr;
 		String tag = ImagePagerFragment.class.getSimpleName();
-		fr = getSupportFragmentManager().findFragmentByTag(tag);
-		if (fr == null) {
-			fr = new ImagePagerFragment();
-			fr.setArguments(getIntent().getExtras());
+		fragment = (ImagePagerFragment) getSupportFragmentManager().findFragmentByTag(tag);
+		if (fragment == null) {
+			fragment = new ImagePagerFragment();
+			fragment.setArguments(getIntent().getExtras());
 		}
 		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.product_detail_content, fr, tag).commit();
+				.replace(R.id.product_detail_content, fragment, tag).commit();
 		
 		initProductList();//call before setWorkspace
 		
@@ -136,6 +140,8 @@ public class ProductDetailActivity extends FragmentActivity {
 			productDetailInfo.setVisibility(View.GONE);
 			v.setVisibility(View.GONE);
 			detailEditView.setVisibility(View.VISIBLE);
+			
+			detailEditView.setAnimation(AnimationUtils.loadAnimation(ProductDetailActivity.this, R.anim.dialog_enter));
 			detailSendView.setVisibility(View.GONE);
 		}
 	};
@@ -152,6 +158,8 @@ public class ProductDetailActivity extends FragmentActivity {
 				showDialog(NO_NAME_MESSAGE_DIALOG);
 				return;
 			}
+			
+			ProductInfoColumn.delete(ProductDetailActivity.this, currentProductInfo.id);
 			
 			if (ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo) > 0) {
 				
@@ -310,6 +318,16 @@ public class ProductDetailActivity extends FragmentActivity {
 					}
 				
 			});
+			
+			buttonRemoveImage = (ImageButton) findViewById(R.id.button_image_remove);
+			buttonRemoveImage.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					//fragment.deleteCurrentImage();
+				}
+				
+			});
+			
 			
 		}
 		

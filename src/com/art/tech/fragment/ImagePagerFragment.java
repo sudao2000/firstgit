@@ -43,6 +43,19 @@ public class ImagePagerFragment extends Fragment {
 	private Handler uiHandler;
 	private ImageAdapter imageAdapter;
 	private ViewPager pager;
+	
+	public PictureInfo getCurrentPageProductInfo() {
+		return imageUrls.get(pager.getCurrentItem());
+	}
+	
+	public void deleteCurrentImage() {
+		PictureInfo pi = getCurrentPageProductInfo();
+		new File(pi.url).delete();
+		ImageCacheColumn.delete(getActivity(), pi.id);
+		
+		imageUrls.remove(pager.getCurrentItem());
+		imageAdapter.notifyDataSetChanged();
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -71,7 +71,7 @@ public class ImageCacheColumn extends DatabaseColumn {
 	    dbHelper.insert(ImageCacheColumn.TABLE_NAME, values);
 	}
 	
-	public static int delete(Context c,  int id) {
+	public static int delete(Context c,  long id) {
 		DBHelper dbHelper = DBHelper.getInstance(c);
 		return dbHelper.delete(ImageCacheColumn.TABLE_NAME, id);
 	}

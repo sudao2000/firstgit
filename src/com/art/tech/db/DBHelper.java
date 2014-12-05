@@ -88,7 +88,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * @param id
 	 * @return 影响行数
 	 */
-	public int delete(String Table_Name, int id) {
+	public int delete(String Table_Name, long id) {
 		if (db == null)
 			db = getWritableDatabase();
 		return db.delete(Table_Name, BaseColumns._ID + "=?",
