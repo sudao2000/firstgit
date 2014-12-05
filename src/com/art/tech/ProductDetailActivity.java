@@ -281,8 +281,6 @@ public class ProductDetailActivity extends FragmentActivity {
 			copyType = (Button) this.findViewById(R.id.copy_type);
 			copySize = (Button) this.findViewById(R.id.copy_size);
 			
-
-			
 			copyType.setOnClickListener(typeListener);
 			copySize.setOnClickListener(sizeListener);
 			copyMaterial.setOnClickListener(materialListener);
@@ -328,12 +326,10 @@ public class ProductDetailActivity extends FragmentActivity {
 				}
 				
 			});
-			
-			
 		}
 		
 		String realCode = intent.getStringExtra(ProductInfoColumn.REAL_CODE);
-		String where = ProductInfoColumn.REAL_CODE + "=" + realCode;
+		String where = ProductInfoColumn.REAL_CODE + "=" + "'" + realCode + "'";
 		new QueryProductInfoTask().execute(where);
 	}
 	
@@ -467,9 +463,6 @@ public class ProductDetailActivity extends FragmentActivity {
 	
 	private class QueryProductInfoTask extends AsyncTask<String, Integer, ProductInfo> {
         @Override  
-        protected void onPreExecute() {
-        }
-        @Override  
         protected ProductInfo doInBackground(String... params) {
         	String where = params[0];
         	
@@ -568,7 +561,6 @@ public class ProductDetailActivity extends FragmentActivity {
 
 	
 	private void updateView(ProductInfo info) {		
-		copyName.setText(info.copy_name);
 		copyName.setText(info.copy_name);
 		copyType.setText(info.copy_type);
 		copyType.setText(info.copy_material);

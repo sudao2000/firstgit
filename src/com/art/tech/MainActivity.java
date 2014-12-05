@@ -10,21 +10,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.art.tech.application.Constants;
 import com.art.tech.board.ScanUIFragment;
+import com.art.tech.board.ScanUIFragment.OnSubmitProduct;
 import com.art.tech.db.DBHelper;
 import com.art.tech.fragment.ImageGridFragment;
 import com.art.tech.util.IntentUtil;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 	Button scanButton;
 	Button browseButton;
 	private Fragment mCurrentFragment;
 	
 	private Fragment scanFragment;
 	private Fragment broweFragment;
+	
+	private LinearLayout footer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +42,10 @@ public class MainActivity extends FragmentActivity {
 		scanButton.setOnClickListener(scanListener);
 		browseButton.setOnClickListener(browseListener);
 		
-		//scanFragment = getSupportFragmentManager().findFragmentById(R.id.scan_frag);
-		//broweFragment = getSupportFragmentManager().findFragmentById(R.id.image_grid_frag);
+		footer = (LinearLayout) findViewById(R.id.main_footer);
+		
 		scanFragment = new ScanUIFragment();
+		((ScanUIFragment) scanFragment).setOnSubmitProductListener(this);
 		broweFragment = new ImageGridFragment();
 		
 		mCurrentFragment = scanFragment;
@@ -49,21 +55,15 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public void onClick(View v) {
-//			Intent mainIntent = new Intent(MainActivity.this,
-//					RecordActivity.class);
-//			startActivity(mainIntent);
+			footer.setVisibility(View.GONE);
 			changeTabState(v.getId());
 		}
-
 	};
 
 	OnClickListener browseListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-//			Intent mainIntent = new Intent(MainActivity.this,
-//					ImageBrowseActivity.class);
-//			startActivity(mainIntent);
 			changeTabState(v.getId());
 		}
 
@@ -145,4 +145,9 @@ public class MainActivity extends FragmentActivity {
         }
         return false;
     }
+
+	@Override
+	public void onSubmit() {
+		footer.setVisibility(View.VISIBLE);
+	}
 }
