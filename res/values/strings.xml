@@ -91,6 +91,10 @@
     <string name="set_product_name">设置作品名称</string>
     
         <string name="other">其他</string>
+        
+           <string name="edit_profile">编辑个人信息</string>
+            <string name="about">关于</string>
+
     
 <string name="btnQuery">&gt;&gt;&gt;&gt;Start&lt;&lt;&lt;&lt;</string>
     <string name="lblEPC">No　　EPC Data</string>

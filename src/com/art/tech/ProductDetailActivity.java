@@ -25,6 +25,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -365,16 +366,18 @@ public class ProductDetailActivity extends FragmentActivity {
 	}
 	
 	private static final String []types = new String[]{ 
-			"type1", "type2",
-            "type3", "type4", 
-            "type5", "type6",
-            "type7", "type8"};
+			"雕塑", "油画",
+            "书法", "陶瓷", 
+            "国画", "装置",
+            "摄影", "版画",
+            "雕刻", "其他"};
 
 	private static final String []materials = new String[]{ 
-		"cai1", "cai2",
-        "cai3", "cai4", 
-        "cai5", "cai6",
-        "cai7", "cai8"};
+		"金属", "木材",
+        "玉石", "玻璃钢", 
+        "粘土", "石膏",
+        "玻璃", "树脂",
+        "综合材料", "其他"};
 	
 	private AlertDialog createMaterialDialog(String[] data, MaterialItemClickListener l) {
 
@@ -612,4 +615,5 @@ public class ProductDetailActivity extends FragmentActivity {
             ((ImagePagerFragment) getSupportFragmentManager().findFragmentByTag(ImagePagerFragment.class.getSimpleName())).initImageUrls();            
 		}
 	}
+
 }

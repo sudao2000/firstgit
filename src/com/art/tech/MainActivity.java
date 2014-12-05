@@ -1,22 +1,22 @@
 package com.art.tech;
 
-import com.art.tech.application.Constants;
-import com.art.tech.board.ScanUIFragment;
-import com.art.tech.db.DBHelper;
-import com.art.tech.fragment.ImageGridFragment;
-
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.Toast;
+
+import com.art.tech.application.Constants;
+import com.art.tech.board.ScanUIFragment;
+import com.art.tech.db.DBHelper;
+import com.art.tech.fragment.ImageGridFragment;
+import com.art.tech.util.IntentUtil;
 
 public class MainActivity extends FragmentActivity {
 	Button scanButton;
@@ -125,5 +125,24 @@ public class MainActivity extends FragmentActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actions, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+        case R.id.menu_edit_profile:
+        	IntentUtil.start_activity(this, EditProfileActivity.class, null);
+        	break;
+        case R.id.menu_about:
+        	break;	
+        }
+        return false;
     }
 }

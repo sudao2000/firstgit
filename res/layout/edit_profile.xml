@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_texture"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="160dp"
+        android:background="@drawable/bg_profile" >
+
+        <FrameLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp" >
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/profile_avatar_bg" />
+
+            <ImageView
+                android:id="@+id/profile_head_photo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-2dp"
+                android:src="@drawable/profile_no_avarta_icon" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/profile_head_camera"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="15dp"
+            android:padding="5dp"
+            android:src="@drawable/profile_refresh_camera_icon" />
+
+        <TextView
+            android:id="@+id/profile_head_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+
+    </FrameLayout>
+
+
+</LinearLayout>

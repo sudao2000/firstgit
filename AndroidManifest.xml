@@ -27,19 +27,23 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.art.tech.LoginActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.art.tech.RegisterActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.art.tech.ForgetPasswordActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
@@ -50,26 +54,33 @@
         </activity>
         <activity
             android:name="com.art.tech.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.art.tech.RecordActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.art.tech.ImageBrowseActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.art.tech.ProductReportActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.art.tech.ProductListActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
+                <activity
+            android:name="com.art.tech.EditProfileActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        
         <activity
             android:name="com.art.tech.ProductDetailActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
     </application>
