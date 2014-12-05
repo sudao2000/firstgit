@@ -14,6 +14,8 @@ public class Constants {
 			.getExternalStorageDirectory().getAbsolutePath() + "/" + FOLDER + "/";
 	
 	public final static String IMAGE_SAVE_PAHT = BASE_DIR +"download_images" + "/";
+	
+	public final static String NO_PICTURE_PRODUCT_IAMAGE = "http://radiotray.sourceforge.net/radio.png";
 
 	public final static int EXIT_TIMEOUT = 2000;
 	

@@ -3,7 +3,6 @@ package com.art.tech.db;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.art.tech.RecordActivity;
 import com.art.tech.fragment.ImageGridFragment.AsyncListener;
 
 import android.content.AsyncQueryHandler;

@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 
 import com.art.tech.ProductDetailActivity;
 import com.art.tech.R;
+import com.art.tech.application.Constants;
 import com.art.tech.db.DBHelper;
 import com.art.tech.db.ImageCacheColumn;
 import com.art.tech.db.ProductInfoColumn;
@@ -185,13 +186,13 @@ public class ImageGridFragment extends Fragment {
         	if (imageUrls.isEmpty()) {
         		
         		for (String realcode : map.keySet()) {        			
-        			addImageUrl(-1, "http://radiotray.sourceforge.net/radio.png", realcode);
+        			addImageUrl(-1, Constants.NO_PICTURE_PRODUCT_IAMAGE, realcode);
         		}
         	}
         		
         	for (PictureInfo info : imageUrls) {
         		if (!map.containsKey(info.realCode)) {
-        			addImageUrl(-1, "http://radiotray.sourceforge.net/radio.png", info.realCode);
+        			addImageUrl(-1, Constants.NO_PICTURE_PRODUCT_IAMAGE, info.realCode);
         		}
         	}
         	imageAdapter.notifyDataSetChanged();
