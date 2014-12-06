@@ -12,21 +12,21 @@
             android:id="@+id/copy_size_chang"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="1234567890"
+            android:inputType="number"
             android:hint="@string/default_copy_size" />
 
         <EditText
             android:id="@+id/copy_size_kuan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="1234567890"
+            android:inputType="number"
             android:hint="@string/default_copy_size" />
 
         <EditText
             android:id="@+id/copy_size_gao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="1234567890"
+            android:inputType="number"
             android:hint="@string/default_copy_size" />
 
 </LinearLayout>

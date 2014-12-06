@@ -147,7 +147,9 @@ public class ProductDetailActivity extends FragmentActivity {
 			detailSendView.setVisibility(View.VISIBLE);
 			detailSendView.setAnimation(AnimationUtils.loadAnimation(ProductDetailActivity.this, R.anim.dialog_enter));
 			
+			
 			currentProductInfo.copy_name = copyName.getText().toString().trim();
+			
 			if (currentProductInfo.copy_name == null || currentProductInfo.copy_name.isEmpty()) {
 				showDialog(NO_NAME_MESSAGE_DIALOG);
 				return;
@@ -155,14 +157,11 @@ public class ProductDetailActivity extends FragmentActivity {
 			
 			ProductInfoColumn.delete(ProductDetailActivity.this, currentProductInfo.id);
 			
-			if (ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo) > 0) {
-				
+			if (ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo) > 0) {				
+				setProductInfoView();
 			} else {
-				
+				throw new IllegalStateException("fail to insert product info into database");
 			}
-			
-			setProductInfoView();
-				
 		}
 	};
 	
@@ -449,8 +448,7 @@ public class ProductDetailActivity extends FragmentActivity {
 				currentProductInfo.copy_size_kuan = Integer.parseInt(copySizeKuan.getText().toString());
 				currentProductInfo.copy_size_gao =  Integer.parseInt(copySizeGao.getText().toString());
 	
-				copySize.setText(copySizeChang + "x" + copySizeKuan + "x"
-						+ copySizeGao);
+				copySize.setText(copySizeChang + "x" + copySizeKuan + "x" + copySizeGao);
 			}
 		};
 		
@@ -463,6 +461,9 @@ public class ProductDetailActivity extends FragmentActivity {
 
 			@Override
 			public void onDismiss(DialogInterface d) {
+				currentProductInfo.copy_size_chang = Integer.parseInt(copySizeChang.getText().toString());
+				currentProductInfo.copy_size_kuan = Integer.parseInt(copySizeKuan.getText().toString());
+				currentProductInfo.copy_size_gao =  Integer.parseInt(copySizeGao.getText().toString());
 				
 				copySize.setText(copySizeChang.getText().toString()  + "x" + copySizeKuan.getText().toString()  + "x"
 						+ copySizeGao.getText().toString());
