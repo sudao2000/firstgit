@@ -527,6 +527,9 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 		info.copy_material = other;
 		info.copy_date = System.currentTimeMillis();
 		
+		String where = ProductInfoColumn.REAL_CODE + "=" + "'" + realcode + "'";
+		ProductInfoColumn.delete(getActivity(), where);
+		
 		if (ProductInfoColumn.insert(getActivity(), info) > 0) {
 			Log.v(TAG, "insert a new product success");
 		} else {

@@ -1,7 +1,5 @@
 package com.art.tech;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,26 +8,20 @@ import java.util.HashMap;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -47,7 +39,6 @@ import com.art.tech.db.DBHelper;
 import com.art.tech.db.ImageCacheColumn;
 import com.art.tech.db.ProductInfoColumn;
 import com.art.tech.fragment.ImagePagerFragment;
-import com.art.tech.model.PictureInfo;
 import com.art.tech.model.ProductInfo;
 import com.art.tech.util.UIHelper;
 
@@ -152,7 +143,9 @@ public class ProductDetailActivity extends FragmentActivity {
 			productDetailInfo.setVisibility(View.GONE);
 			editButton.setVisibility(View.GONE);
 			detailEditView.setVisibility(View.GONE);
+			
 			detailSendView.setVisibility(View.VISIBLE);
+			detailSendView.setAnimation(AnimationUtils.loadAnimation(ProductDetailActivity.this, R.anim.dialog_enter));
 			
 			currentProductInfo.copy_name = copyName.getText().toString().trim();
 			if (currentProductInfo.copy_name == null || currentProductInfo.copy_name.isEmpty()) {
@@ -167,6 +160,8 @@ public class ProductDetailActivity extends FragmentActivity {
 			} else {
 				
 			}
+			
+			setProductInfoView();
 				
 		}
 	};
@@ -247,11 +242,27 @@ public class ProductDetailActivity extends FragmentActivity {
 		currentProductInfo = new ProductInfo();
 		currentProductInfo.real_code = getIntent().getStringExtra(ProductInfoColumn.REAL_CODE);
 	}
+	
+	private void setProductInfoView() {
+		StringBuilder sb = new StringBuilder();
+		String size = currentProductInfo.copy_size_chang + "x" + currentProductInfo.copy_size_kuan + "x"
+				+ currentProductInfo.copy_size_gao;
+		
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(currentProductInfo.copy_date);
+		String yymmdd = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
+
+		sb.append(currentProductInfo.copy_type).append(Constants.WHITE_SPACE)
+			.append(currentProductInfo.copy_material).append(Constants.WHITE_SPACE)
+			.append(size).append(Constants.WHITE_SPACE)
+			.append(yymmdd);
+		
+		productDetailInfo.setText(sb.toString());
+	}
 
 	private void initView(Intent intent) {
 		{
 			productDetailInfo = (TextView) findViewById(R.id.product_detail_info);
-			productDetailInfo.setText("Hello");
 			
 			editButton = (Button) findViewById(R.id.product_detail_info_edit);
 			editButton.setOnClickListener(editListener);			
@@ -426,14 +437,14 @@ public class ProductDetailActivity extends FragmentActivity {
 		LayoutInflater factory = LayoutInflater.from(this);
 		final View v = factory.inflate(R.layout.detail_edit_size, null);
 		
+		copySizeChang = (EditText) v.findViewById(R.id.copy_size_chang);
+		copySizeKuan = (EditText) v.findViewById(R.id.copy_size_kuan);
+		copySizeGao = (EditText) v.findViewById(R.id.copy_size_gao);		
+		
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
-				
-				copySizeChang = (EditText) v.findViewById(R.id.copy_size_chang);
-				copySizeKuan = (EditText) v.findViewById(R.id.copy_size_kuan);
-				copySizeGao = (EditText) v.findViewById(R.id.copy_size_gao);		
-				
+
 				currentProductInfo.copy_size_chang = Integer.parseInt(copySizeChang.getText().toString());
 				currentProductInfo.copy_size_kuan = Integer.parseInt(copySizeKuan.getText().toString());
 				currentProductInfo.copy_size_gao =  Integer.parseInt(copySizeGao.getText().toString());
@@ -452,7 +463,8 @@ public class ProductDetailActivity extends FragmentActivity {
 
 			@Override
 			public void onDismiss(DialogInterface d) {
-				copySize.setText(copySizeChang.getText().toString() + copySizeKuan.getText().toString()  + "x"
+				
+				copySize.setText(copySizeChang.getText().toString()  + "x" + copySizeKuan.getText().toString()  + "x"
 						+ copySizeGao.getText().toString());
 			}
 			
@@ -470,16 +482,15 @@ public class ProductDetailActivity extends FragmentActivity {
 			
 			Cursor c = helper.query(ProductInfoColumn.TABLE_NAME,
 					ProductInfoColumn.columns, where, null);
-			
-			Log.d(TAG, "hehe");
+
 			if (c != null && c.moveToFirst()) {
-				Log.d(TAG, "hehe 1");
 				long _id = c.getLong(c.getColumnIndex(ProductInfoColumn._ID));
 
 				String realCode = new String(c.getString(c
 						.getColumnIndex(ProductInfoColumn.REAL_CODE)));
 				String name = new String(c.getString(c
 						.getColumnIndex(ProductInfoColumn.COPY_NAME)));
+				
 				String type = new String(c.getString(c
 						.getColumnIndex(ProductInfoColumn.COPY_TYPE)));
 				String material = new String(c.getString(c
@@ -563,14 +574,14 @@ public class ProductDetailActivity extends FragmentActivity {
 	private void updateView(ProductInfo info) {		
 		copyName.setText(info.copy_name);
 		copyType.setText(info.copy_type);
-		copyType.setText(info.copy_material);
+		copyMaterial.setText(info.copy_material);
 		
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(info.copy_date);
 		updateDate(c);
 		
-		Log.d(TAG, info.copy_size_chang + " hehe  ") ;
 		copySize.setText(info.copy_size_chang + "x" + info.copy_size_kuan+ "x" + info.copy_size_gao);
+		setProductInfoView();
 	}
 
 	private void updateProductInfo(String name, String type, String material, int chang,

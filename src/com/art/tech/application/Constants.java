@@ -19,6 +19,7 @@ public class Constants {
 
 	public final static int EXIT_TIMEOUT = 2000;
 	
+	public final static String WHITE_SPACE = " ";
 	public static class Config {
 		public static final boolean DEVELOPER_MODE = false;
 	}

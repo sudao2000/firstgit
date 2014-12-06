@@ -118,6 +118,14 @@ public class DBHelper extends SQLiteOpenHelper {
 		return db.query(Table_Name, columns, whereStr, whereArgs, null, null,
 				null);
 	}
+	
+	public Cursor query(boolean distinct, String Table_Name, String[] columns, String whereStr,
+			String[] whereArgs) {
+		if (db == null) {
+			db = getReadableDatabase();
+		}
+		return db.query(distinct, Table_Name, columns, whereStr, whereArgs, null, null, null, null, null);
+	}
 
 	public Cursor rawQuery(String sql, String[] args) {
 		if (db == null) {
@@ -138,6 +146,12 @@ public class DBHelper extends SQLiteOpenHelper {
 			db.close();
 			db = null;
 		}
+	}
+
+	public int delete(String tableName, String where) {
+		if (db == null)
+			db = getWritableDatabase();
+		return db.delete(tableName, where, null);
 	}
 
 }

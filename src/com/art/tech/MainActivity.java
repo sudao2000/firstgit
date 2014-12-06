@@ -55,7 +55,6 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 
 		@Override
 		public void onClick(View v) {
-			footer.setVisibility(View.GONE);
 			changeTabState(v.getId());
 		}
 	};

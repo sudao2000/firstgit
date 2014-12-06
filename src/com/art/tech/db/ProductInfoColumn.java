@@ -8,6 +8,7 @@ import com.art.tech.model.ProductInfo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
 
 public class ProductInfoColumn extends DatabaseColumn {
 
@@ -107,6 +108,12 @@ public class ProductInfoColumn extends DatabaseColumn {
 	public static int delete(Context c,  long id) {
 		DBHelper dbHelper = DBHelper.getInstance(c);
 		return dbHelper.delete(ImageCacheColumn.TABLE_NAME, id);
+	}
+
+	public static int delete(Context c, String where) {
+		DBHelper dbHelper = DBHelper.getInstance(c);
+		return dbHelper.delete(ImageCacheColumn.TABLE_NAME, where);
+		
 	}
 
 }
