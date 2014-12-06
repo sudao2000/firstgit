@@ -3,8 +3,10 @@ package com.art.tech.fragment;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
@@ -43,7 +45,6 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-
 public class ImageGridFragment extends Fragment {
 
 	private static final String TAG = "ImageGridFragment";
@@ -51,6 +52,7 @@ public class ImageGridFragment extends Fragment {
 	private static final int MSG_QUERY_IMAGE_FINISH = 2;
 	
 	private List<PictureInfo> imageUrls = new LinkedList<PictureInfo>();
+	private Set<String> realCodeSet = new HashSet<String>();
 
 	DisplayImageOptions options;
 	private ImageAdapter imageAdapter;
@@ -58,8 +60,10 @@ public class ImageGridFragment extends Fragment {
 	private Handler uiHandler;
 
 	public void addImageUrl(long id, String url, String realCode) {
-		if (imageUrls != null)
-			imageUrls.add(new PictureInfo(id, url, realCode));
+		if (!realCodeSet.contains(realCode)) {
+			realCodeSet.add(realCode);
+			imageUrls.add(new PictureInfo(id, url, realCode));				
+		}
 	}
 
 	@Override
@@ -184,7 +188,6 @@ public class ImageGridFragment extends Fragment {
 
         protected void onPostExecute(Void a) {
         	if (imageUrls.isEmpty()) {
-        		
         		for (String realcode : map.keySet()) {        			
         			addImageUrl(-1, Constants.NO_PICTURE_PRODUCT_IAMAGE, realcode);
         		}
@@ -217,12 +220,18 @@ public class ImageGridFragment extends Fragment {
 					null);
 			if (c != null && c.moveToFirst()) {
 				do {
-					ImageGridFragment.this.imageUrls.add(							
-							new PictureInfo(c.getLong(c.getColumnIndex(ImageCacheColumn._ID)),
-									"file://"+ new File(c.getString(c
-									.getColumnIndex(ImageCacheColumn.Url)))
-									.getAbsolutePath(),
-									c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE))));
+					String realCode = c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE));
+					if (!realCodeSet.contains(realCode)) {
+						realCodeSet.add(realCode);						
+						ImageGridFragment.this.imageUrls.add(
+								new PictureInfo(c.getLong(c.getColumnIndex(ImageCacheColumn._ID)),
+										"file://"+ new File(c.getString(c
+										.getColumnIndex(ImageCacheColumn.Url)))
+										.getAbsolutePath(),
+										realCode));
+						
+						Log.d(TAG, "ImageCacheColumn realcode added" + c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE)));
+					}
 					
 					Log.d(TAG, "ImageCacheColumn real code" + c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE)));
 					
@@ -238,56 +247,12 @@ public class ImageGridFragment extends Fragment {
 			weakHandler.get().sendEmptyMessage(MSG_QUERY_IMAGE_FINISH);
 		}
 	}
-		
-	private void asyncQueryGalleryFirstImage() {
-		int token = 0;
-		Object cookie = new AsyncListener() {
-			@Override
-			public void updateImageUrls(Cursor c) {
-				if (c != null && c.moveToFirst()) {
-					do {
-						imageUrls.add(new PictureInfo(
-								c.getLong(c.getColumnIndex(ImageCacheColumn._ID)), "file://"
-								+ new File(c.getString(c
-										.getColumnIndex(ImageCacheColumn.Url)))
-										.getAbsolutePath(),
-										c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE))));
-					} while (c.moveToNext());
-				}
-			}
-		};
-		
-		String columns[] = { ImageCacheColumn.Url } ;
-		String selection = null;
-		String[] selectionArgs = null;
-		String sortOrder = null;
-				
-		ImageCacheColumn.asyncQuery(getActivity(), token, cookie, ImageCacheColumn.CONTENT_URI, 
-				columns, selection, selectionArgs, sortOrder);
-	}
 
 	private void initImageUrls() {
 		imageUrls.clear();
+		realCodeSet.clear();
 		new ImageQueryThread(uiHandler).start();
 
-	}
-
-	private void getImageListFromDB() {
-		String columns[] = { ImageCacheColumn._ID, ImageCacheColumn.Url, ImageCacheColumn.REAL_CODE};
-		DBHelper helper = DBHelper.getInstance(getActivity());
-		Cursor c = helper.query(ImageCacheColumn.TABLE_NAME, columns, null,
-				null);
-		if (c != null && c.moveToFirst()) {
-			do {
-				imageUrls.add(new PictureInfo(c.getLong(c.getColumnIndex(ImageCacheColumn._ID)),
-						"file://"
-						+ new File(c.getString(c
-								.getColumnIndex(ImageCacheColumn.Url)))
-								.getAbsolutePath(),
-								c.getString(c.getColumnIndex(ImageCacheColumn.REAL_CODE))));
-			} while (c.moveToNext());
-			c.close();
-		}
 	}
 
 	public class ImageAdapter extends BaseAdapter {
