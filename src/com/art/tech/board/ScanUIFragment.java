@@ -72,7 +72,7 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 //	private Button btnSetting = null;
 //	private Button clearScreen;
 //	private ListView epclist;
-//    //
+//
     private ProgressDialogEx pd; 
     private boolean bSuccess;
     private String cMsg;
@@ -528,7 +528,7 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 		info.copy_date = System.currentTimeMillis();
 		
 		String where = ProductInfoColumn.REAL_CODE + "=" + "'" + realcode + "'";
-		ProductInfoColumn.delete(getActivity(), where);
+		ProductInfoColumn.delete(getActivity(), ProductInfoColumn.TABLE_NAME, where);
 		
 		if (ProductInfoColumn.insert(getActivity(), info) > 0) {
 			Log.v(TAG, "insert a new product success");
