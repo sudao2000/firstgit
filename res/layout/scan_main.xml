@@ -28,14 +28,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/id_scan_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/scan"
-                android:textSize="20sp" />
-
             <TextView
                 android:id="@+id/id_scan_real_code"
                 android:layout_width="wrap_content"

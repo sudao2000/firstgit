@@ -58,21 +58,10 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 	private EditText editProductName = null;
 	private TextView txtConnect = null;
 	private TextView txtRealCode = null;
-	private Button btnScan;
+	//private Button btnScan;
 	
 	private Button btnSubmit;
-//	
-//	private TextView txtTotal = null;
-//	//private TextView txtDate = null;
-//	//
-//	private TextView lblEPC = null;
-//	private TextView lblTimes = null;
-//	private Button btnQuery = null;
-//	//
-//	private Button btnSetting = null;
-//	private Button clearScreen;
-//	private ListView epclist;
-//
+
     private ProgressDialogEx pd; 
     private boolean bSuccess;
     private String cMsg;
@@ -129,8 +118,8 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 		btnSubmit =  (Button) rootView.findViewById(R.id.id_scan_submit_button);
 		btnSubmit.setOnClickListener(new btnSubmitClickListener());
 		
-		btnScan =  (Button) rootView.findViewById(R.id.id_scan_button);
-		btnScan.setOnClickListener(new btnScanClickListener());
+//		btnScan =  (Button) rootView.findViewById(R.id.id_scan_button);
+//		btnScan.setOnClickListener(new btnScanClickListener());
 		
 //		//txtDate = (TextView)rootView.findViewById(R.id.txtDate);
 //		clearScreen = (Button) rootView.findViewById(R.id.btnClear);
@@ -157,7 +146,34 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 		reader = new IvrJackService();
 		reader.open(getActivity(), this);
 		
+		startScanThread();		
+		
 		return rootView;
+	}
+	
+	private void startScanThread() {
+		new Thread() {
+			@Override
+			public void run() {
+				int ret = 0;
+				try {
+					cMsg = "Device communication error, make sure that is plugged.";
+					bSuccess = false;
+					ret = reader.readEPC(!bOpened);
+					if (ret == 0 && !bCancel) {
+						bSuccess = true;
+					} else if (ret == -1) {
+						cMsg = "Device is running low battery, please charge!";
+					}
+				} catch (Exception e) {
+					cMsg = "Unknown error.";
+					bSuccess = false;
+				} finally {
+
+				}
+				handler.sendEmptyMessage(QUERYING);
+			}
+		}.start();
 	}
 	
 	private void ListClear() {
@@ -299,7 +315,7 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 			    	editProductName.setVisibility(View.VISIBLE);
 			    	btnSubmit.setVisibility(View.VISIBLE);
 			    	
-					btnScan.setVisibility(View.INVISIBLE);		
+					//btnScan.setVisibility(View.INVISIBLE);		
 					txtStatus.setVisibility(View.INVISIBLE);
 					txtConnect.setVisibility(View.INVISIBLE);				
 					imgPlugout.setVisibility(View.INVISIBLE);	
@@ -336,9 +352,15 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 				onConnect(null);
 			else
 				onDisconnect();
-			reader.stopReadEPC();
+			
 		}
     }
+    
+	@Override
+	public void onDestroyView() {
+    	reader.stopReadEPC();
+    }
+    
 
 	private class btnScanClickListener implements
 			android.view.View.OnClickListener {
@@ -466,7 +488,7 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 		//txtRealCode.setVisibility(View.VISIBLE);
 		//txtRealCode.setText("Reading...........");
 		
-		btnScan.setVisibility(View.VISIBLE);
+		//btnScan.setVisibility(View.VISIBLE);
 		
 		txtStatus.setVisibility(View.INVISIBLE);
 		txtConnect.setVisibility(View.INVISIBLE);
@@ -483,7 +505,7 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 		Resources res = getActivity().getResources();
 		imgPlugout.setVisibility(View.VISIBLE);
 		txtRealCode.setVisibility(View.INVISIBLE);
-		btnScan.setVisibility(View.INVISIBLE);
+//		btnScan.setVisibility(View.INVISIBLE);
 //		btnQuery.setVisibility(View.INVISIBLE);
 //		btnSetting.setVisibility(View.INVISIBLE);
 //		lblEPC.setVisibility(View.INVISIBLE);
@@ -559,7 +581,7 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 				
 				txtRealCode.setVisibility(View.VISIBLE);
 				txtRealCode.setText(res.getString(R.string.please_press_scan));
-				btnScan.setVisibility(View.VISIBLE);
+				//btnScan.setVisibility(View.VISIBLE);
 				editProductName.setVisibility(View.INVISIBLE);
 				btnSubmit.setVisibility(View.INVISIBLE);
 				txtStatus.setVisibility(View.INVISIBLE);
