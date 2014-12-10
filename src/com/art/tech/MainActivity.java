@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.art.tech.application.Constants;
+import com.art.tech.board.ScanActivity;
 import com.art.tech.board.ScanUIFragment;
 import com.art.tech.board.ScanUIFragment.OnSubmitProduct;
 import com.art.tech.db.DBHelper;
@@ -48,14 +49,15 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 		((ScanUIFragment) scanFragment).setOnSubmitProductListener(this);
 		broweFragment = new ImageGridFragment();
 		
-		mCurrentFragment = scanFragment;
+		mCurrentFragment = broweFragment;
 	}
 
 	OnClickListener scanListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			changeTabState(v.getId());
+			//changeTabState(v.getId());
+			IntentUtil.start_activity(MainActivity.this, ScanActivity.class, null);
 		}
 	};
 
