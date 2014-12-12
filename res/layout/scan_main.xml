@@ -1,84 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RelativeLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/id_no_scanner_detected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="3dp"
-        android:text="@string/no_scanner_detected"
-        android:textColor="#000000"
-        android:textSize="20sp" />
-
-    <FrameLayout
-        android:id="@+id/scan_result_container"
+    <LinearLayout
+        android:id="@+id/id_no_scanner_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/id_no_scanner_detected" >
+        android:orientation="vertical" >
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/id_no_scanner_detected"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_marginTop="3dp"
+            android:text="@string/no_scanner_detected"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/id_scan_real_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="invisible"
-                android:textSize="20sp" />
+        <ImageView
+            android:id="@+id/imgPlugout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/plug_out" />
 
-            <ImageView
-                android:id="@+id/imgPlugout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/plug_out" />
-        </LinearLayout>
-    </FrameLayout>
+        <TextView
+            android:id="@+id/id_connect_scanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            android:text="@string/connect_scanner"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+    </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/scan_result_container" >
-        
-    <EditText
-        android:id="@+id/id_scan_edit_product_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="3dp"
-        android:hint="@string/copy_name"
-        android:textColor="#000000"
-        android:visibility="gone"
-        android:textSize="12sp" />
-        
-    <TextView        
-        android:id="@+id/id_connect_scanner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="3dp"        
-        android:text="@string/connect_scanner"
-        android:textColor="#000000"
-        android:textSize="12sp" />
-    </FrameLayout>
-    
     <Button
-        android:layout_alignParentBottom="true"
-	    android:id="@+id/id_scan_submit_button"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_centerHorizontal="true"
-	    	    android:text="@string/ok"
-	    android:textSize="20sp" />
-</RelativeLayout>
+        android:visibility="gone"
+        android:id="@+id/id_scan_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scan"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:id="@+id/id_scanner_result_container"
+        android:layout_width="fill_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/id_scan_real_code"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/id_scan_edit_product_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            android:hint="@string/copy_name"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/id_scan_submit_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</FrameLayout>

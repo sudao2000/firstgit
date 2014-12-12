@@ -26,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,13 +53,17 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
     
     
 	private boolean bFirstLoad = true;
+	
+	
+	private LinearLayout no_scanner_container;
+	private LinearLayout scanner_result_container;
 	private ImageView imgPlugout = null;
 	
 	private TextView txtStatus = null;
 	private EditText editProductName = null;
 	private TextView txtConnect = null;
 	private TextView txtRealCode = null;
-	//private Button btnScan;
+	private Button btnScan;
 	
 	private Button btnSubmit;
 
@@ -79,38 +84,26 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
     
     LayoutInflater mInflater;
 	private Object status;
+
+	private void setVisible(int no_scanner, int scanbutton, int scan_result) {		
+		no_scanner_container.setVisibility(no_scanner);
+		btnScan.setVisibility(scanbutton);
+		scanner_result_container.setVisibility(scan_result);
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mInflater = inflater;
 		
-		View rootView = inflater.inflate(R.layout.scan_main, container,
-				false);
+		View rootView = inflater.inflate(R.layout.scan_main, container, false);
 		
 		
 		imgPlugout = (ImageView) rootView.findViewById(R.id.imgPlugout);
 		
-//		
-//		btnQuery = (Button)rootView.findViewById(R.id.btnQuery);
-//		btnSetting = (Button)rootView.findViewById(R.id.btnSetting);
-//		btnSetting.setVisibility(View.GONE);
-//		btnSetting.setOnClickListener(new View.OnClickListener()
-//	    {
-//			public void onClick(View paramView)
-//			{
-//				if (bOpened) {
-//					showToast("Please stop the inventory tag action.");
-//					return;
-//				}
-//				Intent intent1 = new Intent();
-//		    	intent1.setClass(ScanUIFragment.this.getActivity(), activity_Setting.class);
-//		    	startActivity(intent1);
-//			}
-//	    });
-//		lblEPC = (TextView)rootView.findViewById(R.id.textView1);
-//		lblTimes = (TextView)rootView.findViewById(R.id.textView11);
-//		txtTotal = (TextView)rootView.findViewById(R.id.txtTotal);
+		no_scanner_container = (LinearLayout) rootView.findViewById(R.id.id_no_scanner_container);
+		scanner_result_container = (LinearLayout) rootView.findViewById(R.id.id_scanner_result_container);
+		
 		txtRealCode  = (TextView)rootView.findViewById(R.id.id_scan_real_code);
 		txtStatus = (TextView)rootView.findViewById(R.id.id_no_scanner_detected);
 		txtConnect = (TextView)rootView.findViewById(R.id.id_connect_scanner);
@@ -118,40 +111,20 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 		btnSubmit =  (Button) rootView.findViewById(R.id.id_scan_submit_button);
 		btnSubmit.setOnClickListener(new btnSubmitClickListener());
 		
-//		btnScan =  (Button) rootView.findViewById(R.id.id_scan_button);
-//		btnScan.setOnClickListener(new btnScanClickListener());
+		btnScan =  (Button) rootView.findViewById(R.id.id_scan_button);
+		btnScan.setOnClickListener(new btnScanClickListener());
 		
-//		//txtDate = (TextView)rootView.findViewById(R.id.txtDate);
-//		clearScreen = (Button) rootView.findViewById(R.id.btnClear);
-//		clearScreen.setOnClickListener(new View.OnClickListener()
-//	    {
-//	      public void onClick(View paramView)
-//	      {
-//	    	  ListClear();
-//	      }
-//	    });
-//		
-//		//
-//		epclist = ((ListView)rootView.findViewById(R.id.tag_list));
-//		epclist.setCacheColorHint(Color.TRANSPARENT); 
-//		epclist.setOnItemClickListener(new epclistItemClick());
-//	    seqAdapter = new CustomListAdapter(this.getActivity(), R.layout.customlistview, this.seqArray);
-//	    epclist.setAdapter(this.seqAdapter);
-//		//
-//		btnQuery.setOnClickListener(new btnQuery_Click());
-//		btnQuery.setVisibility(View.GONE);
 		seqAdapter = new CustomListAdapter(this.getActivity(), R.layout.customlistview, this.seqArray);
 		handler = new MHandler(this);
-    	//
+    	
 		reader = new IvrJackService();
 		reader.open(getActivity(), this);
-		
-		startScanThread();		
+
 		
 		return rootView;
 	}
 	
-	private void startScanThread() {
+	private void startScanThread1() {
 		new Thread() {
 			@Override
 			public void run() {
@@ -159,7 +132,7 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 				try {
 					cMsg = "Device communication error, make sure that is plugged.";
 					bSuccess = false;
-					ret = reader.readEPC(!bOpened);
+					ret = reader.readEPC(true);
 					if (ret == 0 && !bCancel) {
 						bSuccess = true;
 					} else if (ret == -1) {
@@ -226,23 +199,6 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 
 	}
 	
-//	@Override 
-//	public void onStart() {
-//		super.onStart();  
-//		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  EEEE", Locale.ENGLISH);     
-//    	Date curDate = new Date(System.currentTimeMillis());//获取当前时间   
-//		txtDate.setText(formatter.format(curDate));
-//	}
-	
-	@Override  
-    public void onDestroy() { 
-		if (reader != null) {
-			reader.close();
-			Log.i("HEX", "reader close");
-		}
-        super.onDestroy();  
-    }  
-	
 	private void showToast(String msg) {
 		showToast(msg, R.drawable.icon_info, true);
 	}
@@ -300,27 +256,19 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 	    			}
 	    			break;
 	    			*/
+    				if (cMsg != null)
+    					showToast(cMsg);
+    				break;
 				case UPDATE_REQUIRED:
 					//theClass.seqAdapter.notifyDataSetChanged();
 					//theClass.epclist.setSelection(theClass.epclist.getAdapter().getCount() - 1);
-					theClass.bUpdateRequired = false;
+					bUpdateRequired = false;
 					break;
 				     
 				case SET_TOTAL:
 					//theClass.txtTotal.setText("Total:" + theClass.tagArray.size());
-					String realCode = (String) msg.obj;
-					
-					txtRealCode.setText(realCode);
-			    	txtRealCode.setVisibility(View.VISIBLE);
-			    	editProductName.setVisibility(View.VISIBLE);
-			    	btnSubmit.setVisibility(View.VISIBLE);
-			    	
-					//btnScan.setVisibility(View.INVISIBLE);		
-					txtStatus.setVisibility(View.INVISIBLE);
-					txtConnect.setVisibility(View.INVISIBLE);				
-					imgPlugout.setVisibility(View.INVISIBLE);	
-					
-					theClass.bUpdateRequired = false;
+					setVisible(View.GONE, View.GONE, View.VISIBLE);
+					bUpdateRequired = false;
 					break;
     		}
         }  
@@ -343,22 +291,28 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 			
 			handleRealCode(realcode, name);
 			
+			reader.readEPC(false);
+			
 			if (onSubmitProductListener != null) {
 				onSubmitProductListener.onSubmit();
 			}
 			
 			// reset to original status
 			if (status == IvrJackStatus.ijsRecognized)
-				onConnect(null);
+				setVisible(View.GONE, View.VISIBLE, View.GONE);
 			else
-				onDisconnect();
+				setVisible(View.VISIBLE, View.GONE, View.GONE);
 			
 		}
     }
     
 	@Override
 	public void onDestroyView() {
+		super.onDestroyView();
+		reader.readEPC(false);
     	reader.stopReadEPC();
+    	reader.close();
+    	reader = null;
     }
     
 
@@ -375,7 +329,8 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 					try {
 						cMsg = "Device communication error, make sure that is plugged.";
 						bSuccess = false;
-						ret = reader.readEPC(!bOpened);
+						ret = reader.readEPC(true);
+						//ret = reader.readEPC(!bOpened);
 						if (ret == 0 && !bCancel) {
 							bSuccess = true;
 						} else if (ret == -1) {
@@ -473,63 +428,30 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 //    }
 
 	@Override
-	public void onConnect(String arg0) {		
-		Resources res = getActivity().getResources();
-		
-		
-//		btnQuery.setVisibility(View.VISIBLE);					
-//		btnSetting.setVisibility(View.VISIBLE);
-//		txtTotal.setVisibility(View.VISIBLE);
-//		lblEPC.setVisibility(View.VISIBLE);
-//		lblTimes.setVisibility(View.VISIBLE);
-//		clearScreen.setVisibility(View.VISIBLE);
-//		epclist.setVisibility(View.VISIBLE);
-		
-		//txtRealCode.setVisibility(View.VISIBLE);
-		//txtRealCode.setText("Reading...........");
-		
-		//btnScan.setVisibility(View.VISIBLE);
-		
-		txtStatus.setVisibility(View.INVISIBLE);
-		txtConnect.setVisibility(View.INVISIBLE);
-		
-		editProductName.setVisibility(View.INVISIBLE);
-		btnSubmit.setVisibility(View.INVISIBLE);
-		imgPlugout.setVisibility(View.INVISIBLE);
-		
+	public void onConnect(String arg0) {
+		Log.d(TAG, "onConnect");
+		setVisible(View.GONE, View.VISIBLE, View.GONE);
 		showToast("Recognized.", R.drawable.toastbox_auth_success);
 	}
 
 	@Override
 	public void onDisconnect() {
-		Resources res = getActivity().getResources();
-		imgPlugout.setVisibility(View.VISIBLE);
-		txtRealCode.setVisibility(View.INVISIBLE);
-//		btnScan.setVisibility(View.INVISIBLE);
-//		btnQuery.setVisibility(View.INVISIBLE);
-//		btnSetting.setVisibility(View.INVISIBLE);
-//		lblEPC.setVisibility(View.INVISIBLE);
-//		lblTimes.setVisibility(View.INVISIBLE);
-//		epclist.setVisibility(View.INVISIBLE);
-//		clearScreen.setVisibility(View.INVISIBLE);
-//		txtTotal.setVisibility(View.INVISIBLE);		
+		Log.d(TAG, "onDisconnect");
+		setVisible(View.VISIBLE, View.GONE, View.GONE);
 		
-		
-		txtStatus.setText(res.getString(R.string.no_scanner_detected));
-		txtConnect.setText(res.getString(R.string.connect_scanner));
-		editProductName.setVisibility(View.INVISIBLE);
-		btnSubmit.setVisibility(View.INVISIBLE);
-		//btnQuery.setText(">>>>Start<<<<");
 		bOpened = false;
 		if (!bFirstLoad) {
 			showToast("Plugout!", R.drawable.toastbox_remove);
 		}
 		bFirstLoad = false;
 		bCancel = false;
+		
+		//reader.readEPC(false);
 	}
 
 	@Override
 	public void onInventory(String arg0) {
+		
 		ListRefresh(arg0);
 		txtRealCode.setText(arg0);
 	}
@@ -562,30 +484,20 @@ public class ScanUIFragment extends Fragment  implements IvrJackAdapter {
 	@Override
 	public void onStatusChange(IvrJackStatus arg0) {
 		switch (arg0) {
-		case ijsPlugout:
-			status = IvrJackStatus.ijsPlugout;
-			onDisconnect();
-			break;
+			case ijsPlugout:
+				status = IvrJackStatus.ijsPlugout;
+				break;
 			case ijsDetecting: 
 				status = IvrJackStatus.ijsDetecting;
 				//pd = ProgressDialogEx.show(ScanUIFragment.this.getActivity(), "Detecting...");
+				//setVisible(View.VISIBLE, View.GONE, View.GONE);
 				break;
 				
 			case ijsRecognized:
 				//pd.dismiss();		
 				status = IvrJackStatus.ijsRecognized;
 				
-				Resources res = getActivity().getResources();
-				
-				imgPlugout.setVisibility(View.INVISIBLE);
-				
-				txtRealCode.setVisibility(View.VISIBLE);
-				txtRealCode.setText(res.getString(R.string.please_press_scan));
-				//btnScan.setVisibility(View.VISIBLE);
-				editProductName.setVisibility(View.INVISIBLE);
-				btnSubmit.setVisibility(View.INVISIBLE);
-				txtStatus.setVisibility(View.INVISIBLE);
-				txtConnect.setVisibility(View.INVISIBLE);
+				//setVisible(View.GONE, View.VISIBLE, View.GONE);
 				
 				showToast("Recognized.", R.drawable.toastbox_auth_success);
 				
