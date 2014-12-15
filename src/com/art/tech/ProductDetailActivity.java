@@ -157,7 +157,7 @@ public class ProductDetailActivity extends FragmentActivity {
 			
 			ProductInfoColumn.delete(ProductDetailActivity.this, currentProductInfo.id);
 			
-			if (ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo) > 0) {				
+			if (ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo) > 0) {
 				setProductInfoView();
 			} else {
 				throw new IllegalStateException("fail to insert product info into database");

@@ -107,7 +107,7 @@ public class ProductInfoColumn extends DatabaseColumn {
 
 	public static int delete(Context c,  long id) {
 		DBHelper dbHelper = DBHelper.getInstance(c);
-		return dbHelper.delete(ImageCacheColumn.TABLE_NAME, id);
+		return dbHelper.delete(ProductInfoColumn.TABLE_NAME, id);
 	}
 
 	public static int delete(Context c, String tableName, String where) {

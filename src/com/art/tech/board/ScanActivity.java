@@ -40,22 +40,6 @@ import com.art.tech.db.ProductInfoColumn;
 import com.art.tech.model.ProductInfo;
 
 public class ScanActivity extends Activity implements IvrJackAdapter {
-	private Fragment scanFragment;
-
-//	@Override
-//	protected void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.scan_activity);
-//		
-//		
-//		scanFragment = new ScanActivity();
-//		
-//		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-//				.beginTransaction();
-//		fragmentTransaction.replace(R.id.scan_container, scanFragment);
-//		fragmentTransaction.commitAllowingStateLoss();
-//	}
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,6 +65,10 @@ public class ScanActivity extends Activity implements IvrJackAdapter {
     	
 		reader = new IvrJackService();
 		reader.open(this, this);
+		
+		String realCode = "123456789abcd";
+		String name = "TAB";
+		handleRealCode(realCode, name);
 	}
 	
 	public interface OnSubmitProduct {
@@ -138,32 +126,6 @@ public class ScanActivity extends Activity implements IvrJackAdapter {
 		scanner_result_container.setVisibility(scan_result);
 	}
 	
-
-	
-	private void startScanThread1() {
-		new Thread() {
-			@Override
-			public void run() {
-				int ret = 0;
-				try {
-					cMsg = "Device communication error, make sure that is plugged.";
-					bSuccess = false;
-					ret = reader.readEPC(true);
-					if (ret == 0 && !bCancel) {
-						bSuccess = true;
-					} else if (ret == -1) {
-						cMsg = "Device is running low battery, please charge!";
-					}
-				} catch (Exception e) {
-					cMsg = "Unknown error.";
-					bSuccess = false;
-				} finally {
-
-				}
-				handler.sendEmptyMessage(QUERYING);
-			}
-		}.start();
-	}
 	
 	private void ListClear() {
 		seqAdapter.setSelectItem(-1);
