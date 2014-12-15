@@ -339,12 +339,12 @@ public class ProductDetailActivity extends FragmentActivity {
 		}
 		
 		String realCode = intent.getStringExtra(ProductInfoColumn.REAL_CODE);
+
+    	setTitle(intent.getStringExtra(ProductInfoColumn.COPY_NAME) + "  " + realCode);
 		String where = ProductInfoColumn.REAL_CODE + "=" + "'" + realCode + "'";
 		new QueryProductInfoTask().execute(where);
 	}
 	
-	
-
 	private void setDialogOnClickListener(int buttonId, final int dialogId) {
 		Button b = (Button) findViewById(buttonId);
 		b.setOnClickListener(new View.OnClickListener() {

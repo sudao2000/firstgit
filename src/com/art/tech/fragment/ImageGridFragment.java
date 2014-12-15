@@ -53,6 +53,7 @@ public class ImageGridFragment extends Fragment {
 	
 	private List<PictureInfo> imageUrls = new LinkedList<PictureInfo>();
 	private Set<String> realCodeSet = new HashSet<String>();
+	private ConcurrentHashMap<String, ProductInfo> map = new ConcurrentHashMap<String, ProductInfo>();
 
 	DisplayImageOptions options;
 	private ImageAdapter imageAdapter;
@@ -107,6 +108,7 @@ public class ImageGridFragment extends Fragment {
 	
 	protected void startImagePagerActivity(int position) {
 		Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+		intent.putExtra(ProductInfoColumn.COPY_NAME, map.get(imageUrls.get(position).realCode).copy_name);
 		intent.putExtra(ProductInfoColumn.REAL_CODE, imageUrls.get(position).realCode);
 		startActivity(intent);
 	}
@@ -129,7 +131,7 @@ public class ImageGridFragment extends Fragment {
 		}
 	}
 	
-	ConcurrentHashMap<String, ProductInfo> map = new ConcurrentHashMap<String, ProductInfo>();
+	
 
 	private class QueryProductInfoTask extends AsyncTask<String, Integer, Void> {
         @Override  
