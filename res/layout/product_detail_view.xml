@@ -21,7 +21,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="top|left"
 	    android:contentDescription="@string/add"
-	    android:src="@drawable/camera" />
+	    android:src="@drawable/camera_delete" />
     
         <ImageButton
 	    android:id="@+id/button_image_add"

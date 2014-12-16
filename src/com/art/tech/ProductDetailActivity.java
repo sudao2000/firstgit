@@ -425,6 +425,7 @@ public class ProductDetailActivity extends FragmentActivity {
 		SimpleAdapter saImageItems = new SimpleAdapter(this, lstImageItem,// 数据源
 				R.layout.grid_view_item,// 显示布局
 				new String[] { "itemText" }, new int[] { R.id.itemText });
+
 		gridview.setAdapter(saImageItems);
 		gridview.setOnItemClickListener(l);
 		
@@ -438,35 +439,32 @@ public class ProductDetailActivity extends FragmentActivity {
 		
 		copySizeChang = (EditText) v.findViewById(R.id.copy_size_chang);
 		copySizeKuan = (EditText) v.findViewById(R.id.copy_size_kuan);
-		copySizeGao = (EditText) v.findViewById(R.id.copy_size_gao);		
-		
-		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
+		copySizeGao = (EditText) v.findViewById(R.id.copy_size_gao);
 
-				currentProductInfo.copy_size_chang = Integer.parseInt(copySizeChang.getText().toString());
-				currentProductInfo.copy_size_kuan = Integer.parseInt(copySizeKuan.getText().toString());
-				currentProductInfo.copy_size_gao =  Integer.parseInt(copySizeGao.getText().toString());
-	
-				copySize.setText(copySizeChang + "x" + copySizeKuan + "x" + copySizeGao);
-			}
-		};
-		
-		AlertDialog d = new AlertDialog.Builder(this).setView(v)
-				//.setPositiveButton(R.string.dialog_OK, listener)
-				.create();
+		AlertDialog d = new AlertDialog.Builder(this).setView(v).create();
 		d.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		d.setOnDismissListener(new OnDismissListener() {
 
 			@Override
 			public void onDismiss(DialogInterface d) {
-				currentProductInfo.copy_size_chang = Integer.parseInt(copySizeChang.getText().toString());
-				currentProductInfo.copy_size_kuan = Integer.parseInt(copySizeKuan.getText().toString());
-				currentProductInfo.copy_size_gao =  Integer.parseInt(copySizeGao.getText().toString());
+				currentProductInfo.copy_size_chang = 0;
+				currentProductInfo.copy_size_kuan = 0;
+				currentProductInfo.copy_size_gao = 0;
 				
-				copySize.setText(copySizeChang.getText().toString()  + "x" + copySizeKuan.getText().toString()  + "x"
-						+ copySizeGao.getText().toString());
+				if (!copySizeChang.getText().toString().trim().equals(""))
+					currentProductInfo.copy_size_chang = Integer
+							.parseInt(copySizeChang.getText().toString());
+				
+				if (!copySizeKuan.getText().toString().trim().equals(""))
+					currentProductInfo.copy_size_kuan = Integer
+							.parseInt(copySizeKuan.getText().toString());
+				if (!copySizeGao.getText().toString().trim().equals(""))
+					currentProductInfo.copy_size_gao = Integer
+							.parseInt(copySizeGao.getText().toString());
+
+				copySize.setText(currentProductInfo.copy_size_chang  + "x" + currentProductInfo.copy_size_kuan  + "x"
+						+ currentProductInfo.copy_size_gao);
 			}
 			
 		});

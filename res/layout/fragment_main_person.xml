@@ -31,16 +31,6 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/textView_person_achievement"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_register_time"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:drawableLeft="@drawable/achievement_title"
-        android:text="@string/main_view_person_title"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <View
         android:layout_width="wrap_content"

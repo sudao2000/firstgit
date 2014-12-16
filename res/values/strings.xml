@@ -60,7 +60,7 @@
     <string name="activate_real_code">激活防伪代码</string>
     <string name="ok">ok</string>
     <string name="cancel">cancel</string>
-    <string name="default_copy_size">100</string>
+    <string name="default_copy_size">100 cm</string>
     <string name="default_copy_money">0</string>
     <string name="default_real_code">00000000</string>
     <string name="product_report">product report</string>
