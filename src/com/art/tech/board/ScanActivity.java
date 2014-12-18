@@ -67,9 +67,9 @@ public class ScanActivity extends Activity implements IvrJackAdapter {
 		reader.open(this, this);
 		
 
-//		String realCode = "123456789abcd";
-//		String name = "TAB";
-//		handleRealCode(realCode, name);
+		String realCode = "123456789abcd";
+		String name = "TAB";
+		handleRealCode(realCode, name);
 	}
 	
 	public interface OnSubmitProduct {

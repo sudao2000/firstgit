@@ -91,15 +91,15 @@
     <string name="set_product_name">设置作品名称</string>
     
     <string name="please_press_scan">请按扫描开始</string>
+    <string name="other">其他</string>
+    <string name="edit_profile">编辑个人信息</string>
+    <string name="about">关于</string>
+    <string name="btnQuery">&gt;&gt;&gt;&gt;Start&lt;&lt;&lt;&lt;</string>
     
-        <string name="other">其他</string>
-        
-           <string name="edit_profile">编辑个人信息</string>
-            <string name="about">关于</string>
-
+    <string name="signature">设置签名</string>
+    <string name="self_description">个人简介</string>
     
-<string name="btnQuery">&gt;&gt;&gt;&gt;Start&lt;&lt;&lt;&lt;</string>
-    <string name="lblEPC">No　　EPC Data</string>
+<string name="lblEPC">No　　EPC Data</string>
     <string name="btnClear">Clean</string>
     <string name="sTotal">Total：0</string>
     <string name="lblTimes">Times</string>
