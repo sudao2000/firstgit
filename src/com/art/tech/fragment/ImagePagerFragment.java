@@ -48,6 +48,7 @@ public class ImagePagerFragment extends Fragment {
 		return imageUrls.get(pager.getCurrentItem());
 	}
 	
+	
 	public void deleteCurrentImage() {
 		PictureInfo pi = getCurrentPageProductInfo();
 		new File(pi.url).delete();
@@ -56,7 +57,7 @@ public class ImagePagerFragment extends Fragment {
 		imageUrls.remove(pager.getCurrentItem());
 		imageAdapter.notifyDataSetChanged();
 	}
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,7 +84,7 @@ public class ImagePagerFragment extends Fragment {
 		imageAdapter = new ImageAdapter();		
 
 		return rootView;
-	}
+	}	
 
 	public void initImageUrls() {
 		new ImageQueryThread(uiHandler).start();

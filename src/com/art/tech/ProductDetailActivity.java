@@ -39,6 +39,7 @@ import com.art.tech.db.DBHelper;
 import com.art.tech.db.ImageCacheColumn;
 import com.art.tech.db.ProductInfoColumn;
 import com.art.tech.fragment.ImagePagerFragment;
+import com.art.tech.model.PictureInfo;
 import com.art.tech.model.ProductInfo;
 import com.art.tech.util.UIHelper;
 
@@ -229,11 +230,12 @@ public class ProductDetailActivity extends FragmentActivity {
 	
 	private OnClickListener deletePictureListener = new OnClickListener() {
 		@Override
-		public void onClick(View v) {			
-			//ImageCacheColumn.delete(c, id);
-			//ProductInfoColumn.delete(c, id);
-			
-			//delete file 
+		public void onClick(View v) {
+			PictureInfo pi = fragment.getCurrentPageProductInfo();
+			//delete from
+			ProductInfoColumn.delete(ProductDetailActivity.this, pi.id);
+			//correspoding file
+			fragment.deleteCurrentImage();
 		}
 	};
 
@@ -332,7 +334,7 @@ public class ProductDetailActivity extends FragmentActivity {
 			buttonRemoveImage.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
-					//fragment.deleteCurrentImage();
+					fragment.deleteCurrentImage();
 				}
 				
 			});
@@ -405,6 +407,8 @@ public class ProductDetailActivity extends FragmentActivity {
 		gridview.setAdapter(saImageItems);
 		gridview.setOnItemClickListener(l);
 		
+		setBg(gridview);
+		
 		return d;
 	}
 	
@@ -429,7 +433,18 @@ public class ProductDetailActivity extends FragmentActivity {
 		gridview.setAdapter(saImageItems);
 		gridview.setOnItemClickListener(l);
 		
+		setBg(gridview);
+
 		return d;
+	}
+	
+	private static final void setBg(GridView gridview) {
+		for (int i = 0; i < gridview.getChildCount(); ++i) {
+			if (i % 2 == 0)
+				gridview.getChildAt(i).setBackgroundResource(R.drawable.ou_bg);
+			else
+				gridview.getChildAt(i).setBackgroundResource(R.drawable.ou_bg);
+		}
 	}
 
 	private AlertDialog createSizeDialog() {

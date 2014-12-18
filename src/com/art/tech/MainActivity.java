@@ -49,7 +49,7 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 		((ScanUIFragment) scanFragment).setOnSubmitProductListener(this);
 		broweFragment = new ImageGridFragment();
 		
-		mCurrentFragment = broweFragment;
+		changeFragment(broweFragment);
 	}
 
 	OnClickListener scanListener = new OnClickListener() {
