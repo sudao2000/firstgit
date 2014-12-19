@@ -48,6 +48,9 @@ public class ImagePagerFragment extends Fragment {
 		return imageUrls.get(pager.getCurrentItem());
 	}
 	
+	public int getPageCount() {
+		return imageUrls.size();
+	}
 	
 	public void deleteCurrentImage() {
 		PictureInfo pi = getCurrentPageProductInfo();
@@ -55,6 +58,7 @@ public class ImagePagerFragment extends Fragment {
 		ImageCacheColumn.delete(getActivity(), pi.id);
 		
 		imageUrls.remove(pager.getCurrentItem());
+		
 		imageAdapter.notifyDataSetChanged();
 	}
 	
@@ -160,6 +164,10 @@ public class ImagePagerFragment extends Fragment {
 		public int getCount() {
 			return imageUrls.size();
 		}
+		@Override
+		public int getItemPosition(Object object) {  
+            return POSITION_NONE;  
+        }
 
 		@Override
 		public Object instantiateItem(ViewGroup view, int position) {
