@@ -160,6 +160,7 @@ public class ProductDetailActivity extends FragmentActivity {
 			
 			if (ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo) > 0) {
 				setProductInfoView();
+				ProductDetailActivity.this.setTitle(currentProductInfo.copy_name);
 			} else {
 				throw new IllegalStateException("fail to insert product info into database");
 			}
@@ -324,7 +325,8 @@ public class ProductDetailActivity extends FragmentActivity {
 						if (currentPicUri == null) {
 							Log.e(TAG, "error, fail to capture image at : " + saveLocation);
 						} else {
-							Log.v(TAG, "succeed to capture image at" + currentPicUri  );
+							Log.d(TAG, "succeed to capture image at" + currentPicUri  );
+							buttonRemoveImage.setVisibility(View.VISIBLE);
 						}
 					}
 				
@@ -334,7 +336,15 @@ public class ProductDetailActivity extends FragmentActivity {
 			buttonRemoveImage.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
+					if (fragment.getPageCount() == 0) {
+						return;
+					}
+					
 					fragment.deleteCurrentImage();
+
+					if (fragment.getPageCount() == 0) {
+						buttonRemoveImage.setVisibility(View.GONE);
+					}
 				}
 				
 			});

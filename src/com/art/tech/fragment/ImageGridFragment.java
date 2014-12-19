@@ -190,7 +190,8 @@ public class ImageGridFragment extends Fragment {
 
         protected void onPostExecute(Void a) {
         	if (imageUrls.isEmpty()) {
-        		for (String realcode : map.keySet()) {        			
+        		for (String realcode : map.keySet()) {
+        			
         			addImageUrl(-1, Constants.NO_PICTURE_PRODUCT_IAMAGE, realcode);
         		}
         	}

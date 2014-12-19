@@ -1,8 +1,15 @@
 package com.art.tech.application;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileFilter;
+import java.io.IOException;
 
+import com.art.tech.R;
+
+import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.os.Environment;
 
 public class Constants {
@@ -15,7 +22,7 @@ public class Constants {
 	
 	public final static String IMAGE_SAVE_PAHT = BASE_DIR +"download_images" + "/";
 	
-	public final static String NO_PICTURE_PRODUCT_IAMAGE = "http://radiotray.sourceforge.net/radio.png";
+	public final static String NO_PICTURE_PRODUCT_IAMAGE = "file:///android_asset/image.png";
 
 	public final static int EXIT_TIMEOUT = 2000;
 	
