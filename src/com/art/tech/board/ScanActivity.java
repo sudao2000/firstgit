@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.art.tech.MainActivity;
 import com.art.tech.R;
 import com.art.tech.R.id;
 import com.art.tech.R.layout;
@@ -66,6 +67,7 @@ public class ScanActivity extends Activity implements IvrJackAdapter {
 		reader = new IvrJackService();
 		reader.open(this, this);
 		
+		//this.setOnSubmitProductListener();
 
 		String realCode = "123456789abcd";
 		String name = "TAB";
@@ -73,7 +75,7 @@ public class ScanActivity extends Activity implements IvrJackAdapter {
 	}
 	
 	public interface OnSubmitProduct {
-		void onSubmit();
+		void onSubmit(ProductInfo info);
 	}
 	
 	private OnSubmitProduct onSubmitProductListener;
@@ -269,19 +271,13 @@ public class ScanActivity extends Activity implements IvrJackAdapter {
 			}
 			
 			handleRealCode(realcode, name);
-			
-			reader.readEPC(false);
-			
-			if (onSubmitProductListener != null) {
-				onSubmitProductListener.onSubmit();
-			}
-			
 			// reset to original status
 			if (status == IvrJackStatus.ijsRecognized)
 				setVisible(View.GONE, View.VISIBLE, View.GONE);
 			else
 				setVisible(View.VISIBLE, View.GONE, View.GONE);
 			
+			reader.readEPC(false);
 		}
     }
     
@@ -427,7 +423,7 @@ public class ScanActivity extends Activity implements IvrJackAdapter {
 	}
 	
 	
-	private void handleRealCode(String realcode, String name) {
+	private ProductInfo handleRealCode(String realcode, String name) {
 		Resources res = getResources();
 		String other = res.getString(R.string.other);
 		
@@ -449,6 +445,12 @@ public class ScanActivity extends Activity implements IvrJackAdapter {
 		} else {
 			Log.e(TAG, "insert a new product failed");
 		}
+		
+		if (onSubmitProductListener != null) {
+			onSubmitProductListener.onSubmit(info);
+		}
+		
+		return info;
 	}
 
 	@Override

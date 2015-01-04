@@ -33,6 +33,7 @@ import android.widget.ProgressBar;
 import com.art.tech.ProductDetailActivity;
 import com.art.tech.R;
 import com.art.tech.application.Constants;
+import com.art.tech.board.ScanActivity.OnSubmitProduct;
 import com.art.tech.db.DBHelper;
 import com.art.tech.db.ImageCacheColumn;
 import com.art.tech.db.ProductInfoColumn;
@@ -45,7 +46,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-public class ImageGridFragment extends Fragment {
+public class ImageGridFragment extends Fragment implements OnSubmitProduct {
 
 	private static final String TAG = "ImageGridFragment";
 	private static final int MSG_QUERY_IMAGE = 1;
@@ -60,7 +61,7 @@ public class ImageGridFragment extends Fragment {
 	private GridView gridView;
 	private Handler uiHandler;
 
-	public void addImageUrl(long id, String url, String realCode) {
+	private void addImageUrl(long id, String url, String realCode) {
 		if (!realCodeSet.contains(realCode)) {
 			realCodeSet.add(realCode);
 			imageUrls.add(new PictureInfo(id, url, realCode));				
@@ -334,5 +335,32 @@ public class ImageGridFragment extends Fragment {
 	static class ViewHolder {
 		ImageView imageView;
 		ProgressBar progressBar;
+	}
+
+	
+	private void addImageUrlAtFirst(long id, String url, String realCode) {
+		if (!realCodeSet.contains(realCode)) {
+			realCodeSet.add(realCode);
+			imageUrls.add(0, new PictureInfo(id, url, realCode));		
+		}
+	}
+
+	@Override
+	public void onSubmit(ProductInfo i) {
+		addImageUrlAtFirst(-1, Constants.NO_PICTURE_PRODUCT_IAMAGE, i.real_code);		
+		imageAdapter.notifyDataSetChanged();
+		
+		ProductInfo info = new ProductInfo();
+		info.real_code = i.real_code;
+		info.copy_name = i.copy_name;
+		info.copy_type = i.copy_type;
+		info.copy_material = i.copy_material;
+
+		info.copy_size_chang = i.copy_size_chang;
+		info.copy_size_kuan = i.copy_size_kuan;
+		info.copy_size_gao = i.copy_size_gao;
+		info.copy_date = i.copy_date;
+
+		map.put(info.real_code, info);
 	}
 }

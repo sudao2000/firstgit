@@ -27,8 +27,8 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 	Button browseButton;
 	private Fragment mCurrentFragment;
 	
-	private Fragment scanFragment;
-	private Fragment broweFragment;
+	//private Fragment scanFragment;
+	private ImageGridFragment broweFragment;
 	
 	private LinearLayout footer;
 	
@@ -45,8 +45,8 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 		
 		footer = (LinearLayout) findViewById(R.id.main_footer);
 		
-		scanFragment = new ScanUIFragment();
-		((ScanUIFragment) scanFragment).setOnSubmitProductListener(this);
+//		scanFragment = new ScanUIFragment();
+//		((ScanUIFragment) scanFragment).setOnSubmitProductListener(this);
 		broweFragment = new ImageGridFragment();
 		
 		changeFragment(broweFragment);
@@ -87,9 +87,9 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 	
 	private void changeTabState(int buttonId) {
 		switch (buttonId) {
-		case R.id.button_scan:
-			changeFragment(scanFragment);
-			break;
+//		case R.id.button_scan:
+//			changeFragment(scanFragment);
+//			break;
 		case R.id.button_browse:
 			changeFragment(broweFragment);
 			break;
@@ -150,5 +150,10 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 	@Override
 	public void onSubmit() {
 		footer.setVisibility(View.VISIBLE);
+	}
+	
+	
+	public ImageGridFragment getBrowseFragment() {
+		return broweFragment;
 	}
 }
