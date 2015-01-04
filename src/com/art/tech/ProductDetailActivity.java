@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -90,7 +92,8 @@ public class ProductDetailActivity extends FragmentActivity {
 	
 	protected static final int ACTION_CAPTURE_IMAGE = 0;
 	private static final String TAG = "ProductDetailActivity";
-	//private String saveLocation;
+	
+	private TextView mCustomView;
 
 	private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -160,7 +163,7 @@ public class ProductDetailActivity extends FragmentActivity {
 			
 			if (ProductInfoColumn.insert(ProductDetailActivity.this, currentProductInfo) > 0) {
 				setProductInfoView();
-				ProductDetailActivity.this.setTitle(currentProductInfo.copy_name);
+				mCustomView.setText(currentProductInfo.copy_name);
 			} else {
 				throw new IllegalStateException("fail to insert product info into database");
 			}
@@ -243,6 +246,15 @@ public class ProductDetailActivity extends FragmentActivity {
 	private void initProductList() {
 		currentProductInfo = new ProductInfo();
 		currentProductInfo.real_code = getIntent().getStringExtra(ProductInfoColumn.REAL_CODE);
+		
+		mCustomView = (TextView) getLayoutInflater().inflate(R.layout.product_detail_custom_title, null);
+		mCustomView.setText(getIntent().getStringExtra(ProductInfoColumn.REAL_CODE));
+
+        ActionBar bar = getActionBar();
+        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
+        bar.setCustomView(mCustomView, new ActionBar.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+       
+
 	}
 	
 	private void setProductInfoView() {
@@ -349,8 +361,6 @@ public class ProductDetailActivity extends FragmentActivity {
 		}
 		
 		String realCode = intent.getStringExtra(ProductInfoColumn.REAL_CODE);
-
-    	setTitle(intent.getStringExtra(ProductInfoColumn.COPY_NAME) + "  " + realCode);
 		String where = ProductInfoColumn.REAL_CODE + "=" + "'" + realCode + "'";
 		new QueryProductInfoTask().execute(where);
 	}
