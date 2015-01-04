@@ -59,7 +59,7 @@ public class ProductDetailActivity extends FragmentActivity {
 	
 	EditText copyName;
 	private Button copyType;
-	private Button copyMaterial;	
+	
 	private Button copySize;
 		private EditText copySizeChang;
 		private EditText copySizeKuan;
@@ -289,14 +289,12 @@ public class ProductDetailActivity extends FragmentActivity {
 		}
 
 		{
-			copyMaterial = (Button) findViewById(R.id.copy_material);
 			copyName = (EditText) this.findViewById(R.id.copy_name);
 			copyType = (Button) this.findViewById(R.id.copy_type);
 			copySize = (Button) this.findViewById(R.id.copy_size);
 			
 			copyType.setOnClickListener(typeListener);
 			copySize.setOnClickListener(sizeListener);
-			copyMaterial.setOnClickListener(materialListener);
 		}
 
 		{
@@ -375,8 +373,6 @@ public class ProductDetailActivity extends FragmentActivity {
 			return createTypeDialog(types, new TypeItemClickListener());
 		case SIZE_DIALOG_ID:
 			return createSizeDialog();
-		case MATERIAL_DIALOG_ID:
-			return createMaterialDialog(materials, new MaterialItemClickListener());
 		case NO_NAME_MESSAGE_DIALOG:
 		    return createNoNameDialog();
 		}
@@ -384,43 +380,12 @@ public class ProductDetailActivity extends FragmentActivity {
 	}
 	
 	private static final String []types = new String[]{ 
-			"雕塑", "油画",
-            "书法", "陶瓷", 
-            "国画", "装置",
-            "摄影", "版画",
-            "雕刻", "其他"};
+			"闆曞", "娌圭敾",
+            "涔︽硶", "闄剁摲", 
+            "鍥界敾", "瑁呯疆",
+            "鎽勫奖", "鐗堢敾",
+            "闆曞埢", "鍏朵粬"};
 
-	private static final String []materials = new String[]{ 
-		"金属", "木材",
-        "玉石", "玻璃钢", 
-        "粘土", "石膏",
-        "玻璃", "树脂",
-        "综合材料", "其他"};
-	
-	private AlertDialog createMaterialDialog(String[] data, MaterialItemClickListener l) {
-
-		LayoutInflater factory = LayoutInflater.from(this);
-		final View v = factory.inflate(R.layout.grid_view, null);
-		AlertDialog d = new AlertDialog.Builder(this).setView(v).create();
-		d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-		GridView gridview = (GridView) v;
-		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
-		for (int i = 0; i < 8; i++) {
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("itemText", data[i]);
-			lstImageItem.add(map);
-		}
-		SimpleAdapter saImageItems = new SimpleAdapter(this, lstImageItem,// 数据源
-				R.layout.grid_view_item,// 显示布局
-				new String[] { "itemText" }, new int[] { R.id.itemText });
-		gridview.setAdapter(saImageItems);
-		gridview.setOnItemClickListener(l);
-		
-		setBg(gridview);
-		
-		return d;
-	}
 	
 	private AlertDialog createTypeDialog(String[] data, TypeItemClickListener l) {
 
@@ -436,8 +401,8 @@ public class ProductDetailActivity extends FragmentActivity {
 			map.put("itemText", data[i]);
 			lstImageItem.add(map);
 		}
-		SimpleAdapter saImageItems = new SimpleAdapter(this, lstImageItem,// 数据源
-				R.layout.grid_view_item,// 显示布局
+		SimpleAdapter saImageItems = new SimpleAdapter(this, lstImageItem,// 鏁版嵁婧�
+				R.layout.grid_view_item,// 鏄剧ず甯冨眬
 				new String[] { "itemText" }, new int[] { R.id.itemText });
 
 		gridview.setAdapter(saImageItems);
@@ -574,19 +539,6 @@ public class ProductDetailActivity extends FragmentActivity {
 		}
 	}
 	
-	private class MaterialItemClickListener implements OnItemClickListener {
-
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long rowid) {
-			HashMap<String, Object> item = (HashMap<String, Object>) parent
-					.getItemAtPosition(position);
-			String itemText = (String) item.get("itemText");
-			currentProductInfo.copy_material = itemText;
-			copyMaterial.setText(itemText);
-			ProductDetailActivity.this.dismissDialog(MATERIAL_DIALOG_ID);
-		}
-	}
-	
 	private void updateDate(Calendar c) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String yymmdd = simpleDateFormat.format(c.getTime());
@@ -598,7 +550,6 @@ public class ProductDetailActivity extends FragmentActivity {
 	private void updateView(ProductInfo info) {		
 		copyName.setText(info.copy_name);
 		copyType.setText(info.copy_type);
-		copyMaterial.setText(info.copy_material);
 		
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(info.copy_date);
