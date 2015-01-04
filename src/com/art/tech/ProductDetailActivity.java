@@ -141,12 +141,12 @@ public class ProductDetailActivity extends FragmentActivity {
 	private OnClickListener okListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			productDetailInfo.setVisibility(View.GONE);
-			editButton.setVisibility(View.GONE);
-			detailEditView.setVisibility(View.GONE);
+			productDetailInfo.setVisibility(View.VISIBLE);
+			editButton.setVisibility(View.VISIBLE);
 			
-			detailSendView.setVisibility(View.VISIBLE);
-			detailSendView.setAnimation(AnimationUtils.loadAnimation(ProductDetailActivity.this, R.anim.dialog_enter));
+			detailEditView.setVisibility(View.GONE);			
+			detailSendView.setVisibility(View.GONE);
+			//detailSendView.setAnimation(AnimationUtils.loadAnimation(ProductDetailActivity.this, R.anim.dialog_enter));
 			
 			
 			currentProductInfo.copy_name = copyName.getText().toString().trim();
