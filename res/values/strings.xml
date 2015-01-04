@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">我很忙</string>
+    <string name="app_name">TAG</string>
     <string name="action_logout">更换帐号</string>
     <string name="action_about_app">关于与建议</string>
     <string name="network_error">网络错误，请检查您的网络连接</string>
