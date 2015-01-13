@@ -13,6 +13,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -395,15 +396,15 @@ public class ProductDetailActivity extends FragmentActivity {
 		return super.onCreateDialog(id);
 	}
 	
-	private static final String []types = new String[]{ 
-			"闆曞", "娌圭敾",
-            "涔︽硶", "闄剁摲", 
-            "鍥界敾", "瑁呯疆",
-            "鎽勫奖", "鐗堢敾",
-            "闆曞埢", "鍏朵粬"};
+	private static final int []types = new int[]{ 
+			R.string.type1, R.string.type2, 
+			R.string.type3, R.string.type4, 
+			R.string.type5, R.string.type6, 
+			R.string.type7, R.string.type8,
+			};
 
 	
-	private AlertDialog createTypeDialog(String[] data, TypeItemClickListener l) {
+	private AlertDialog createTypeDialog(int[] data, TypeItemClickListener l) {
 
 		LayoutInflater factory = LayoutInflater.from(this);
 		final View v = factory.inflate(R.layout.grid_view, null);
@@ -411,10 +412,11 @@ public class ProductDetailActivity extends FragmentActivity {
 		d.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		GridView gridview = (GridView) v;
+		Resources res =  getResources();
 		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
 		for (int i = 0; i < 8; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("itemText", data[i]);
+			map.put("itemText", res.getString(data[i]));
 			lstImageItem.add(map);
 		}
 		SimpleAdapter saImageItems = new SimpleAdapter(this, lstImageItem,// 鏁版嵁婧�
