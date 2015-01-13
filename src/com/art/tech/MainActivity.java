@@ -1,5 +1,6 @@
 package com.art.tech;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,13 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.art.tech.application.Constants;
 import com.art.tech.board.ScanActivity;
-import com.art.tech.board.ScanUIFragment;
 import com.art.tech.board.ScanUIFragment.OnSubmitProduct;
 import com.art.tech.db.DBHelper;
 import com.art.tech.fragment.ImageGridFragment;
@@ -26,6 +25,14 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 	Button scanButton;
 	Button browseButton;
 	private Fragment mCurrentFragment;
+	
+	public static int REQUEST_SCAN_NEW_ART = 1;
+	
+	public static int RESPONESE_SCAN_NEW_INIT = 0;
+	public static int RESPONESE_SCAN_NEW_SUCCESS = 1;
+	public static int RESPONESE_SCAN_NEW_FAILED_REPEAT = 2;
+	public static int RESPONESE_SCAN_NEW_FAILED_DEVICE_ERROR = 3;
+	public int scanResult = RESPONESE_SCAN_NEW_INIT;
 	
 	//private Fragment scanFragment;
 	private ImageGridFragment broweFragment;
@@ -57,9 +64,21 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 		@Override
 		public void onClick(View v) {
 			//changeTabState(v.getId());
-			IntentUtil.start_activity(MainActivity.this, ScanActivity.class, null);
+			//IntentUtil.start_activity(MainActivity.this, ScanActivity.class, null);
+            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+            startActivityForResult(intent, REQUEST_SCAN_NEW_ART);
 		}
 	};
+	
+	
+	@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SCAN_NEW_ART) {
+            if (resultCode == RESPONESE_SCAN_NEW_SUCCESS) {
+            	scanResult = RESPONESE_SCAN_NEW_SUCCESS;
+            }
+        }
+    }
 
 	OnClickListener browseListener = new OnClickListener() {
 
@@ -117,6 +136,16 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 	    return super.onKeyDown(keyCode, event);
 	}
 	
+	@Override
+	protected void onResume() {
+		if (scanResult == RESPONESE_SCAN_NEW_SUCCESS) {
+			changeFragment(broweFragment);
+			scanResult = RESPONESE_SCAN_NEW_INIT;
+		}
+		
+		super.onResume();
+	}
+	
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -152,6 +181,10 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 		footer.setVisibility(View.VISIBLE);
 	}
 	
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 	
 	public ImageGridFragment getBrowseFragment() {
 		return broweFragment;
