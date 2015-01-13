@@ -297,6 +297,7 @@ public class ProductDetailActivity extends FragmentActivity {
 				}
 
 			};
+			
 			datePicker.setOnClickListener(datePickerListener);
 		}
 
@@ -378,7 +379,12 @@ public class ProductDetailActivity extends FragmentActivity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DATE_DIALOG_ID:
-			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
+			Calendar cal=Calendar.getInstance();
+		    int year=cal.get(Calendar.YEAR);
+		    int month=cal.get(Calendar.MONTH);
+		    int day=cal.get(Calendar.DAY_OF_MONTH);
+			return new DatePickerDialog(this, mDateSetListener, year, month, day);
+			//return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
 		case TYPE_DIALOG_ID:
 			return createTypeDialog(types, new TypeItemClickListener());
 		case SIZE_DIALOG_ID:
