@@ -69,10 +69,10 @@ public class ScanActivity extends Activity implements IvrJackAdapter {
 		
 		//this.setOnSubmitProductListener();
 
-		String realCode = "123456789abcd";
-		String name = "TAB";
-		handleRealCode(realCode, name);
-		setResult(MainActivity.RESPONESE_SCAN_NEW_SUCCESS);
+//		String realCode = "123456789abcd";
+//		String name = "TAB";
+//		handleRealCode(realCode, name);
+//		setResult(MainActivity.RESPONESE_SCAN_NEW_SUCCESS);
 	}
 	
 	public interface OnSubmitProduct {
@@ -443,8 +443,10 @@ public class ScanActivity extends Activity implements IvrJackAdapter {
 		
 		if (ProductInfoColumn.insert(this, info) > 0) {
 			Log.v(TAG, "insert a new product success");
+			setResult(MainActivity.RESPONESE_SCAN_NEW_SUCCESS);
 		} else {
 			Log.e(TAG, "insert a new product failed");
+			setResult(MainActivity.RESPONESE_SCAN_NEW_FAILED_INSERT_DB);
 		}
 		
 		if (onSubmitProductListener != null) {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import com.art.tech.fragment.ImageGridFragment;
 import com.art.tech.util.IntentUtil;
 
 public class MainActivity extends FragmentActivity implements OnSubmitProduct {
+	private static final String TAG = MainActivity.class.getSimpleName();
 	Button scanButton;
 	Button browseButton;
 	private Fragment mCurrentFragment;
@@ -32,6 +34,8 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
 	public static int RESPONESE_SCAN_NEW_SUCCESS = 1;
 	public static int RESPONESE_SCAN_NEW_FAILED_REPEAT = 2;
 	public static int RESPONESE_SCAN_NEW_FAILED_DEVICE_ERROR = 3;
+	public static int RESPONESE_SCAN_NEW_FAILED_INSERT_DB  = 4;
+	
 	public int scanResult = RESPONESE_SCAN_NEW_INIT;
 	
 	//private Fragment scanFragment;
@@ -76,6 +80,8 @@ public class MainActivity extends FragmentActivity implements OnSubmitProduct {
         if (requestCode == REQUEST_SCAN_NEW_ART) {
             if (resultCode == RESPONESE_SCAN_NEW_SUCCESS) {
             	scanResult = RESPONESE_SCAN_NEW_SUCCESS;
+            } else {
+            	Log.e(TAG, "scan error: errocode " + scanResult);
             }
         }
     }
